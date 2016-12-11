@@ -1,0 +1,19 @@
+<ion-menu [content]="content" side="right">
+  <ion-content>
+    <ion-toolbar>
+      <ion-title>Hello</ion-title>    <!-- {{email}}  -->
+     </ion-toolbar>
+    <div padding>
+      <button ion-button full color="danger" (click)="logout()">Logout</button>   <!-- (click)="logout()"  -->
+    </div>
+  </ion-content>
+</ion-menu>
+
+<ion-tabs #content>
+  <!-- <ion-tab [root]="tab1Root" tabTitle="places" tabIcon="list-box"></ion-tab>  --> 
+
+   <ion-tab [root]="tab2Root" tabTitle="Add place" tabIcon="add-circle" ></ion-tab>  
+   <ion-tab [root]="tab3Root" tabTitle="Arround" tabIcon="map"></ion-tab> 
+   <!--<ion-tab [root]="tab4Root" tabTitle="friends" tabIcon="people"></ion-tab>   -->
+ 
+</ion-tabs>
