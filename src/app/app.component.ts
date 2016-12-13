@@ -3,18 +3,14 @@ import { Platform } from 'ionic-angular';
 import { StatusBar, Splashscreen } from 'ionic-native';
 import { Routes } from './app.routes';
 //import { Auth } from '../providers/auth';
-
 //import { HomePage } from '../pages/home/home';
-//import { AroundPage } from '../pages/around/around';
-
 import {AngularFire, FirebaseListObservable} from 'angularfire2';
+
 //import { FB_CONFIG } from '../providers/fb-config';
 //const firebaseconfig:Object = FB_CONFIG;
    
-
 @Component({
-  template: `<ion-nav [root]="rootPage"></ion-nav>
-  `,
+  template: `<ion-nav [root]="rootPage"></ion-nav>`,
  // providers: [Places],
  // templateUrl: 'app.html'
 })
@@ -25,8 +21,7 @@ export class MyApp {
   //firebase.initializeApp(firebaseconfig);
  // items: FirebaseListObservable<any[]>;
 
-  constructor(platform: Platform, af: AngularFire) {  //private auth:Auth
-    
+  constructor(platform: Platform, af: AngularFire) {  //private auth:Auth  
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
@@ -36,9 +31,8 @@ export class MyApp {
   }
 
   ngOnInit() {
-   // debugger;
      console.log ("OnInit " +  this.rootPage)
-     this.rootPage = Routes.getRootPage(false);  //false
+     this.rootPage = Routes.getRootPage(false);  
     
   }
 }

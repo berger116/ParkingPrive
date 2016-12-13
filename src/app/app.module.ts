@@ -1,8 +1,7 @@
 import { NgModule, ErrorHandler } from '@angular/core';
 import { IonicApp, IonicModule } from 'ionic-angular';    //IonicErrorHandler
 import { MyApp } from './app.component';
-
-//import { HeaderContentComponent } from '../components/header-content/header-content';
+import { HeaderContentComponent } from '../components/header-content/header-content';
 import { Routes } from './app.routes';
 //import { FirebaseSVC } from '../providers/firebase-svc';
 import { AngularFireModule, AuthProviders, AuthMethods } from 'angularfire2';
@@ -21,8 +20,8 @@ import {Map} from '../components/map/map';
 const app:Array<any>=[MyApp];
 const pages:Array<any> = Routes.getPages();
 const components:Array<any> = [
- // HeaderContentComponent,
- Map
+  HeaderContentComponent,
+  Map
 ];
 //const pipes:Array<any> = [SortAsc, GroupBy];
 
@@ -30,7 +29,7 @@ const appIonicConfig = {
   mode: 'md',
   platforms: {
     ios: {
-      tabsPlacement: 'top',
+      tabsPlacement: 'bottom',
     }
 //    android: {
 //      tabsPlacement: 'top',
@@ -48,7 +47,7 @@ export const myFirebaseConfig = {
 
 export const myFirebaseAuthConfig = {
   provider: AuthProviders.Google,
-  method: AuthMethods.Redirect
+  method: AuthMethods.Redirect  // ou popup ??
 }
 
 

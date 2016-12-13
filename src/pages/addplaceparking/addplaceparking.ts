@@ -27,8 +27,8 @@ export class AddplaceparkingPage {
      this.items = af.database.list('/items', { preserveSnapshot: true });
      this.items.subscribe(snapshots => {
         snapshots.forEach(snapshot => {
-        console.log("snap key:" + snapshot.key)
-        console.log("snap val:" + snapshot.val().name)
+        //console.log("snap key:" + snapshot.key)
+        //console.log("snap val:" + snapshot.val().name)
        });
      });
 
@@ -39,7 +39,7 @@ export class AddplaceparkingPage {
          query: {
            orderByChild: 'plaque',
            equalTo: this.numberSubject,
-       //  orderByKey: true,   //un seul orderBy
+        //  orderByKey: true,   //un seul orderBy
 
         //  limitToFirst: 2,
         //  limitToLast: 2,
@@ -78,14 +78,6 @@ export class AddplaceparkingPage {
     this.items.remove();
   }
 
-  login() {
-    console.log('Addplaceparkin login Page')
-    this.af.auth.login();
-  }
-
-  logout() {
-     this.af.auth.logout();
-  }
 
   ionViewDidLoad() {
     console.log('Hello AddplaceparkingPage Page');

@@ -6,18 +6,17 @@
 -->
 <ion-header>
 
-  <ion-navbar>
+  <!-- <ion-navbar>
     <ion-title>addplaceparking</ion-title>
-  </ion-navbar>
-
+  </ion-navbar>  -->
+  <header-content title="addplaceparking"></header-content>  
 </ion-header>
-
   
 <ion-content padding>
   <p> test</p>
   <div> {{ (af.auth | async)?.uid }} </div>
-  <button (click)="login()">Login</button>
-  <button (click)="logout()">Logout</button>
+  <!-- <button (click)="login()">Login</button>
+  <button (click)="logout()">Logout</button>  -->
 
   <ul>
     <li *ngFor="let item of items | async">
@@ -40,6 +39,7 @@
       <button (click)="filterBy('1234')">1234</button>
       <button (click)="filterBy('12345')">12345</button>
     </div>
+
    <!-- <ul>
       <li class="text" *ngFor="let item of items | async">
          {{ item | json }}

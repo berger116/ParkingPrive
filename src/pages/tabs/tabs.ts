@@ -1,13 +1,11 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 //import { PlacesPage } from '../places/places';
-//import { AddPage } from '../add/add';
 import { AroundPage } from '../around/around';
 import { AddplaceparkingPage } from '../addplaceparking/addplaceparking';
-//import { LoginPage } from '../login/login';
-//import { HomePage } from '../home/home';
 import { Routes } from '../../app/app.routes';
 //import { Auth } from '../../providers/auth';
+import { AngularFire, FirebaseListObservable, FirebaseObjectObservable} from 'angularfire2';
 
 /*
   Generated class for the Tabs tabs.
@@ -30,13 +28,16 @@ export class TabsPage {
 
   email: string;
 
-  constructor(public navCtrl: NavController) {  // ,private auth: Auth
+  constructor(public navCtrl: NavController, public af: AngularFire) {  // ,private auth: Auth
    // this.email = (auth.user) ? auth.user.email : null
   }
 
   logout() {
-  // this.auth.logout();
+    // this.auth.logout();
+    console.log("tabs logout")
+    this.af.auth.logout();
     this.navCtrl.setRoot(Routes.getRootPage(false));
   }
+  
 
 }

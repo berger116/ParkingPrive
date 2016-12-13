@@ -16,7 +16,6 @@ export class FirebaseSVC {
   userPlaces: any;
   userDisp: any;
 
-
   constructor(public http: Http) {
     console.log('Hello FirebaseSVC Provider');
     this.fireAuth = firebase.auth();
