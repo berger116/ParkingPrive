@@ -23,62 +23,74 @@ import {
 })
 export class Map {
 
-  //map:google.maps.Map;
+  map:google.maps.Map;  
+  myLatLng = { lat:  46.2043907, lng: 6.143157699999961 }; // 46.2043907, 6.143157699999961
+  marker: any;
 
-  //init(lat:number, long:number, zoom:number=12) {
+  //var map = new google.maps.Map(document.getElementById("map"), mapOptions);
 
-  //this.map = new google.maps.Map(document.getElementById("map_canvas"), {
-  //      center: new google.maps.LatLng(lat, long),
-  //      zoom: zoom,
-  //      mapTypeId: google.maps.MapTypeId.ROADMAP
-  //  });
-  //}
+  init(lat:number, long:number, zoom:number=12) {
+
+     this.map = new google.maps.Map(document.getElementById("map_canvas"), {
+       center: new google.maps.LatLng(lat, long),
+       zoom: zoom,
+       mapTypeId: google.maps.MapTypeId.ROADMAP
+     });
+
+     this.marker = new google.maps.Marker({
+        position: this.myLatLng,
+        title:"Hello World!"
+     });
+     // To add the marker to the map, call setMap();
+     this.marker.setMap(this.map);
+  }
 
 // ionic plugin add cordova-plugin-googlemaps --variable API_KEY_FOR_ANDROID="YOUR_ANDROID_API_KEY_IS_HERE" --variable API_KEY_FOR_IOS="YOUR_IOS_API_KEY_IS_HERE"
 
-  ionic: GoogleMapsLatLng = new GoogleMapsLatLng(46.2043907, 6.143157699999961);
-  markerOptions: GoogleMapsMarkerOptions = {
-      position: this.ionic,
-      title: 'Test'
-  };
+  //pos: GoogleMapsLatLng = new GoogleMapsLatLng(46.2043907, 6.143157699999961);
+  //markerOptions: GoogleMapsMarkerOptions = {
+  //    position: this.pos,
+  //    title: 'Test'
+  //};
 
-  loadMap() {
+ // loadMap() {
  // make sure to create following structure in your view.html file
  // <ion-content>
  //  <div #map id="map"></div>
  // </ion-content>
 
  // create a new map by passing HTMLElement
-    let element: HTMLElement = document.getElementById('map_canvas');
+ //    let element: HTMLElement = document.getElementById('map_canvas');
+ //    let map = new GoogleMap(element);
 
-    let map = new GoogleMap(element);
+  // listen to MAP_READY event
+  //    map.one(GoogleMapsEvent.MAP_READY).then(() => console.log('Map is ready!'));
 
-    // listen to MAP_READY event
-    map.one(GoogleMapsEvent.MAP_READY).then(() => console.log('Map is ready!'));
+   // create LatLng object
+   //let posi: GoogleMapsLatLng = new GoogleMapsLatLng(46.2043907, 6.143157699999961);
 
-    // create LatLng object
-    let posi: GoogleMapsLatLng = new GoogleMapsLatLng(46.2043907, 6.143157699999961);
-
-    // create CameraPosition
-    let position: CameraPosition = {
-      target: posi,
-      zoom: 18,
-      tilt: 30
-    };
+   // create CameraPosition
+   //let position: CameraPosition = {
+   //  target: posi,
+   //  zoom: 18,
+   //  tilt: 30
+   //};
 
     // move the map's camera to position
     // map.moveCamera(position);
 
     // create new marker
-    let markerOptions: GoogleMapsMarkerOptions = {
-      position: posi,
-      title: 'Ionic'
-    };
+    //let markerOptions: GoogleMapsMarkerOptions = {
+    //  position: posi,
+    //  title: 'test'
+    //};
 
-    map.addMarker(markerOptions)
-    .then((marker: GoogleMapsMarker) => {
-        marker.showInfoWindow();
-    });
- }
+   // map.addMarker(markerOptions)
+   // .then((marker: GoogleMapsMarker) => {
+   //     marker.showInfoWindow();
+   // });
+   
+//});
+
 
 }

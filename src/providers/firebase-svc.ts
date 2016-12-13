@@ -29,20 +29,20 @@ export class FirebaseSVC {
   //  return this.fireAuth.signInWithEmailAndPassword(email, password);
   //}
 
-  setCurrentUserWallet(uid, userWallet){
-    this.wallet = firebase.database().ref('/wallet/'+ uid)
-    this.currentUserWallet = userWallet;
-  }
+ // setCurrentUserWallet(uid, userWallet){
+ //   this.wallet = firebase.database().ref('/wallet/'+ uid)
+ //   this.currentUserWallet = userWallet;
+ // }
 
-  setUserSolde(uid){
-    let userSoleRef = this.userSolde.child(uid)
-    userSoleRef.once('value', (snapshot)=> {
-      if(snapshot.val() != null){
-        this.walletSolde = snapshot.val().solde
+ // setUserSolde(uid){
+ //   let userSoleRef = this.userSolde.child(uid)
+ //   userSoleRef.once('value', (snapshot)=> {
+ //     if(snapshot.val() != null){
+ //       this.walletSolde = snapshot.val().solde
         //console.log('userSole ->', this.walletSolde)
-      }
-    });
-  }
+ //     }
+ //   });
+ // }
 
   //saveUserWallet(totalWallet, amountItem, categorie, status, uid){
   //  return this.userSolde.child(uid).set({

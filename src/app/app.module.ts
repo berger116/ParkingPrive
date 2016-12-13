@@ -4,8 +4,8 @@ import { MyApp } from './app.component';
 
 //import { HeaderContentComponent } from '../components/header-content/header-content';
 import { Routes } from './app.routes';
-import { FirebaseSVC } from '../providers/firebase-svc';
-import { AngularFireModule } from 'angularfire2';
+//import { FirebaseSVC } from '../providers/firebase-svc';
+import { AngularFireModule, AuthProviders, AuthMethods } from 'angularfire2';
 
 //import { AuthHttp, AuthConfig } from 'angular2-jwt';
 //import { Http } from '@angular/http';
@@ -25,6 +25,7 @@ const components:Array<any> = [
  Map
 ];
 //const pipes:Array<any> = [SortAsc, GroupBy];
+
 const appIonicConfig = {
   mode: 'md',
   platforms: {
@@ -37,14 +38,19 @@ const appIonicConfig = {
   }
 };
 
-export const firebaseConfig = {
- 
+export const myFirebaseConfig = {
   apiKey: "AIzaSyAyi1hy-rHuxWSWm2hOQU0AZ7_sARKcwPo",
   authDomain: "parkingprive-73f09.firebaseapp.com",
   databaseURL: "https://parkingprive-73f09.firebaseio.com",
   storageBucket: "parkingprive-73f09.appspot.com",
   messagingSenderId: "756854799582"
 };
+
+export const myFirebaseAuthConfig = {
+  provider: AuthProviders.Google,
+  method: AuthMethods.Redirect
+}
+
 
 //let storage = new Storage();
 
@@ -61,9 +67,8 @@ export const firebaseConfig = {
   declarations: app.concat(pages).concat(components), // .concat(pipes),
   imports: [
     IonicModule.forRoot(MyApp, appIonicConfig, Routes.getDeepLinkerConfig()),
-    AngularFireModule.initializeApp(firebaseConfig)
+    AngularFireModule.initializeApp(myFirebaseConfig,myFirebaseAuthConfig)
   ],
-
   providers: [
   // {
    //  provide: AuthHttp,
@@ -73,11 +78,10 @@ export const firebaseConfig = {
   // Endpoints,
   // Auth,
   // Settings,
-  FirebaseSVC
+  //FirebaseSVC
   ],
 
   bootstrap: [IonicApp],
-
   entryComponents: app.concat(pages),
 })
 export class AppModule {}

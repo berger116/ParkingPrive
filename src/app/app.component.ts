@@ -9,18 +9,12 @@ import { Routes } from './app.routes';
 
 import {AngularFire, FirebaseListObservable} from 'angularfire2';
 //import { FB_CONFIG } from '../providers/fb-config';
-
-const firebaseconfig:Object =   //FB_CONFIG;
-    {
-      apiKey: "AIzaSyAyi1hy-rHuxWSWm2hOQU0AZ7_sARKcwPo",
-      authDomain: "parkingprive-73f09.firebaseapp.com",
-      databaseURL: "https://parkingprive-73f09.firebaseio.com",
-      storageBucket: "parkingprive-73f09.appspot.com",
-      messagingSenderId: "756854799582"
-    };
+//const firebaseconfig:Object = FB_CONFIG;
+   
 
 @Component({
-  template: `<ion-nav [root]="rootPage"></ion-nav>`,
+  template: `<ion-nav [root]="rootPage"></ion-nav>
+  `,
  // providers: [Places],
  // templateUrl: 'app.html'
 })
@@ -29,8 +23,10 @@ export class MyApp {
   rootPage: any;
 
   //firebase.initializeApp(firebaseconfig);
+ // items: FirebaseListObservable<any[]>;
 
-  constructor(platform: Platform) {  //private auth:Auth
+  constructor(platform: Platform, af: AngularFire) {  //private auth:Auth
+    
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.

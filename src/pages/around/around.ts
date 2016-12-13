@@ -23,18 +23,12 @@ export class AroundPage {
   @ViewChild(Map)
   private map: Map;
 
-  ionic: GoogleMapsLatLng = new GoogleMapsLatLng(46.2043907, 6.143157699999961);
-  markerOptions: GoogleMapsMarkerOptions = {
-      position: this.ionic,
-      title: 'Test'
-  };
-
   constructor() {}
 
   ionViewDidEnter(){
-    //this.map.init(46.2043907, 6.143157699999961); 
+    this.map.init(46.2043907, 6.143157699999961); 
 
-    this.map.loadMap();
+   //this.map.loadMap();
   }
   
 
