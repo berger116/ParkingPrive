@@ -65,9 +65,15 @@ export class AddplaceparkingPage {
     this.numberSubject.next(plaq); 
   }
 
-  addItem(newName: string, newPlaque: string) {
-    this.items.push({ name: newName, plaque: newPlaque });
+  addItem(newAdresse: string, newVille: string, newNoPostal: string ) {
+   // this.items.push({ name: newName, plaque: newPlaque });
+    this.items.push({ 
+      adresse: newAdresse,
+      ville: newVille,
+      noPostal: newNoPostal,
+    });
   }
+
   updateItem(key: string, newName: string, newPlaque: string) {
     this.items.update(key, { name: newName, plaque: newPlaque });
   }

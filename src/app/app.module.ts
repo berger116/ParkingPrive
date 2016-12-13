@@ -17,6 +17,8 @@ import {Map} from '../components/map/map';
 //import {GroupBy} from '../pipes/group-by';
 //import { HomePage } from '../pages/home/home';
 
+// ?? import { AuthService } from '../providers/auth-service';
+
 const app:Array<any>=[MyApp];
 const pages:Array<any> = Routes.getPages();
 const components:Array<any> = [
@@ -78,6 +80,8 @@ export const myFirebaseAuthConfig = {
   // Auth,
   // Settings,
   //FirebaseSVC
+
+  // ?? AuthService
   ],
 
   bootstrap: [IonicApp],
