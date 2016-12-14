@@ -48,8 +48,10 @@ export const myFirebaseConfig = {
 };
 
 export const myFirebaseAuthConfig = {
-  provider: AuthProviders.Google,
-  method: AuthMethods.Redirect  // ou popup ??
+  provider: AuthProviders.Password,
+  method: AuthMethods.Password
+  //provider: AuthProviders.Google,
+  //method: AuthMethods.Redirect  // ou popup ??
 }
 
 

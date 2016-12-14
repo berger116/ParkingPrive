@@ -12,7 +12,7 @@
   <header-content title="addplaceparking"></header-content>  
 </ion-header>
   
-<ion-content padding>
+<ion-content>
   <br> <br>
   <h6>Mettre en location une place de parking</h6>
  <!--  <ion-spinner></ion-spinner>  -->
@@ -21,7 +21,7 @@
   <button (click)="login()">Login</button>
   <button (click)="logout()">Logout</button>  -->
 
-  <ion-content >
+  
    <!--  <ion-list>  -->
       <ion-grid>
         <ion-row>
@@ -80,22 +80,22 @@
 
    <button ion-button color="secondary"  (click)="addItem(newname.value, newplaque.value)">Valider</button>
 
-  <ul>
-    <li *ngFor="let item of items | async">
-      <input type="text" #updatename [value]="item.name" /> 
-      <input type="text" #updateplaque [value]="item.plaque" />
-     
-      <button (click)="updateItem(item.$key, updatename.value,  updateplaque.value)">Update</button>
-      <button (click)="deleteItem(item.$key)">Delete</button>
-    </li>
-  </ul>
-  <input type="text" #newname />
-  <input type="text" #newplaque />
-  <button (click)="addItem(newname.value, newplaque.value)">Add</button>
+    <ul>
+      <li *ngFor="let item of items | async">
+        <input type="text" #updatename [value]="item.name" /> 
+        <input type="text" #updateplaque [value]="item.plaque" />
+      
+        <button (click)="updateItem(item.$key, updatename.value,  updateplaque.value)">Update</button>
+        <button (click)="deleteItem(item.$key)">Delete</button>
+      </li>
+    </ul>
+    <input type="text" #newname />
+    <input type="text" #newplaque />
+    <button (click)="addItem(newname.value, newplaque.value)">Add</button>
   <!-- <button (click)="deleteEverything()">Delete All</button>  -->
 
 
-  <div>
+    <div>
       <h4>Filter by plaque</h4>
       <button (click)="filterBy('123')">123</button>
       <button (click)="filterBy('1234')">1234</button>

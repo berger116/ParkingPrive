@@ -36,8 +36,9 @@ export class TabsPage {
     // this.auth.logout();
     console.log("tabs logout")
     this.af.auth.logout();
+   // ? this.navCtrl.pop(Routes.getPage(Routes.TABS))  // ajouté
+
     this.navCtrl.setRoot(Routes.getRootPage(false));
   }
   
-
 }

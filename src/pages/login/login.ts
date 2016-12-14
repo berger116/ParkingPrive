@@ -14,16 +14,19 @@ import { AngularFire, AuthProviders, AuthMethods} from 'angularfire2';
   templateUrl: 'login.html'
 })
 export class LoginPage {
-  email:string;
-  password:string;
+  email:string = "t@t.ch";
+  password:string = "tttttt";
   error:string;
   loader:any;
+  //af2:any
   
   //auth:Observable;
 
-  constructor(public navCtrl: NavController, public af: AngularFire, public loadingCtrl: LoadingController,) {
-    
-    //this.af.auth.subscribe(auth => console.log("XXX Login auth:" + auth));  
+  constructor(public navCtrl: NavController, private af: AngularFire, public loadingCtrl: LoadingController,) {
+    //this.af.auth.subscribe(auth => console.log("XXX Login auth:" + auth)); 
+
+      // log avec google
+      // this.af.auth.login(); 
   }
 
     //login(){
@@ -43,17 +46,21 @@ export class LoginPage {
     login() {
       console.log('login Page')
 
+      //affichage du spinner
       this.loader = this.loadingCtrl.create({
          content: "Chargement..."
       });
-      this.loader.present();
+      // tmp this.loader.present();
 
-      this.af.auth.login();
+      // login credential 
+      this.af.auth.login({ email: this.email, password: this.password });
 
-      //login credential a tester
-      //this.af.auth.login({ email: 'email', password: 'pass' });
-
-     // if (this.af.auth.getAuth().provider) {
+      console.log("XXXX login.ts af.auth: " + this.af.auth )
+      if (this.af.auth) {
+          this.goTabs();
+      }
+    
+     // if (this.af.auth.getAuth().provider) {  //méthode dépréciée
     
     //  if (this.auth) {
     //     console.log("XXX Login auth:" ) //+ this.auth)
@@ -61,16 +68,7 @@ export class LoginPage {
     //     this.goTabs();
     //  }
 
-       this.af.auth.subscribe(auth => {
-          //this.auth = auth;
-          if(auth) {
-            console.log('logged in');
-            this.goTabs();
-          } else {
-            console.log('not logged in');
-          }
-       
-       });
+      
 
        // affichage si connecte -> marche pas
        //var connectedRef = this.firebase.database().ref(".info/connected");
@@ -91,12 +89,29 @@ export class LoginPage {
    //   this.goTabs();   
    // }
 
-    goTabs(){
+   ionViewDidLoad(){
+      console.info('before subscribe viewDidload');
+        this.af.auth.subscribe(auth => {
+          //debugger;
+          //this.auth = auth;
+          console.info('subscribe in viewDidload');
+          if(auth) {
+            console.log('logged in ' + auth.auth.email);
+            console.log('logged in ' + auth.auth.uid);
+
+           // this.goTabs();
+          } else {
+            console.log('not logged in');
+          }  
+       });
+   }
+
+   goTabs(){
       console.log ("go tabs");
       this.navCtrl.push(Routes.getPage(Routes.TABS));   // ADDPLACES
       
-      this.hideLoading();
-    }
+      // tmp this.hideLoading();
+   }
 
     private hideLoading(){
        this.loader.dismiss();
