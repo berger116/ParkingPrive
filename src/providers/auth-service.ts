@@ -1,31 +1,31 @@
 import { Injectable } from '@angular/core';
 import { AngularFire, AuthProviders, FirebaseAuth, FirebaseAuthState, AuthMethods} from 'angularfire2';
-//import { AuthProviders, FirebaseAuth, FirebaseAuthState, AuthMethods } from 'angularfire2';
 
 @Injectable()
 export class AuthService {
-  //private authState: FirebaseAuthState;
- 
-  constructor(public af: AngularFire){}
+  private authState: FirebaseAuthState;
+  private authObj: any;
 
-  // constructor(public af: FirebaseAuth) {
-  //   this.authState = auth$.getAuth();
-  //   auth$.subscribe((state: FirebaseAuthState) => {
-  //     this.authState = state;
-  //   });
-  // }
+  constructor(public fba: FirebaseAuth,public af: AngularFire) {
+     this.authState = fba.getAuth();
+     fba.subscribe((state: FirebaseAuthState) => {
+       this.authState = state;
+     })
 
-  // get authenticated(): boolean {
-  //   return this.authState !== null;
-  // }
+     af.auth.subscribe(auth => {
+        if (auth) { 
+          this.authObj = auth;
+        }
+     });
+  }
 
-  getAuthent(): any {
+  get authenticated(): boolean {
+     return this.authState !== null;
+  }
+
+  getAuthObj(): any {
     console.log ("test SVC")
-
-    this.af.auth.subscribe( auth => {
-      if (auth) return auth
-      else return null;
-    })
+    return this.authObj;
   }
 
   // signInWithFacebook(): firebase.Promise<FirebaseAuthState> {

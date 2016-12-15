@@ -20,11 +20,14 @@ export class AddplaceparkingPage {
   //item: FirebaseObjectObservable<any>;
   items: FirebaseListObservable<any>;
   numberSubject: Subject<any>;
-  //auth: any;
+  scs:any;
 
+  uid: string;
   newAdresse: string;
   newVille: string;
   newNoPostal: string;
+  newLatitude: string;
+  newLongitude: string;
 
   constructor(public navCtrl: NavController, public af: AngularFire, private authSVC: AuthService) {
   
@@ -56,7 +59,7 @@ export class AddplaceparkingPage {
       //this.items.push({ plaque: "1234" });
      // this.items.update({ plaque: "1234" });  items.update('key-of-some-data', { size: newSize });
 
-    //  af.database.list('/items')    
+    //  af.database.list('/items')   //code utile ?? 
     //  .subscribe((data)=>{
     //    this.itemstr = data;
     //  })
@@ -74,26 +77,59 @@ export class AddplaceparkingPage {
   }
 
   addItem() { 
-   // this.items.push({ name: newName, plaque: newPlaque });
    // this.af.auth.subscribe(auth => {
-        console.log("TTTT test")
+    console.log("authenticated: ", this.authSVC.authenticated)
+    if (this.authSVC.authenticated)
+    {
+        let authObj = this.authSVC.getAuthObj();
+        if (authObj){
+          console.log("authObj: ", authObj);
+          this.uid = authObj.auth.uid;
 
-        let authent = this.authSVC.getAuthent();
-        
-       // let uid = authent.auth.uid;
-       // console.log("UUUUU UID: ", uid)
-
-        if (authent){
-          console.log("UUUUU authent: ", authent)
-          let uid = authent.auth.uid;
-
-          this.items.push({ 
-            userKey: uid,
+          let scs = this.items.push({ 
+            userKey: this.uid,
             adresse: this.newAdresse,
             ville: this.newVille,
             noPostal: this.newNoPostal,
+          //  Latitude: this.newLatitude,
+          //  Longitude: this.newLongitude,
           });
+
+          this.scs  //promisse
+          .then(_ => {
+            console.log('success push')
+          })
+          .catch(err => console.log(err, 'You do not have access!'));
        }
+    }
+
+   // })  
+  }
+
+  itemUpdate() { 
+   // this.af.auth.subscribe(auth => {
+    console.log("authenticated key: ", this.authSVC.authenticated, this.scs.key)
+    if (this.authSVC.authenticated)
+    {
+        let authObj = this.authSVC.getAuthObj();
+        if (authObj){
+          console.log("authObj: ", authObj)
+          let uid = authObj.auth.uid;
+
+          let scs = this.items.update( this.scs.key, { 
+            userKey: this.uid,
+            adresse: this.newAdresse,
+            ville: this.newVille,
+            noPostal: this.newNoPostal,
+          // Latitude: this.newLatitude,
+          //  Longitude: this.newLongitude,
+          });
+          
+          scs  //promisse
+          .then(_ => console.log('success push'))
+          .catch(err => console.log(err, 'You do not have access!'));
+       }
+    }
 
    // })  
   }

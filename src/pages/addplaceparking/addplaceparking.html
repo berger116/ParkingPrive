@@ -13,23 +13,21 @@
 </ion-header>
   
 <ion-content>
-  <br> <br>
   <h6>Mettre en location une place de parking</h6>
  <!--  <ion-spinner></ion-spinner>  -->
 
   <!-- <div> {{ (af.auth | async)?.uid }} </div>
   <button (click)="login()">Login</button>
   <button (click)="logout()">Logout</button>  -->
-
   
-   <!--  <ion-list>  -->
+  <ion-list> 
       <ion-grid>
         <ion-row>
            <ion-col width-100>
              <ion-item>
                 <ion-label floating>Adresse</ion-label>   <!-- fixed stacked -->
                 <ion-input type="text" [(ngModel)]="newAdresse"></ion-input>
-             </ion-item>
+              </ion-item>
            </ion-col>
         </ion-row>
         <ion-row>
@@ -49,24 +47,31 @@
 
         <ion-row>
           <ion-col width-30>
-             <ion-item>
-               <!--  <ion-label floating>Calcul Coord GPS</ion-label>
-                     <ion-input type="password" [(ngModel)]="coordGPS"></ion-input>  -->
+           
                 <button ion-button color="secondary">Calcul GPS</button>
-             </ion-item>
+            
           </ion-col>
           <ion-col width-33>
              <ion-item>
                 <ion-label floating>Latitude</ion-label>
-                <ion-input type="text" [(ngModel)]="latitude"></ion-input>
+                <ion-input type="text" [(ngModel)]="newLatitude"></ion-input>
              </ion-item>
            </ion-col>
            <ion-col width-33>
              <ion-item>
                 <ion-label floating>Longitude</ion-label>
-                <ion-input type="text" [(ngModel)]="longitude"></ion-input>
+                <ion-input type="text" [(ngModel)]="newLongitude"></ion-input>
              </ion-item>
            </ion-col>
+        </ion-row>
+
+        <ion-row>
+            <ion-col width-90>
+            
+                 <button ion-button color="secondary"  (click)="addItem()">Valider</button>
+                 <button ion-button color="secondary"  (click)="itemUpdate()">Valider</button>
+            
+            </ion-col>
         </ion-row>
       </ion-grid>
 
@@ -76,9 +81,11 @@
     <!--  <div padding>
         <button ion-button full (click)="signup()">Sign Up</button>
       </div>  -->
-  <!-- </ion-list> -->
+  </ion-list> 
 
-   <button ion-button color="secondary"  (click)="addItem(newname.value, newplaque.value)">Valider</button>
+  <!-- <button ion-button color="secondary"  (click)="addItem(newname.value, newplaque.value)">Valider G</button> -->
+
+
 
     <ul>
       <li *ngFor="let item of items | async">
