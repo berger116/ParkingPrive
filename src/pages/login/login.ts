@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, LoadingController } from 'ionic-angular';
 import { Routes } from '../../app/app.routes';
 import { AngularFire, AuthProviders, AuthMethods} from 'angularfire2';
+import { AuthService } from '../../providers/auth-service';
 
 /*
   Generated class for the Login page.
@@ -18,15 +19,25 @@ export class LoginPage {
   password:string = "tttttt";
   error:string;
   loader:any;
-  //af2:any
   
-  //auth:Observable;
-
   constructor(public navCtrl: NavController, private af: AngularFire, public loadingCtrl: LoadingController,) {
     //this.af.auth.subscribe(auth => console.log("XXX Login auth:" + auth)); 
+      //console.log(this.af.auth )
 
-      // log avec google
-      // this.af.auth.login(); 
+      // this.af.auth.subscribe(auth => {   //(this.af.auth.getAuth().provider) {  //méthode dépréciée
+      //     console.log("QQQQQQ  avant if af.auth: " + auth )
+      //     if(auth) {
+      //       //this.goTabs();
+      //     }
+      //     else {
+      //       console.log("QQQQQQ  NOT loged af.auth: " + auth )       
+      //       //this.navCtrl.setRoot(Routes.getRootPage(false));
+      //     }
+      // },
+      // err =>{ 
+      //   console.log("ERROR  NOT loged af.auth: ", err )      
+      //   //this.navCtrl.setRoot(Routes.getRootPage(false));
+      // });
   }
 
     //login(){
@@ -38,11 +49,6 @@ export class LoginPage {
         //    })
     //}
 
-    //  openSignup(){
-    //     let modal = this.modalCtrl.create(Routes.getPage(Routes.SIGNUP));
-    //     modal.present();
-    //  }
-
     login() {
       console.log('login Page')
 
@@ -50,25 +56,35 @@ export class LoginPage {
       this.loader = this.loadingCtrl.create({
          content: "Chargement..."
       });
-      // tmp this.loader.present();
+      this.loader.present();
 
+      // this.af.auth.login();  // log avec google
       // login credential 
-      this.af.auth.login({ email: this.email, password: this.password });
+      this.af.auth.login({ email: this.email, password: this.password },
+        { provider: AuthProviders.Password,
+          method: AuthMethods.Password
+        }).then (() => {
+           this.goTabs();
+        }).catch(err =>{
+            console.log("FFFFFFF CATCH")
+            this.navCtrl.setRoot(Routes.getRootPage(false));
+        });
 
-      console.log("XXXX login.ts af.auth: " + this.af.auth )
-      if (this.af.auth) {
-          this.goTabs();
-      }
-    
-     // if (this.af.auth.getAuth().provider) {  //méthode dépréciée
+        this.af.auth.subscribe(auth => {   //(this.af.auth.getAuth().provider) {  //méthode dépréciée
+           console.log("Subscribe af.auth: " + auth )
+        });
+
+        if (this.loader)
+            this.hideLoading();
+
+      //console.log("XXXX login.ts af.auth: ")
+      
     
     //  if (this.auth) {
     //     console.log("XXX Login auth:" ) //+ this.auth)
          //this.af.auth.subscribe(auth => console.log("XXX Login auth:" + auth));
     //     this.goTabs();
     //  }
-
-      
 
        // affichage si connecte -> marche pas
        //var connectedRef = this.firebase.database().ref(".info/connected");
@@ -89,32 +105,23 @@ export class LoginPage {
    //   this.goTabs();   
    // }
 
-   ionViewDidLoad(){
-      console.info('before subscribe viewDidload');
-        this.af.auth.subscribe(auth => {
-          //debugger;
-          //this.auth = auth;
-          console.info('subscribe in viewDidload');
-          if(auth) {
-            console.log('logged in ' + auth.auth.email);
-            console.log('logged in ' + auth.auth.uid);
-
-           // this.goTabs();
-          } else {
-            console.log('not logged in');
-          }  
-       });
-   }
+   //ionViewDidLoad(){
+   //}
 
    goTabs(){
       console.log ("go tabs");
       this.navCtrl.push(Routes.getPage(Routes.TABS));   // ADDPLACES
       
-      // tmp this.hideLoading();
+      //this.hideLoading();
    }
 
-    private hideLoading(){
+   private hideLoading(){
        this.loader.dismiss();
-    }
+   }
+
+    //  openSignup(){
+    //     let modal = this.modalCtrl.create(Routes.getPage(Routes.SIGNUP));
+    //     modal.present();
+    //  }
 
 }

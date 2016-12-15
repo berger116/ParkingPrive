@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
-import {AngularFire, FirebaseListObservable} from 'angularfire2';  //AuthProviders, AuthMethods
+import { AngularFire, FirebaseListObservable} from 'angularfire2';  //AuthProviders, AuthMethods
+import { AuthService } from '../../providers/auth-service';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/map';
 
@@ -19,16 +20,16 @@ export class AddplaceparkingPage {
   //item: FirebaseObjectObservable<any>;
   items: FirebaseListObservable<any>;
   numberSubject: Subject<any>;
-  auth: any;
+  //auth: any;
 
   newAdresse: string;
   newVille: string;
   newNoPostal: string;
 
-  constructor(public navCtrl: NavController, public af: AngularFire) {
+  constructor(public navCtrl: NavController, public af: AngularFire, private authSVC: AuthService) {
   
-    //  this.item = af.database.object('/items');
-     this.numberSubject = new Subject();
+    // this.item = af.database.object('/items');
+    this.numberSubject = new Subject();
      //this.auth = af.auth;
      //console.log("YYYY this.auth " + this.auth.auth.uid);
 
@@ -72,18 +73,29 @@ export class AddplaceparkingPage {
     this.numberSubject.next(plaq); 
   }
 
-  addItem() {  // newAdresse: string, newVille: string, newNoPostal: string ) {
+  addItem() { 
    // this.items.push({ name: newName, plaque: newPlaque });
-    this.af.auth.subscribe(auth => {
-        let uid= auth.auth.uid;
-    
-        this.items.push({ 
-          userKey: uid,
-          adresse: this.newAdresse,
-          ville: this.newVille,
-          noPostal: this.newNoPostal,
-        });
-    })  
+   // this.af.auth.subscribe(auth => {
+        console.log("TTTT test")
+
+        let authent = this.authSVC.getAuthent();
+        
+       // let uid = authent.auth.uid;
+       // console.log("UUUUU UID: ", uid)
+
+        if (authent){
+          console.log("UUUUU authent: ", authent)
+          let uid = authent.auth.uid;
+
+          this.items.push({ 
+            userKey: uid,
+            adresse: this.newAdresse,
+            ville: this.newVille,
+            noPostal: this.newNoPostal,
+          });
+       }
+
+   // })  
   }
 
 

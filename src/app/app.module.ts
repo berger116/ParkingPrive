@@ -17,7 +17,7 @@ import {Map} from '../components/map/map';
 //import {GroupBy} from '../pipes/group-by';
 //import { HomePage } from '../pages/home/home';
 
-// ?? import { AuthService } from '../providers/auth-service';
+import { AuthService } from '../providers/auth-service';
 
 const app:Array<any>=[MyApp];
 const pages:Array<any> = Routes.getPages();
@@ -53,7 +53,7 @@ export const myFirebaseAuthConfig = {
   //provider: AuthProviders.Google,
   //method: AuthMethods.Redirect  // ou popup ??
 }
-
+ 
 
 //let storage = new Storage();
 
@@ -70,7 +70,7 @@ export const myFirebaseAuthConfig = {
   declarations: app.concat(pages).concat(components), // .concat(pipes),
   imports: [
     IonicModule.forRoot(MyApp, appIonicConfig, Routes.getDeepLinkerConfig()),
-    AngularFireModule.initializeApp(myFirebaseConfig,myFirebaseAuthConfig)
+    AngularFireModule.initializeApp(myFirebaseConfig)  //myFirebaseAuthConfig
   ],
   providers: [
   // {
@@ -83,24 +83,10 @@ export const myFirebaseAuthConfig = {
   // Settings,
   //FirebaseSVC
 
-  // ?? AuthService
+    AuthService
   ],
 
   bootstrap: [IonicApp],
   entryComponents: app.concat(pages),
 })
 export class AppModule {}
-//  declarations: [
-//    MyApp,
-//    HomePage
-//  ],
-//  imports: [
-//    IonicModule.forRoot(MyApp)
-//  ],
-//  bootstrap: [IonicApp],
-//  entryComponents: [
-//    MyApp,
-//    HomePage
-//  ],
-//  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}]
-//})
