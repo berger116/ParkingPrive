@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
-import { AngularFire, FirebaseListObservable} from 'angularfire2';  //AuthProviders, AuthMethods
+import { AngularFire, FirebaseListObservable, FirebaseObjectObservable} from 'angularfire2';  //AuthProviders, AuthMethods
 import { AuthService } from '../../providers/auth-service';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/map';
@@ -17,21 +17,20 @@ import 'rxjs/add/operator/map';
 })
 export class AddplaceparkingPage {
   //items: FirebaseObjectObservable<any>;
-  //item: FirebaseObjectObservable<any>;
+  item: FirebaseListObservable<any>;
   items: FirebaseListObservable<any>;
   numberSubject: Subject<any>;
   scsIns:any;
   scsUpd:any;
 
   uid: string;
-  newAdresse: string;
-  newVille: string;
-  newNoPostal: string;
-  newLatitude: string;
-  newLongitude: string;
+  adresse: string;
+  ville: string;
+  noPostal: string;
+  latitude: string;
+  longitude: string;
 
   constructor(public navCtrl: NavController, public navparams: NavParams, public af: AngularFire, private authSVC: AuthService) {
-  
     // this.item = af.database.object('/items');
     this.numberSubject = new Subject();
      //this.auth = af.auth;
@@ -51,9 +50,6 @@ export class AddplaceparkingPage {
     this.uid = this.navparams.get("uid") // this.getUserUID ()
     console.log("constr. authUID: ", this.uid);
 
-
-    
-
       //this.items.push({ plaque: "1234" });
      // this.items.update({ plaque: "1234" });  items.update('key-of-some-data', { size: newSize });
 
@@ -67,10 +63,32 @@ export class AddplaceparkingPage {
     //  .then(_ => console.log('success'))
     //  .catch(err => console.log(err, 'You do not have access!'));
 
-     console.log("addPlacePark: "+ (this.items))
+    this.items = this.af.database.list('/items');   // '/dispo'
+     this.item = this.af.database.list('/items')[0]; 
+      //,{
+      //   query: {
+      //     orderByChild: 'userKey',
+      //     equalTo: this.numberSubject,
+
+          //  orderByKey: true,   //un seul orderBy
+          //  limitToFirst: 2,
+          //  limitToLast: 2,
+      //   }
+     //}
+    // )  //.subscribe(itm => { console.log(itm)} );
+
+    // this.items.map( item => { item.userKey == this.uid })
+
+    // this.items.subscribe( itm => {
+    //  this.adresse = this.items[0].adresse;
+    //  this.ville = this.items.ville;
+    //  this.noPostal =this.items.noPostal;
+    // })
+
+     console.log("addPlacePark: ", (this.items))
   }
 
- filterBy(plaq: any) {
+  filterBy(plaq: any) {
     this.numberSubject.next(plaq); 
   }
 
@@ -86,9 +104,9 @@ export class AddplaceparkingPage {
 
           this.scsIns = this.items.push({ 
             userKey: this.uid,
-            adresse: this.newAdresse,
-            ville: this.newVille,
-            noPostal: this.newNoPostal,
+            adresse: this.adresse,
+            ville: this.ville,
+            noPostal: this.noPostal,
           //  Latitude: this.newLatitude,
           //  Longitude: this.newLongitude,
           });
@@ -109,13 +127,13 @@ export class AddplaceparkingPage {
     if (this.authSVC.authenticated)
     {     
           //let authObj = this.authSVC.getAuthObj();
-          this.uid = this.getUserUID ();
+         // this.uid = this.getUserUID ();
           if (this.uid){
             this.scsUpd = this.items.update( this.scsIns.key, { 
               userKey: this.uid,
-              adresse: this.newAdresse,
-              ville: this.newVille,
-              noPostal: this.newNoPostal,
+              adresse: this.adresse,
+              ville: this.ville,
+              noPostal: this.noPostal,
             // Latitude: this.newLatitude,
             //  Longitude: this.newLongitude,
             });
@@ -130,16 +148,16 @@ export class AddplaceparkingPage {
    // })  
   }
 
-  getUserUID () {
-      let uid= null;
-      let authObj = this.authSVC.getAuthObj();
-      if (authObj){
-          console.log("authObj uid: ", authObj.auth.uid)
-          uid =  authObj.auth.uid;
-          return uid;
-      }
-      return uid;
-  }
+ // getUserUID () {
+ //     let uid= null;
+ //     let authObj = this.authSVC.getAuthObj();
+ //     if (authObj){
+ //         console.log("authObj uid: ", authObj.auth.uid)
+ //         uid =  authObj.auth.uid;
+ //         return uid;
+ //     }
+ //     return uid;
+ // }
 
 
   updateItem(key: string, newName: string, newPlaque: string) {
@@ -155,26 +173,27 @@ export class AddplaceparkingPage {
 
   ionViewDidLoad() {
      console.log("DidLoad authUID: ", this.uid);
-
-     this.items = this.af.database.list('/items', {   // '/dispo'
-         query: {
-           orderByChild: 'userKey',
-           equalTo: this.numberSubject,
-        //  orderByKey: true,   //un seul orderBy
-        //  limitToFirst: 2,
-        //  limitToLast: 2,
-         }
-     });
+     //this.item
      console.log("avant ", this.items)
 
-     this.uid = this.getUserUID ();
-     console.log("this.uid: ",this.uid )
+     //this.uid = this.getUserUID ();
+     //console.log("this.uid: ",this.uid )
      if (this.uid){
-        this.items.map( item => { item.userKey == this.uid })
+       // this.items.map( item => { item.userKey == this.uid })
         console.log("apres", this.items)
      }
 
     console.log('Hello AddplaceparkingPage Page');
   }
+
+   // ionViewCanLeave(): boolean{   //code utile ??
+   // here we can either return true or false
+   // depending on if we want to leave this view
+   //if(isValid(randomValue)){
+   //   return true;
+   // } else {
+   //   return false;
+   // }
+  //}
 
 }

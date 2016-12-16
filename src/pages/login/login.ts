@@ -64,10 +64,11 @@ export class LoginPage {
         { provider: AuthProviders.Password,
           method: AuthMethods.Password
         }).then ((res) => {
-           console.log("RRRRR res", res.uid)
+           //console.log("Login res.uid", res.uid)
            this.goTabs(res.uid);
+
         }).catch(err =>{
-            console.log("FFFFFFF CATCH")
+            console.log("Login catch error")
             this.navCtrl.setRoot(Routes.getRootPage(false));
         });
 
@@ -77,9 +78,6 @@ export class LoginPage {
 
         if (this.loader)
             this.hideLoading();
-
-      //console.log("XXXX login.ts af.auth: ")
-      
     
     //  if (this.auth) {
     //     console.log("XXX Login auth:" ) //+ this.auth)

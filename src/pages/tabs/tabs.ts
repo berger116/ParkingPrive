@@ -27,11 +27,13 @@ export class TabsPage {
  // tab5Root: any = SettingsPage;
 
   email: string;
+  chatParams = {
+    uid: this.navParams.get("uid")
+  };
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public af: AngularFire) {  // ,private auth: Auth
-   // this.email = (auth.user) ? auth.user.email : null
-   console.log ("Tabs: ",  this.navParams.get("uid")) 
-   //@input =...
+  constructor(public navCtrl: NavController, public navParams: NavParams, public af: AngularFire) {  
+   //// this.email = (auth.user) ? auth.user.email : null
+   //console.log ("Tabs: ",  this.navParams.get("uid")) 
   }
 
   logout() {
