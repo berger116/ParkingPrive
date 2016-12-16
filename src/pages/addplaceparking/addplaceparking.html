@@ -20,8 +20,9 @@
   <button (click)="login()">Login</button>
   <button (click)="logout()">Logout</button>  -->
   
-  <ion-list> 
-      <ion-grid>
+   {{ items | async  | async }}
+  <ion-list  >  <!-- *ngFor="let item of items | async"  -->
+      <ion-grid >
         <ion-row>
            <ion-col width-100>
              <ion-item>
@@ -69,7 +70,7 @@
             <ion-col width-90>
             
                  <button ion-button color="secondary"  (click)="addItem()">Valider</button>
-                 <button ion-button color="secondary"  (click)="itemUpdate()">Valider</button>
+                 <button ion-button color="secondary"  (click)="itemUpdate()">Modifier</button>
             
             </ion-col>
         </ion-row>

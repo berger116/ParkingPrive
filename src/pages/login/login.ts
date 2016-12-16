@@ -63,8 +63,9 @@ export class LoginPage {
       this.af.auth.login({ email: this.email, password: this.password },
         { provider: AuthProviders.Password,
           method: AuthMethods.Password
-        }).then (() => {
-           this.goTabs();
+        }).then ((res) => {
+           console.log("RRRRR res", res.uid)
+           this.goTabs(res.uid);
         }).catch(err =>{
             console.log("FFFFFFF CATCH")
             this.navCtrl.setRoot(Routes.getRootPage(false));
@@ -108,9 +109,9 @@ export class LoginPage {
    //ionViewDidLoad(){
    //}
 
-   goTabs(){
-      console.log ("go tabs");
-      this.navCtrl.push(Routes.getPage(Routes.TABS));   // ADDPLACES
+   goTabs(uid){
+      console.log ("go tabs",uid);
+      this.navCtrl.push(Routes.getPage(Routes.TABS), {uid: uid});   // ADDPLACES
       
       //this.hideLoading();
    }

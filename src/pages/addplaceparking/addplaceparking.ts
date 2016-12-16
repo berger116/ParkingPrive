@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 import { AngularFire, FirebaseListObservable} from 'angularfire2';  //AuthProviders, AuthMethods
 import { AuthService } from '../../providers/auth-service';
 import { Subject } from 'rxjs/Subject';
@@ -20,7 +20,8 @@ export class AddplaceparkingPage {
   //item: FirebaseObjectObservable<any>;
   items: FirebaseListObservable<any>;
   numberSubject: Subject<any>;
-  scs:any;
+  scsIns:any;
+  scsUpd:any;
 
   uid: string;
   newAdresse: string;
@@ -29,7 +30,7 @@ export class AddplaceparkingPage {
   newLatitude: string;
   newLongitude: string;
 
-  constructor(public navCtrl: NavController, public af: AngularFire, private authSVC: AuthService) {
+  constructor(public navCtrl: NavController, public navparams: NavParams, public af: AngularFire, private authSVC: AuthService) {
   
     // this.item = af.database.object('/items');
     this.numberSubject = new Subject();
@@ -47,15 +48,12 @@ export class AddplaceparkingPage {
      // this.item.update({ siz: 'name 5'});
      //// this.item.set({ size: 'name 4'});  a eviter
 
-     this.items = af.database.list('/items', {   // '/dispo'
-         query: {
-           orderByChild: 'plaque',
-           equalTo: this.numberSubject,
-        //  orderByKey: true,   //un seul orderBy
-        //  limitToFirst: 2,
-        //  limitToLast: 2,
-         }
-     });
+    this.uid = this.navparams.get("uid") // this.getUserUID ()
+    console.log("constr. authUID: ", this.uid);
+
+
+    
+
       //this.items.push({ plaque: "1234" });
      // this.items.update({ plaque: "1234" });  items.update('key-of-some-data', { size: newSize });
 
@@ -81,12 +79,12 @@ export class AddplaceparkingPage {
     console.log("authenticated: ", this.authSVC.authenticated)
     if (this.authSVC.authenticated)
     {
-        let authObj = this.authSVC.getAuthObj();
-        if (authObj){
-          console.log("authObj: ", authObj);
-          this.uid = authObj.auth.uid;
+        //this.authObj = this.authSVC.getAuthObj();
+        //this.uid = this.getUserUID ()
+        if (this.uid){
+          console.log("authUID: ", this.uid);
 
-          let scs = this.items.push({ 
+          this.scsIns = this.items.push({ 
             userKey: this.uid,
             adresse: this.newAdresse,
             ville: this.newVille,
@@ -95,43 +93,52 @@ export class AddplaceparkingPage {
           //  Longitude: this.newLongitude,
           });
 
-          this.scs  //promisse
-          .then(_ => {
-            console.log('success push')
-          })
-          .catch(err => console.log(err, 'You do not have access!'));
+          this.scsIns  //promisse
+           .then(_ => {
+            console.log('success push key', this.scsIns.key )
+           })
+           .catch(err => console.log(err, 'You do not have access!'));
        }
     }
-
    // })  
   }
 
   itemUpdate() { 
    // this.af.auth.subscribe(auth => {
-    console.log("authenticated key: ", this.authSVC.authenticated, this.scs.key)
+    console.log("authenticated key: ", this.authSVC.authenticated, this.scsUpd.key)
     if (this.authSVC.authenticated)
-    {
-        let authObj = this.authSVC.getAuthObj();
-        if (authObj){
-          console.log("authObj: ", authObj)
-          let uid = authObj.auth.uid;
-
-          let scs = this.items.update( this.scs.key, { 
-            userKey: this.uid,
-            adresse: this.newAdresse,
-            ville: this.newVille,
-            noPostal: this.newNoPostal,
-          // Latitude: this.newLatitude,
-          //  Longitude: this.newLongitude,
-          });
+    {     
+          //let authObj = this.authSVC.getAuthObj();
+          this.uid = this.getUserUID ();
+          if (this.uid){
+            this.scsUpd = this.items.update( this.scsIns.key, { 
+              userKey: this.uid,
+              adresse: this.newAdresse,
+              ville: this.newVille,
+              noPostal: this.newNoPostal,
+            // Latitude: this.newLatitude,
+            //  Longitude: this.newLongitude,
+            });
           
-          scs  //promisse
-          .then(_ => console.log('success push'))
-          .catch(err => console.log(err, 'You do not have access!'));
+            this.scsUpd  //promisse
+            .then(_ => { 
+                console.log("success update key: ",  this.scsUpd.key)
+            })
+            .catch(err => console.log(err, 'You do not have access!'));
        }
     }
-
    // })  
+  }
+
+  getUserUID () {
+      let uid= null;
+      let authObj = this.authSVC.getAuthObj();
+      if (authObj){
+          console.log("authObj uid: ", authObj.auth.uid)
+          uid =  authObj.auth.uid;
+          return uid;
+      }
+      return uid;
   }
 
 
@@ -147,6 +154,26 @@ export class AddplaceparkingPage {
 
 
   ionViewDidLoad() {
+     console.log("DidLoad authUID: ", this.uid);
+
+     this.items = this.af.database.list('/items', {   // '/dispo'
+         query: {
+           orderByChild: 'userKey',
+           equalTo: this.numberSubject,
+        //  orderByKey: true,   //un seul orderBy
+        //  limitToFirst: 2,
+        //  limitToLast: 2,
+         }
+     });
+     console.log("avant ", this.items)
+
+     this.uid = this.getUserUID ();
+     console.log("this.uid: ",this.uid )
+     if (this.uid){
+        this.items.map( item => { item.userKey == this.uid })
+        console.log("apres", this.items)
+     }
+
     console.log('Hello AddplaceparkingPage Page');
   }
 

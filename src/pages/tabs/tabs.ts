@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 //import { PlacesPage } from '../places/places';
 import { AroundPage } from '../around/around';
 import { AddplaceparkingPage } from '../addplaceparking/addplaceparking';
@@ -28,15 +28,17 @@ export class TabsPage {
 
   email: string;
 
-  constructor(public navCtrl: NavController, public af: AngularFire) {  // ,private auth: Auth
+  constructor(public navCtrl: NavController, public navParams: NavParams, public af: AngularFire) {  // ,private auth: Auth
    // this.email = (auth.user) ? auth.user.email : null
+   console.log ("Tabs: ",  this.navParams.get("uid")) 
+   //@input =...
   }
 
   logout() {
     // this.auth.logout();
     console.log("tabs logout")
     this.af.auth.logout();
-     this.navCtrl.pop(Routes.getPage(Routes.TABS)); 
+    this.navCtrl.pop(Routes.getPage(Routes.TABS)); 
   
     this.navCtrl.setRoot(Routes.getRootPage(false));
   }
