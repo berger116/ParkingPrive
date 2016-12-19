@@ -26,27 +26,42 @@
    <!-- <li *ngFor="let item of items | async">
        {{ item.adresse | json }}
     </li> -->
+
+
        <ion-row >  <!-- *ngFor="let item of items | async">-->
            <ion-col width-100>
              <ion-item>
-                <ion-label floating>Adresse</ion-label>   <!-- fixed stacked -->
-                <ion-input type="text" [(ngModel)]="this.adresse "></ion-input>  --> <!-- Plante -->
+                <ion-label floating>Adresse 2</ion-label>   <!-- fixed stacked -->
+                <ion-input type="text" [(ngModel)]="this.adresse"></ion-input>   <!-- Plante -->
                 <!--  <ion-input type="text" [(ngModel)]="this.adresse"></ion-input>  -->
               </ion-item>
            </ion-col>
         </ion-row>
   </ul>  
 
-  <!-- *ngFor="let item of items | async"  -->
+ <!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+  <!-- il n'y pour l'instant qu'un seul enregistrement, comme vu avec fazio...impossible de pas utiliser un ngFor  
+         pour que le template face le binding avec le .ts voir exemple ci dessus ! 
+  -->
   <ion-list *ngFor="let item of items | async">  
-     <ion-grid >
+     <ion-grid>
+        <ion-row >
+           <ion-col width-100>
+             <ion-item>
+                 <!--<ion-input type="text" [(ngModel)]="items[0]?.adresse"></ion-input>  --> <!-- Plante ! -->
+                 <!-- <ion-input type="text" [(ngModel)]="item.adresse"></ion-input> -->
+            <!--      <ion-label type="text" [(ngModel)]="this.item.$key"></ion-label>  -->  <!-- mettre à invisible -->
+              </ion-item>
+           </ion-col>
+        </ion-row>
 
         <ion-row >
            <ion-col width-100>
              <ion-item>
-                <ion-label floating>Adress</ion-label>   <!-- fixed stacked -->
-                 <!--<ion-input type="text" [(ngModel)]="items[0]?.adresse"></ion-input>  --> <!-- Plante -->-->
-                 <ion-input type="text" [(ngModel)]="item.adresse"></ion-input> 
+                <ion-label floating>Adresse</ion-label>   <!-- fixed stacked -->
+                 <!--<ion-input type="text" [(ngModel)]="items[0]?.adresse"></ion-input>  --> <!-- Plante ! -->
+                 <!-- <ion-input type="text" [(ngModel)]="item.adresse"></ion-input> -->
+               <ion-input type="text" [(ngModel)]="this.item.adresse"></ion-input>   
               </ion-item>
            </ion-col>
         </ion-row>
@@ -56,7 +71,7 @@
           <ion-col width-50>
              <ion-item>
                 <ion-label floating>Ville</ion-label>
-                <ion-input type="text" [(ngModel)]="item.ville"></ion-input>  
+                <ion-input type="text" [(ngModel)]="this.item.ville"></ion-input>  
              <!--     <ion-input type="text" [(ngModel)]="this.items[0].ville"></ion-input>   --> 
              </ion-item>
           </ion-col>
@@ -64,10 +79,11 @@
              <ion-item>
                 <ion-label floating>No Postal</ion-label>
              <!--   <ion-input type="text" [(ngModel)]="items[0].noPostal"></ion-input>  -->
-                 <ion-input type="text" [(ngModel)]="item.noPostal"></ion-input>
+                 <ion-input type="text" [(ngModel)]="this.item.noPostal"></ion-input>
              </ion-item>
            </ion-col>
         </ion-row>
+
 
         <ion-row>
           <ion-col width-30>
@@ -119,28 +135,24 @@
   </ion-list>
 </ion-content>  -->
 
-
-
     <ul>
       <li *ngFor="let item of items | async">
         <input type="text" #updatename [value]="item.adresse" /> 
         <input type="text" #updateplaque [value]="item.ville" />
       
-        <button (click)="updateItem(item.$key, updatename.value,  updateplaque.value)">Update</button>
-        <button (click)="deleteItem(item.$key)">Delete</button>
+       <!-- <button (click)="updateItem(item.$key, updatename.value,  updateplaque.value)">Update</button>
+        <button (click)="deleteItem(item.$key)">Delete</button>  -->
       </li>
     </ul>
-    <input type="text" #newname />
+    <!-- <input type="text" #newname />
     <input type="text" #newplaque />
-    <button (click)="addItem(newname.value, newplaque.value)">Add</button>
+    <button (click)="addItem(newname.value, newplaque.value)">Add</button>  -->
   <!-- <button (click)="deleteEverything()">Delete All</button>  -->
 
 
     <div>
-      <h4>Filter by ville</h4>
+      <h4>Filter by uid</h4>
       <button (click)="filterBy('hJWnojzr2tcPrkpX47znLhvtopB2')">hJWnojzr2tcPrkpX47znLhvtopB2</button>
-      <button (click)="filterBy('1234')">1234</button>
-      <button (click)="filterBy('12345')">12345</button>
     </div>
 
    <!-- <ul>

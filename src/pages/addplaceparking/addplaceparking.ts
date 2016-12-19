@@ -5,6 +5,8 @@ import { AuthService } from '../../providers/auth-service';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/filter';
+
+import { IPlaceParking } from './placeparking';
 //import {Observable} from 'rxjs/Observable';
 //import {Observable} from 'rxjs/Observable';
 //import {FIREBASE_PROVIDERS, defaultFirebase, AngularFire} from 'angularfire2';
@@ -23,7 +25,7 @@ export class AddplaceparkingPage {
   //items: FirebaseObjectObservable<any>;
   items: FirebaseListObservable<any>;
   //items: Observable<any>; //FirebaseListObservable<any>;
-  numberSubject: Subject<any>;
+  uidSubject: Subject<any>;
   scsIns:any;
   scsUpd:any;
 
@@ -33,16 +35,14 @@ export class AddplaceparkingPage {
   noPostal: string;
   latitude: string;
   longitude: string;
-  //item:any {
-  //  uid: string;
-  //  adresse: string;
-  //  ville: string;
-  //  noPostal: string;
-  //}
+
+  item: IPlaceParking;
+  //itemKey: string;
+ 
 
   constructor(public navCtrl: NavController, public navparams: NavParams, public af: AngularFire, private authSVC: AuthService) {
     // this.item = af.database.object('/items');
-    this.numberSubject = new Subject();
+    this.uidSubject = new Subject();
      //this.auth = af.auth;
      //console.log("YYYY this.auth " + this.auth.auth.uid);
 
@@ -60,7 +60,7 @@ export class AddplaceparkingPage {
     this.uid = this.navparams.get("uid") // this.getUserUID ()
     console.log("constr. authUID: ", this.uid);
 
-      //this.items.push({ plaque: "1234" });
+    //this.items.push({ plaque: "1234" });
      // this.items.update({ plaque: "1234" });  items.update('key-of-some-data', { size: newSize });
 
     //  af.database.list('/items')   //code utile ?? 
@@ -74,12 +74,12 @@ export class AddplaceparkingPage {
     //  .catch(err => console.log(err, 'You do not have access!'));
 
 //this.item = this.af.database.list('/items')[0]; 
-//.subscribe( item => { item.filter(.userKey == this.uid})//.filter(item => { return item[0].userKey == this.uid })    //.$ref // '/dispo'
+//.subscribe( item => { item.filter(.userKey == this.uid}) //.filter(item => { return item[0].userKey == this.uid })    //.$ref // '/dispo'
      this.items = this.af.database.list('/items', {
         query: {
           // orderByChild: 'ville',
            orderByChild: 'userKey',
-           equalTo: this.numberSubject,
+           equalTo: this.uidSubject,
 
           //  orderByKey: true,   //un seul orderBy
           //  limitToFirst: 2,
@@ -92,10 +92,11 @@ export class AddplaceparkingPage {
    //console.log("filter: " ,this.items.filter( item => { return item.userKey == this.uid }))
 
     // this.items.subscribe( itm => {
-    //  this.adresse = this.items[0].adresse;
+    // this.adresse = this.items[0].adresse;
     // this.ville = this.items.ville;
     // this.noPostal =this.items.noPostal;
     // })
+   
 
      console.log("addPlacePark: ", (this.items))
   }
@@ -114,7 +115,7 @@ export class AddplaceparkingPage {
 //})
 
   filterBy(ville: any) {
-    this.numberSubject.next(ville); 
+    this.uidSubject.next(ville); 
   }
 
  //<button (click)="addItem(newitem.value)">Add</button>
@@ -125,16 +126,16 @@ export class AddplaceparkingPage {
     {
         //this.authObj = this.authSVC.getAuthObj();
         //this.uid = this.getUserUID ()
-          console.log("authUID: ", this.uid);
+        console.log("authUID: ", this.uid);
 
         if (this.uid){
           console.log("authUID: ", this.uid);
 
           this.scsIns = this.items.push({ 
             userKey: this.uid,
-            adresse: this.adresse,
-            ville: this.ville,
-            noPostal: this.noPostal,
+            adresse: this.item.adresse, //this.adresse,
+            ville: this.item.ville,
+            noPostal: this.item.noPostal,
           //  Latitude: this.newLatitude,
           //  Longitude: this.newLongitude,
           });
@@ -151,19 +152,19 @@ export class AddplaceparkingPage {
 
   itemUpdate() { 
    // this.af.auth.subscribe(auth => {
-    console.log("authenticated key: ", this.authSVC.authenticated, this.scsUpd.key)
+    console.log("authenticated key: ", this.authSVC.authenticated, this.scsIns.key)
     if (this.authSVC.authenticated)
     {  
           //let authObj = this.authSVC.getAuthObj();
          // this.uid = this.getUserUID ();
-           console.log("authUID: ", this.uid);
+          console.log("authUID: ", this.uid);
 
           if (this.uid){
-            this.scsUpd = this.items.update( this.scsIns.key, { 
+            this.scsUpd = this.items.update(this.item.$key, {    //this.scsIns.key
               userKey: this.uid,
-              adresse: this.adresse,
-              ville: this.ville,
-              noPostal: this.noPostal,
+              adresse: this.item.adresse, // this.adresse,
+              ville: this.item.ville,
+              noPostal: this.item.noPostal,
             // Latitude: this.newLatitude,
             //  Longitude: this.newLongitude,
             });
