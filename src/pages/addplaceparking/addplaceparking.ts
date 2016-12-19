@@ -4,6 +4,8 @@ import { AngularFire, FirebaseListObservable, FirebaseObjectObservable} from 'an
 import { AuthService } from '../../providers/auth-service';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/map';
+//import {Observable} from 'rxjs/Observable';
+//import {FIREBASE_PROVIDERS, defaultFirebase, AngularFire} from 'angularfire2';
 
 /*
   Generated class for the Addplaceparking page.
@@ -63,7 +65,7 @@ export class AddplaceparkingPage {
     //  .then(_ => console.log('success'))
     //  .catch(err => console.log(err, 'You do not have access!'));
 
-    this.items = this.af.database.list('/items');   // '/dispo'
+    this.items = this.af.database.list('/items');      //.$ref // '/dispo'
      this.item = this.af.database.list('/items')[0]; 
       //,{
       //   query: {
@@ -75,7 +77,7 @@ export class AddplaceparkingPage {
           //  limitToLast: 2,
       //   }
      //}
-    // )  //.subscribe(itm => { console.log(itm)} );
+     // )  //.subscribe(itm => { console.log(itm)} );
 
     // this.items.map( item => { item.userKey == this.uid })
 
@@ -87,6 +89,19 @@ export class AddplaceparkingPage {
 
      console.log("addPlacePark: ", (this.items))
   }
+
+//https://github.com/angular/angularfire2/issues/104
+// @Inject(FirebaseRef) private ref:Firebase
+
+//  let subscription = this.af.database.object('someLocation').subscribe(data=> {
+  ////do something with your data
+//})
+
+//Which is essentially the same as:
+
+// firebase.database().ref('someLocation').on('value', snapshot=>{
+////do something with your data
+//})
 
   filterBy(plaq: any) {
     this.numberSubject.next(plaq); 
