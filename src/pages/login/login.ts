@@ -68,7 +68,7 @@ export class LoginPage {
            this.goTabs(res.uid);
 
         }).catch(err =>{
-            console.log("Login catch error")
+            console.log("Login catch error", err)
             this.navCtrl.setRoot(Routes.getRootPage(false));
         });
 

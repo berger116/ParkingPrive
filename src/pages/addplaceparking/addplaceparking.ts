@@ -6,8 +6,8 @@ import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/filter';
 
-import { IPlaceParking } from './placeparking';
-//import {Observable} from 'rxjs/Observable';
+//import { IPlaceParking } from './placeparking';
+
 //import {Observable} from 'rxjs/Observable';
 //import {FIREBASE_PROVIDERS, defaultFirebase, AngularFire} from 'angularfire2';
 
@@ -22,13 +22,12 @@ import { IPlaceParking } from './placeparking';
   templateUrl: 'addplaceparking.html'
 })
 export class AddplaceparkingPage {
-  //items: FirebaseObjectObservable<any>;
-  items: FirebaseListObservable<any>;
+  queryObs: FirebaseListObservable<any>;
   //items: Observable<any>; //FirebaseListObservable<any>;
   uidSubject: Subject<any>;
-  scsIns:any;
   scsUpd:any;
 
+  fireKey:string;
   uid: string;
   adresse: string;
   ville: string;
@@ -36,16 +35,11 @@ export class AddplaceparkingPage {
   latitude: string;
   longitude: string;
 
-  item: IPlaceParking;
+ // item: IPlaceParking;
   //itemKey: string;
  
 
-  constructor(public navCtrl: NavController, public navparams: NavParams, public af: AngularFire, private authSVC: AuthService) {
-    // this.item = af.database.object('/items');
-    this.uidSubject = new Subject();
-     //this.auth = af.auth;
-     //console.log("YYYY this.auth " + this.auth.auth.uid);
-
+  constructor(public navCtrl: NavController, public navparams: NavParams, public af: AngularFire, public authSVC: AuthService) {
      //this.items = af.database.list('/items', { preserveSnapshot: true });
      //this.items.subscribe(snapshots => {
        // snapshots.forEach(snapshot => {
@@ -53,15 +47,10 @@ export class AddplaceparkingPage {
         //console.log("snap val:" + snapshot.val().name)
       // });
      //});
-
-     // this.item.update({ siz: 'name 5'});
      //// this.item.set({ size: 'name 4'});  a eviter
 
     this.uid = this.navparams.get("uid") // this.getUserUID ()
-    console.log("constr. authUID: ", this.uid);
-
-    //this.items.push({ plaque: "1234" });
-     // this.items.update({ plaque: "1234" });  items.update('key-of-some-data', { size: newSize });
+    console.log("addPlaceParking UID: ", this.uid);
 
     //  af.database.list('/items')   //code utile ?? 
     //  .subscribe((data)=>{
@@ -73,19 +62,34 @@ export class AddplaceparkingPage {
     //  .then(_ => console.log('success'))
     //  .catch(err => console.log(err, 'You do not have access!'));
 
-//this.item = this.af.database.list('/items')[0]; 
 //.subscribe( item => { item.filter(.userKey == this.uid}) //.filter(item => { return item[0].userKey == this.uid })    //.$ref // '/dispo'
-     this.items = this.af.database.list('/items', {
-        query: {
+    this.uidSubject = new Subject();
+    this.queryObs = authSVC.getQueryPkgPlace(this.uid,  this.uidSubject );
+    //   this.queryObs = this.af.database.list('/items', {  //this.items
+    //    query: {
           // orderByChild: 'ville',
-           orderByChild: 'userKey',
-           equalTo: this.uidSubject,
-
+    //       orderByChild: 'userKey',
+    //       equalTo: this.uidSubject,
           //  orderByKey: true,   //un seul orderBy
           //  limitToFirst: 2,
           //  limitToLast: 2,
-         }
-     });
+    //     }
+    // })
+    console.log("PlacePkg queryObs: ", this.queryObs)
+
+    if (this.queryObs)
+      this.queryObs.subscribe (itm => { 
+          this.fireKey =  "-KZ7adwUf4BUQXKGsZ97"    //mis en dure  !!!!  //itm[0].$key
+          this.adresse = itm[0].adresse 
+          this.ville = itm[0].ville
+          this.noPostal= itm[0].noPostal
+          this.latitude= itm[0].latitude
+          this.longitude= itm[0].longitude
+      }); 
+
+     if (this.uid)
+         this.uidSubject.next(this.uid)
+
      //)  //.subscribe(itm => { console.log(itm)} );
 
     //this.items.map( item => { item.userKey == this.uid })
@@ -97,8 +101,7 @@ export class AddplaceparkingPage {
     // this.noPostal =this.items.noPostal;
     // })
    
-
-     console.log("addPlacePark: ", (this.items))
+    // console.log("addPlacePark: ", (this.items))
   }
 
 //https://github.com/angular/angularfire2/issues/104
@@ -114,45 +117,12 @@ export class AddplaceparkingPage {
 ////do something with your data
 //})
 
-  filterBy(ville: any) {
-    this.uidSubject.next(ville); 
+  filterBy(userKey: any) {
+    this.uidSubject.next(userKey); 
   }
-
- //<button (click)="addItem(newitem.value)">Add</button>
-  addItem() { 
-   // this.af.auth.subscribe(auth => {
-    console.log("authenticated: ", this.authSVC.authenticated)
-    if (this.authSVC.authenticated)
-    {
-        //this.authObj = this.authSVC.getAuthObj();
-        //this.uid = this.getUserUID ()
-        console.log("authUID: ", this.uid);
-
-        if (this.uid){
-          console.log("authUID: ", this.uid);
-
-          this.scsIns = this.items.push({ 
-            userKey: this.uid,
-            adresse: this.item.adresse, //this.adresse,
-            ville: this.item.ville,
-            noPostal: this.item.noPostal,
-          //  Latitude: this.newLatitude,
-          //  Longitude: this.newLongitude,
-          });
-
-          this.scsIns  //promisse
-           .then(_ => {
-            console.log('success push key', this.scsIns.key )
-           })
-           .catch(err => console.log(err, 'You do not have access!'));
-       }
-    }
-   // })  
-  }
-
+ 
   itemUpdate() { 
-   // this.af.auth.subscribe(auth => {
-    console.log("authenticated key: ", this.authSVC.authenticated, this.scsIns.key)
+    console.log("authenticated key: ", this.authSVC.authenticated, this.fireKey)
     if (this.authSVC.authenticated)
     {  
           //let authObj = this.authSVC.getAuthObj();
@@ -160,23 +130,37 @@ export class AddplaceparkingPage {
           console.log("authUID: ", this.uid);
 
           if (this.uid){
-            this.scsUpd = this.items.update(this.item.$key, {    //this.scsIns.key
-              userKey: this.uid,
-              adresse: this.item.adresse, // this.adresse,
-              ville: this.item.ville,
-              noPostal: this.item.noPostal,
-            // Latitude: this.newLatitude,
-            //  Longitude: this.newLongitude,
-            });
+            if (this.fireKey) {  //update
+              this.scsUpd = this.queryObs.update(this.fireKey, {  // this.$key //this.scsIns.key
+                userKey: this.uid,
+                adresse: this.adresse, // this.adresse,
+                ville: this.ville,
+                noPostal: this.noPostal,
+                latitude: this.latitude,
+                longitude: this.longitude,
+              // Latitude: this.newLatitude,
+              //  Longitude: this.newLongitude,
+              });
+            } else {  //insert
+              this.scsUpd = this.queryObs.push({ 
+                  userKey: this.uid,
+                  adresse: this.adresse, //this.adresse,
+                  ville: this.ville,
+                  noPostal: this.noPostal,
+                  latitude: this.latitude,
+                  longitude: this.longitude,
+                //  Latitude: this.newLatitude,
+                //  Longitude: this.newLongitude,
+                });
+            }
           
             this.scsUpd  //promisse
             .then(_ => { 
-                console.log("success update key: ",  this.scsUpd.key)
+                console.log("success insert/update key: ",  this.fireKey)
             })
             .catch(err => console.log(err, 'You do not have access!'));
-       }
-    }
-   // })  
+         }
+    } 
   }
 
  // getUserUID () {
@@ -190,15 +174,14 @@ export class AddplaceparkingPage {
  //     return uid;
  // }
 
-
   //updateItem(key: string, newName: string, newPlaque: string) {
   //  this.items.update(key, { name: newName, plaque: newPlaque });
   //}
   deleteItem(key: string) { 
-    this.items.remove(key); 
+  //  this.items.remove(key); 
   }
   deleteEverything() {
-    this.items.remove();
+  //  this.items.remove();
   }
 
 

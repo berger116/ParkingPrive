@@ -26,17 +26,6 @@
    <!-- <li *ngFor="let item of items | async">
        {{ item.adresse | json }}
     </li> -->
-
-
-       <ion-row >  <!-- *ngFor="let item of items | async">-->
-           <ion-col width-100>
-             <ion-item>
-                <ion-label floating>Adresse 2</ion-label>   <!-- fixed stacked -->
-                <ion-input type="text" [(ngModel)]="this.adresse"></ion-input>   <!-- Plante -->
-                <!--  <ion-input type="text" [(ngModel)]="this.adresse"></ion-input>  -->
-              </ion-item>
-           </ion-col>
-        </ion-row>
   </ul>  
 
  <!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
@@ -45,14 +34,14 @@
 
          est-ce qu'il y a une autre manière de faire ca ?? merci
   -->
-  <ion-list *ngFor="let item of items | async">  
+  <ion-list> <!-- *ngFor="let item of items | async">  -->  
      <ion-grid>
         <ion-row >
            <ion-col width-100>
              <ion-item>
                  <!--<ion-input type="text" [(ngModel)]="items[0]?.adresse"></ion-input>  --> <!-- Plante ! -->
                  <!-- <ion-input type="text" [(ngModel)]="item.adresse"></ion-input> -->
-            <!--      <ion-label type="text" [(ngModel)]="this.item.$key"></ion-label>  -->  <!-- plante -->
+                 <ion-label >{{this.fireKey}}</ion-label>     <!-- plante -->
               </ion-item>
            </ion-col>
         </ion-row>
@@ -63,7 +52,7 @@
                 <ion-label floating>Adresse</ion-label>   <!-- fixed stacked -->
                  <!--<ion-input type="text" [(ngModel)]="items[0]?.adresse"></ion-input>  --> <!-- Plante ! -->
                  <!-- <ion-input type="text" [(ngModel)]="item.adresse"></ion-input> -->
-               <ion-input type="text" [(ngModel)]="this.item.adresse"></ion-input>   
+               <ion-input type="text" [(ngModel)]="this.adresse"></ion-input>   
               </ion-item>
            </ion-col>
         </ion-row>
@@ -73,7 +62,7 @@
           <ion-col width-50>
              <ion-item>
                 <ion-label floating>Ville</ion-label>
-                <ion-input type="text" [(ngModel)]="this.item.ville"></ion-input>  
+                <ion-input type="text" [(ngModel)]="this.ville"></ion-input>  
              <!--     <ion-input type="text" [(ngModel)]="this.items[0].ville"></ion-input>   --> 
              </ion-item>
           </ion-col>
@@ -81,11 +70,10 @@
              <ion-item>
                 <ion-label floating>No Postal</ion-label>
              <!--   <ion-input type="text" [(ngModel)]="items[0].noPostal"></ion-input>  -->
-                 <ion-input type="text" [(ngModel)]="this.item.noPostal"></ion-input>
+                 <ion-input type="text" [(ngModel)]="this.noPostal"></ion-input>
              </ion-item>
            </ion-col>
         </ion-row>
-
 
         <ion-row>
           <ion-col width-30>
@@ -95,20 +83,20 @@
           <ion-col width-33>
              <ion-item>
                 <ion-label floating>Latitude</ion-label>
-            <!--    <ion-input type="text" [(ngModel)]="latitude"></ion-input>  -->
+                <ion-input type="text" [(ngModel)]="latitude"></ion-input>  
              </ion-item>
            </ion-col>
            <ion-col width-33>
              <ion-item>
                 <ion-label floating>Longitude</ion-label>
-           <!--     <ion-input type="text" [(ngModel)]="longitude"></ion-input>  -->
+                <ion-input type="text" [(ngModel)]="longitude"></ion-input> 
              </ion-item>
            </ion-col>
         </ion-row>
 
         <ion-row>
             <ion-col width-90>           
-                 <button ion-button color="secondary"  (click)="addItem()">Valider</button>
+            <!--     <button ion-button color="secondary"  (click)="addItem()">Valider</button>  -->
                  <button ion-button color="secondary"  (click)="itemUpdate()">Modifier</button>
             
             </ion-col>
@@ -153,8 +141,8 @@
 
 
     <div>
-      <h4>Filter by uid</h4>
-      <button (click)="filterBy('hJWnojzr2tcPrkpX47znLhvtopB2')">hJWnojzr2tcPrkpX47znLhvtopB2</button>
+   <!--   <h4>Filter by uid</h4>
+      <button (click)="filterBy('hJWnojzr2tcPrkpX47znLhvtopB2')">hJWnojzr2tcPrkpX47znLhvtopB2</button>  -->
     </div>
 
    <!-- <ul>

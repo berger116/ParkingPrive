@@ -1,12 +1,17 @@
 import { Injectable } from '@angular/core';
-import { AngularFire, AuthProviders, FirebaseAuth, FirebaseAuthState, AuthMethods} from 'angularfire2';
+import { NavParams } from 'ionic-angular';
+import { AngularFire, AuthProviders, FirebaseAuth, FirebaseAuthState, AuthMethods, FirebaseListObservable, FirebaseObjectObservable} from 'angularfire2';
+//import { AngularFire, FirebaseListObservable, FirebaseObjectObservable} from 'angularfire2';
+import { Subject } from 'rxjs/Subject';
 
 @Injectable()
 export class AuthService {
   private authState: FirebaseAuthState;
   private authObj: any;
 
-  constructor(public fba: FirebaseAuth,public af: AngularFire) {
+  queryObs: FirebaseListObservable<any>;
+
+  constructor(public fba: FirebaseAuth, public af: AngularFire) {
      this.authState = fba.getAuth();
      fba.subscribe((state: FirebaseAuthState) => {
        this.authState = state;
@@ -20,30 +25,52 @@ export class AuthService {
   }
 
   get authenticated(): boolean {
-     return this.authState !== null;
+    return this.authState !== null;
   }
 
   getAuthObj(): any {
     console.log ("test SVC")
     return this.authObj;
   }
+  
+  getQueryPkgPlace(uid, uidSubject):FirebaseListObservable<any>  {
+    this.queryObs = null;
 
-  // signInWithFacebook(): firebase.Promise<FirebaseAuthState> {
-  //   return this.auth$.login({
-  //     provider: AuthProviders.Facebook,
-  //     method: AuthMethods.Popup
-  //   });
-  // }
+    if (uid) {
+      this.queryObs = this.af.database.list('/items', {  //this.items
+              query: {
+                // orderByChild: 'ville',
+                orderByChild: 'userKey',
+                equalTo: uidSubject,
+                //  orderByKey: true,   //un seul orderBy
+                //  limitToFirst: 2,
+                //  limitToLast: 2,
+              }
+          });
 
-  // signOut(): void {
-  //   this.auth$.logout();
-  // }
+      //this.uidSubject.next(uid)
+    }
+    console.log("authSVC queryObs: ", this.queryObs)
+    return this.queryObs
+  }
 
-  // displayName(): string {
-  //   if (this.authState != null) {
-  //     return this.authState.facebook.displayName;
-  //   } else {
-  //     return '';
-  //   }
-  // }  
+    //InWithFacebook(): firebase.Promise<FirebaseAuthState> {
+    //   return this.auth$.login({
+    //     provider: AuthProviders.Facebook,
+    //     method: AuthMethods.Popup
+    //   });
+    // }
+
+    // signOut(): void {
+    //   this.auth$.logout();
+    // }
+
+    // displayName(): string {
+    //   if (this.authState != null) {
+    //     return this.authState.facebook.displayName;
+    //   } else {
+    //     return '';
+    //   }
+    // } 
+
 }

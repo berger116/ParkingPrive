@@ -24,26 +24,35 @@ import {
 export class Map {
 
   map:google.maps.Map;  
-  myLatLng = { lat:  46.2043907, lng: 6.143157699999961 }; // 46.2043907, 6.143157699999961
+ 
   marker: any;
 
   //var map = new google.maps.Map(document.getElementById("map"), mapOptions);
 
-  init(lat:number, long:number, zoom:number=12) {
+  initMap( zoom:number=12) {
+     //position de la Map
+     let myLatLng = { lat:  46.2043907, lng: 6.143157699999961 }; // 46.2043907, 6.143157699999961
 
      this.map = new google.maps.Map(document.getElementById("map_canvas"), {
-       center: new google.maps.LatLng(lat, long),
+       //center: new google.maps.LatLng(lat, long),
+       center: new google.maps.LatLng(myLatLng.lat, myLatLng.lng),
        zoom: zoom,
        mapTypeId: google.maps.MapTypeId.ROADMAP
      });
+  }
 
+  initMarker(latd:number, long:number) {
+
+     let myLatLng = { lat:  latd, lng: long }; // 46.2043907, 6.143157699999961
      this.marker = new google.maps.Marker({
-        position: this.myLatLng,
+        position: myLatLng,
         title:"Hello World!"
-     });
+       });
      // To add the marker to the map, call setMap();
      this.marker.setMap(this.map);
   }
+
+
 
 // ionic plugin add cordova-plugin-googlemaps --variable API_KEY_FOR_ANDROID="YOUR_ANDROID_API_KEY_IS_HERE" --variable API_KEY_FOR_IOS="YOUR_IOS_API_KEY_IS_HERE"
 
