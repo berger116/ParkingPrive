@@ -42,6 +42,8 @@
  <!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
   <!-- il n'y pour l'instant qu'un seul enregistrement, comme vu avec fazio...impossible de pas utiliser un ngFor  
          pour que le template face le binding avec le .ts voir exemple ci dessus ! 
+
+         est-ce qu'il y a une autre manière de faire ca ?? merci
   -->
   <ion-list *ngFor="let item of items | async">  
      <ion-grid>
@@ -50,7 +52,7 @@
              <ion-item>
                  <!--<ion-input type="text" [(ngModel)]="items[0]?.adresse"></ion-input>  --> <!-- Plante ! -->
                  <!-- <ion-input type="text" [(ngModel)]="item.adresse"></ion-input> -->
-            <!--      <ion-label type="text" [(ngModel)]="this.item.$key"></ion-label>  -->  <!-- mettre à invisible -->
+            <!--      <ion-label type="text" [(ngModel)]="this.item.$key"></ion-label>  -->  <!-- plante -->
               </ion-item>
            </ion-col>
         </ion-row>
