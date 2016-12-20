@@ -25,31 +25,10 @@ export class LoginPage {
       //console.log(this.af.auth )
 
       // this.af.auth.subscribe(auth => {   //(this.af.auth.getAuth().provider) {  //méthode dépréciée
-      //     console.log("QQQQQQ  avant if af.auth: " + auth )
-      //     if(auth) {
-      //       //this.goTabs();
-      //     }
-      //     else {
-      //       console.log("QQQQQQ  NOT loged af.auth: " + auth )       
-      //       //this.navCtrl.setRoot(Routes.getRootPage(false));
-      //     }
       // },
-      // err =>{ 
-      //   console.log("ERROR  NOT loged af.auth: ", err )      
-      //   //this.navCtrl.setRoot(Routes.getRootPage(false));
-      // });
   }
 
-    //login(){
-        //this.auth.login({email:this.email,password:this.password })
-        //   .then((success)=>{
-    //        this.goTabs();
-        //    },(error)=>{
-        //      this.error = error._body;
-        //    })
-    //}
-
-    login() {
+  login() {
       console.log('login Page')
 
       //affichage du spinner
@@ -66,7 +45,10 @@ export class LoginPage {
         }).then ((res) => {
            //console.log("Login res.uid", res.uid)
            this.goTabs(res.uid);
-
+           }, (error) => {
+               console.log("Login catch error", error)
+              //this.error = error._body;
+           // });
         }).catch(err =>{
             console.log("Login catch error", err)
             this.navCtrl.setRoot(Routes.getRootPage(false));
@@ -78,12 +60,6 @@ export class LoginPage {
 
         if (this.loader)
             this.hideLoading();
-    
-    //  if (this.auth) {
-    //     console.log("XXX Login auth:" ) //+ this.auth)
-         //this.af.auth.subscribe(auth => console.log("XXX Login auth:" + auth));
-    //     this.goTabs();
-    //  }
 
        // affichage si connecte -> marche pas
        //var connectedRef = this.firebase.database().ref(".info/connected");

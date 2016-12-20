@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component,  Input, Output, EventEmitter } from '@angular/core';
+import { NavController, NavParams, ModalController } from 'ionic-angular';
 import { } from "@types/google-maps";
+import { Routes } from '../../app/app.routes';
 
 import {
  GoogleMap,
@@ -22,10 +24,12 @@ import {
   template: "<div id='map_canvas'></div>"
 })
 export class Map {
-
   map:google.maps.Map;  
- 
   marker: any;
+
+  @Output() select:EventEmitter<any> = new EventEmitter();
+
+constructor(public modalCtrl: ModalController) {}
 
   //var map = new google.maps.Map(document.getElementById("map"), mapOptions);
 
@@ -43,11 +47,19 @@ export class Map {
 
   initMarker(latd:number, long:number) {
 
-     let myLatLng = { lat:  latd, lng: long }; // 46.2043907, 6.143157699999961
+     let myLatLng = { lat: latd, lng: long }; // 46.2043907, 6.143157699999961
      this.marker = new google.maps.Marker({
         position: myLatLng,
         title:"Hello World!"
        });
+       
+       this.marker.addListener( 'click', ( (res) => {
+         console.log('emit test', res)
+         let modal = this.modalCtrl.create(Routes.getPage(Routes.ADDPLACES));
+         modal.present();
+        } ))
+     //  this.marker.addListener( 'click', ( () => { this.select.emit("console.log('emit test');" )} )) //next("I was a map click")
+      //google.maps.event.addListener(this.marker, 'click', ( () => this.select.emit("console.log('emit test');" ) ))  //next("I was a map click")
      // To add the marker to the map, call setMap();
      this.marker.setMap(this.map);
   }
