@@ -57,9 +57,7 @@ export class AroundPage {
     this.uidSubject = new Subject();
     this.queryObs = authSVC.getQueryPkgPlace(this.uid,  this.uidSubject );
 
-    if (this.uid)
-        this.uidSubject.next(null); //(this.uid)
-
+    
     // if (this.queryObs) { 
     //    console.log("around queryObs: ", this.queryObs)
     //    this.queryObs.subscribe(snapshots=>{
@@ -72,25 +70,45 @@ export class AroundPage {
 
   ionViewDidEnter(){
     this.map.initMap();
-    this.map.initMarker(46.2043907, 6.143157699999961);
+//this.map.addMarker(46.2043907, 6.143157699999961, this.addMarkerlistener);
 
     if (this.queryObs) {
       console.log("Around queryObs: ", this.queryObs)
    ////   this.queryObs.forEach( (itm) => {
-      //this.queryObs.subscribe( itms => {
-      //    itms.forEach( itm => {
-      //      console.log("itm.lat: ", itm.latitude )
-      //      this.map.initMarker(itm.latitude, itm.longitude);
+      this.queryObs.subscribe( itms => {
+          console.log(" avant for itm.lat: ", itms)
+          itms.forEach( itm => {
+            console.log("itm.lat: ", itm.latitude)
+            this.map.addMarker(itm.latitude, itm.longitude) //, this.addMarkerlistener);
+          })
+      })
 
-       this.queryObs.forEach( itm => {
-          console.log("itm.lat: ", itm.latitude )
+      if (this.uid)
+        this.uidSubject.next(this.uid); //(  null //this.uid)
+
+
+      // this.queryObs.forEach( itm => {
+      //    console.log("itm.lat: ", itm.latitude )
         //  this.(map.initMarker(itm.latitude, itm.longitude);
-       }).then ( itm => {
-          console.log("itm.lat: ", itm[0].latitude )
-            this.map.initMarker(itm[0].latitude, itm[0].longitude);
-          });
-       };  
-   }      
+      // }).then ( itm => {
+      //      console.log("itm.lat: ", itm[0].latitude )
+      //      this.map.initMarker(itm[0].latitude, itm[0].longitude);
+      //    }).catch ( err => {
+      //      console.log("error", err);
+      //    })
+       }   //end if
+   }     
+
+   addMarkerlistener() {
+      console.log("listerner")
+    //    this.marker.addListener( 'click', ( (res) => {
+    //     console.log('emit test', res)
+    //     let modal = this.modalCtrl.create(Routes.getPage(Routes.LOGIN));
+    //     modal.present();
+    //    } ))
+   }
+
+
   //     this.af.database.list('/users', { preserveSnapshot: true})
   //  .subscribe(snapshots=>{
   //      snapshots.forEach(snapshot => {

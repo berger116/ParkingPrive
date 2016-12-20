@@ -79,7 +79,9 @@ export class AddplaceparkingPage {
 
     if (this.queryObs)
       this.queryObs.subscribe (itm => { 
-          this.fireKey =  "-KZ7adwUf4BUQXKGsZ97"    //mis en dure  !!!!  //itm[0].$key
+         console.log("itm: " ,itm[0].$key)
+         this.fireKey = itm[0].$key
+          //this.fireKey =  "-KZ7adwUf4BUQXKGsZ97"    //mis en dure  !!!!  //itm[0].$key
           this.adresse = itm[0].adresse 
           this.ville = itm[0].ville
           this.noPostal= itm[0].noPostal

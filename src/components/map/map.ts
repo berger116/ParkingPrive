@@ -45,17 +45,20 @@ constructor(public modalCtrl: ModalController) {}
      });
   }
 
-  initMarker(latd:number, long:number) {
+  addMarker(latd: number, long:number) { //, callbck:any) {
 
-     let myLatLng = { lat: latd, lng: long }; // 46.2043907, 6.143157699999961
+    console.log("latd:", latd)
+     let myLatLng = { latd, long }; // 46.2043907, 6.143157699999961
      this.marker = new google.maps.Marker({
-        position: myLatLng,
+        position: new google.maps.LatLng(latd, long), //myLatLng,
         title:"Hello World!"
        });
        
+      //callbck();
+       //mettre la suite ds un callback
        this.marker.addListener( 'click', ( (res) => {
          console.log('emit test', res)
-         let modal = this.modalCtrl.create(Routes.getPage(Routes.ADDPLACES));
+         let modal = this.modalCtrl.create(Routes.getPage(Routes.LOGIN));
          modal.present();
         } ))
      //  this.marker.addListener( 'click', ( () => { this.select.emit("console.log('emit test');" )} )) //next("I was a map click")
