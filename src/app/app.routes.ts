@@ -3,8 +3,9 @@ import {LoginPage} from '../pages/login/login';
 import {TabsPage} from '../pages/tabs/tabs';
 //import {AddPage} from '../pages/add/add';
 //import {FriendsPage} from '../pages/friends/friends';
-import { AroundPage } from '../pages/around/around';
-import { AddplaceparkingPage } from '../pages/addplaceparking/addplaceparking';
+import { AroundplacePage } from '../pages/around/aroundplace';
+import { PlacetobookPage } from '../pages/placetobook/placetobook';
+import { DispotobookPage } from '../pages/dispotobook/dispotobook';
 //import {LoginPage} from '../login/login';
 //import {PlacesPage} from '../pages/places/places';
 //import {SignupPage} from '../pages/signup/signup';
@@ -16,20 +17,19 @@ export class Routes {
   static HOME:string="home";
   static LOGIN:string="login";
   static TABS:string="tabs";  
-  static ADDPLACES:string="addplaces";
- // static PLACES:string="places";
-  static AROUND:string="around";
+  static PLACETOBOOK:string="placetobook";
+  static DISPOTOBOOK:string="dispotobook";
+  static AROUNDPLACE:string="aroundplace";
  // static SIGNUP:string="signup";
 
   static pages = {
     [Routes.LOGIN]: LoginPage,
     [Routes.HOME]: HomePage,
     [Routes.TABS]: TabsPage,
-    [Routes.ADDPLACES]: AddplaceparkingPage,
-    [Routes.AROUND]: AroundPage,
- //   [Routes.ADD]: AddPage,
+    [Routes.PLACETOBOOK]: PlacetobookPage,
+    [Routes.DISPOTOBOOK]: DispotobookPage,
+    [Routes.AROUNDPLACE]: AroundplacePage,
  //   [Routes.PLACES]: PlacesPage,
- //   [Routes.AROUND]: AroundPage,
  //   [Routes.FRIENDS]: FriendsPage,
  //   [Routes.SIGNUP]: SignupPage,
  //   [Routes.PLACE]: PlacePage,

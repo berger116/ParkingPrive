@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, LoadingController } from 'ionic-angular';
 import { Routes } from '../../app/app.routes';
 import { AngularFire, AuthProviders, AuthMethods} from 'angularfire2';
-import { AuthService } from '../../providers/auth-service';
+//import { FireService } from '../../providers/fireservice';
 
 /*
   Generated class for the Login page.

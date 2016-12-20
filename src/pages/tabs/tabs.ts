@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 //import { PlacesPage } from '../places/places';
-import { AroundPage } from '../around/around';
-import { AddplaceparkingPage } from '../addplaceparking/addplaceparking';
+import { AroundplacePage } from '../around/aroundplace';
+import { PlacetobookPage } from '../placetobook/placetobook';
 import { Routes } from '../../app/app.routes';
 //import { Auth } from '../../providers/auth';
 import { AngularFire, FirebaseListObservable, FirebaseObjectObservable} from 'angularfire2';
@@ -21,8 +21,8 @@ export class TabsPage {
 
  // tab1Root: any = HomePage;
  // tab2Root: any = AddPage;
-  tab2Root: any = AddplaceparkingPage;
-  tab3Root: any = AroundPage;
+  tab2Root: any = PlacetobookPage;
+  tab3Root: any = AroundplacePage;
  // tab4Root: any = FriendsPage;
  // tab5Root: any = SettingsPage;
 

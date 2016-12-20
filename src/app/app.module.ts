@@ -13,11 +13,10 @@ import { AngularFireModule, AuthProviders, AuthMethods } from 'angularfire2';
 //import { Auth} from '../providers/auth'
 //import { Settings} from '../providers/Settings';
 import {Map} from '../components/map/map';
+import { FireService } from '../providers/fireservice';
 //import {SortAsc} from '../pipes/sort-asc';
 //import {GroupBy} from '../pipes/group-by';
 //import { HomePage } from '../pages/home/home';
-
-import { AuthService } from '../providers/auth-service';
 
 const app:Array<any>=[MyApp];
 const pages:Array<any> = Routes.getPages();
@@ -53,7 +52,6 @@ export const myFirebaseAuthConfig = {
   //provider: AuthProviders.Google,
   //method: AuthMethods.Redirect  // ou popup ??
 }
- 
 
 //let storage = new Storage();
 
@@ -83,7 +81,7 @@ export const myFirebaseAuthConfig = {
   // Settings,
   //FirebaseSVC
 
-    AuthService
+    FireService
   ],
 
   bootstrap: [IonicApp],

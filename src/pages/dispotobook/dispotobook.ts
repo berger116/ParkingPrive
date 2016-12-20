@@ -1,27 +1,23 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { AngularFire, FirebaseListObservable, FirebaseObjectObservable} from 'angularfire2';  //AuthProviders, AuthMethods
-import { AuthService } from '../../providers/auth-service';
+import { FireService } from '../../providers/fireservice';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/filter';
 
-//import { IPlaceParking } from './placeparking';
-
-//import {Observable} from 'rxjs/Observable';
-//import {FIREBASE_PROVIDERS, defaultFirebase, AngularFire} from 'angularfire2';
-
 /*
-  Generated class for the Addplaceparking page.
+  Generated class for the Dispotobook page.
 
   See http://ionicframework.com/docs/v2/components/#navigation for more info on
   Ionic pages and navigation.
 */
 @Component({
-  selector: 'page-addplaceparking',
-  templateUrl: 'addplaceparking.html'
+  selector: 'page-dispotobook',
+  templateUrl: 'dispotobook.html'
 })
-export class AddplaceparkingPage {
+export class DispotobookPage {
+
   queryObs: FirebaseListObservable<any>;
   //items: Observable<any>; //FirebaseListObservable<any>;
   uidSubject: Subject<any>;
@@ -39,7 +35,7 @@ export class AddplaceparkingPage {
   //itemKey: string;
  
 
-  constructor(public navCtrl: NavController, public navparams: NavParams, public af: AngularFire, public authSVC: AuthService) {
+  constructor(public navCtrl: NavController, public navparams: NavParams, public af: AngularFire, public fireSVC: FireService) {
      //this.items = af.database.list('/items', { preserveSnapshot: true });
      //this.items.subscribe(snapshots => {
        // snapshots.forEach(snapshot => {
@@ -52,11 +48,6 @@ export class AddplaceparkingPage {
     this.uid = this.navparams.get("uid") // this.getUserUID ()
     console.log("addPlaceParking UID: ", this.uid);
 
-    //  af.database.list('/items')   //code utile ?? 
-    //  .subscribe((data)=>{
-    //    this.itemstr = data;
-    //  })
-
     //const promise = af.database.list('/items').remove();   //code utile
     //promise
     //  .then(_ => console.log('success'))
@@ -64,23 +55,14 @@ export class AddplaceparkingPage {
 
 //.subscribe( item => { item.filter(.userKey == this.uid}) //.filter(item => { return item[0].userKey == this.uid })    //.$ref // '/dispo'
     this.uidSubject = new Subject();
-    this.queryObs = authSVC.getQueryPkgPlace(this.uid,  this.uidSubject );
-    //   this.queryObs = this.af.database.list('/items', {  //this.items
-    //    query: {
-          // orderByChild: 'ville',
-    //       orderByChild: 'userKey',
-    //       equalTo: this.uidSubject,
-          //  orderByKey: true,   //un seul orderBy
-          //  limitToFirst: 2,
-          //  limitToLast: 2,
-    //     }
-    // })
+    this.queryObs = fireSVC.getQueryDispo(this.uid,  this.uidSubject );
+   
     console.log("PlacePkg queryObs: ", this.queryObs)
 
     if (this.queryObs)
       this.queryObs.subscribe (itm => { 
-         console.log("itm: " ,itm[0].$key)
-         this.fireKey = itm[0].$key
+          console.log("itm: ", itm[0].$key)
+          this.fireKey = itm[0].$key
           //this.fireKey =  "-KZ7adwUf4BUQXKGsZ97"    //mis en dure  !!!!  //itm[0].$key
           this.adresse = itm[0].adresse 
           this.ville = itm[0].ville
@@ -92,17 +74,9 @@ export class AddplaceparkingPage {
      if (this.uid)
          this.uidSubject.next(this.uid)
 
-     //)  //.subscribe(itm => { console.log(itm)} );
-
     //this.items.map( item => { item.userKey == this.uid })
    //console.log("filter: " ,this.items.filter( item => { return item.userKey == this.uid }))
 
-    // this.items.subscribe( itm => {
-    // this.adresse = this.items[0].adresse;
-    // this.ville = this.items.ville;
-    // this.noPostal =this.items.noPostal;
-    // })
-   
     // console.log("addPlacePark: ", (this.items))
   }
 
@@ -123,9 +97,9 @@ export class AddplaceparkingPage {
     this.uidSubject.next(userKey); 
   }
  
-  itemUpdate() { 
-    console.log("authenticated key: ", this.authSVC.authenticated, this.fireKey)
-    if (this.authSVC.authenticated)
+  dispoUpdate() { 
+    //console.log("authenticated key: ", this.fireSVC.authenticated, this.fireKey)
+    if (this.fireSVC.authenticated)
     {  
           //let authObj = this.authSVC.getAuthObj();
          // this.uid = this.getUserUID ();
@@ -165,41 +139,12 @@ export class AddplaceparkingPage {
     } 
   }
 
- // getUserUID () {
- //     let uid= null;
- //     let authObj = this.authSVC.getAuthObj();
- //     if (authObj){
- //         console.log("authObj uid: ", authObj.auth.uid)
- //         uid =  authObj.auth.uid;
- //         return uid;
- //     }
- //     return uid;
- // }
-
   //updateItem(key: string, newName: string, newPlaque: string) {
   //  this.items.update(key, { name: newName, plaque: newPlaque });
   //}
-  deleteItem(key: string) { 
-  //  this.items.remove(key); 
-  }
-  deleteEverything() {
-  //  this.items.remove();
-  }
-
 
   ionViewDidLoad() {
      console.log("DidLoad authUID: ", this.uid);
-     //this.item
-     //console.log("avant ", this.items)
-
-     //this.uid = this.getUserUID ();
-     //console.log("this.uid: ",this.uid )
-     //if (this.uid){
-       // this.items.map( item => { item.userKey == this.uid })
-       // console.log("apres", this.items)
-     //}
-
-    console.log('Hello AddplaceparkingPage Page');
   }
 
    // ionViewCanLeave(): boolean{   //code utile ??

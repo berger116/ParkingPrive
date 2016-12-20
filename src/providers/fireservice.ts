@@ -5,7 +5,7 @@ import { AngularFire, AuthProviders, FirebaseAuth, FirebaseAuthState, AuthMethod
 import { Subject } from 'rxjs/Subject';
 
 @Injectable()
-export class AuthService {
+export class FireService {
   private authState: FirebaseAuthState;
   private authObj: any;
 
@@ -33,11 +33,32 @@ export class AuthService {
     return this.authObj;
   }
   
-  getQueryPkgPlace(uid, uidSubject):FirebaseListObservable<any>  {
+  getQueryPlace(uid, uidSubject):FirebaseListObservable<any> {
     this.queryObs = null;
 
     if (uid) {
-      this.queryObs = this.af.database.list('/items', {  //this.items
+      this.queryObs = this.af.database.list('/places', {  //  '/items'
+              query: {
+                // orderByChild: 'ville',
+                orderByChild: 'userKey',
+                equalTo: uidSubject,
+                //  orderByKey: true,   //un seul orderBy
+                //  limitToFirst: 2,
+                //  limitToLast: 2,
+              }
+          });
+
+      //this.uidSubject.next(uid)
+    }
+    console.log("authSVC queryObs: ", this.queryObs)
+    return this.queryObs
+  }
+
+  getQueryDispo(uid, uidSubject):FirebaseListObservable<any> {
+    this.queryObs = null;
+
+    if (uid) {
+      this.queryObs = this.af.database.list('/dispo', {  //  '/items'
               query: {
                 // orderByChild: 'ville',
                 orderByChild: 'userKey',

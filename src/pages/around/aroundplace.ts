@@ -3,7 +3,7 @@ import { NavController, NavParams, ModalController } from 'ionic-angular';
 import { Map } from '../../components/map/map';
 import { Routes } from '../../app/app.routes';
 import { AngularFire, FirebaseListObservable, FirebaseObjectObservable} from 'angularfire2';
-import { AuthService } from '../../providers/auth-service';
+import { FireService } from '../../providers/fireservice';
 import { Subject } from 'rxjs/Subject';
 //import {SebmGoogleMap, SebmGoogleMapMarker} from 'angular2-google-maps/core';
 
@@ -22,7 +22,7 @@ import { Subject } from 'rxjs/Subject';
 */
 @Component({
   selector: 'page-around',
-  templateUrl: 'around.html',
+  templateUrl: 'aroundplace.html',
 })
 
 //@Component({
@@ -40,7 +40,8 @@ import { Subject } from 'rxjs/Subject';
 //   </sebm-google-map>
 // `
 //})
-export class AroundPage {
+
+export class AroundplacePage {
   uidSubject: Subject<any>;
   queryObs: FirebaseListObservable<any>;
   uid: string;
@@ -48,15 +49,12 @@ export class AroundPage {
   @ViewChild(Map)
   private map: Map;
 
-  constructor(public navCtrl: NavController, public navparams: NavParams, public modalCtrl: ModalController, public authSVC: AuthService) {
+  constructor(public navCtrl: NavController, public navparams: NavParams, public modalCtrl: ModalController, public fireSVC: FireService) {
     this.uid = this.navparams.get("uid");
     console.log("addPlaceParking UID: ", this.uid);
-    //if (this.uid)
-    //     this.uidSubject.next(this.uid)   => plante si ici
 
     this.uidSubject = new Subject();
-    this.queryObs = authSVC.getQueryPkgPlace(this.uid,  this.uidSubject );
-
+    this.queryObs = fireSVC.getQueryPlace(this.uid, this.uidSubject);
     
     // if (this.queryObs) { 
     //    console.log("around queryObs: ", this.queryObs)
@@ -70,22 +68,21 @@ export class AroundPage {
 
   ionViewDidEnter(){
     this.map.initMap();
-//this.map.addMarker(46.2043907, 6.143157699999961, this.addMarkerlistener);
+    //this.map.addMarker(46.2043907, 6.143157699999961, this.addMarkerlistener);
 
     if (this.queryObs) {
       console.log("Around queryObs: ", this.queryObs)
-   ////   this.queryObs.forEach( (itm) => {
+   
       this.queryObs.subscribe( itms => {
-          console.log(" avant for itm.lat: ", itms)
+          // console.log("avant for itm.lat: ", itms)
           itms.forEach( itm => {
-            console.log("itm.lat: ", itm.latitude)
-            this.map.addMarker(itm.latitude, itm.longitude) //, this.addMarkerlistener);
+            console.log("itm.latitude: ", itm.latitude)
+            this.map.addMarker(itm.latitude, itm.longitude, this.addMarkerlistener);
           })
       })
 
       if (this.uid)
         this.uidSubject.next(this.uid); //(  null //this.uid)
-
 
       // this.queryObs.forEach( itm => {
       //    console.log("itm.lat: ", itm.latitude )
@@ -96,11 +93,20 @@ export class AroundPage {
       //    }).catch ( err => {
       //      console.log("error", err);
       //    })
+
        }   //end if
    }     
 
-   addMarkerlistener() {
-      console.log("listerner")
+   addMarkerlistener(marker) {
+       console.log("listener")
+       marker.addListener('click', (res => {
+         console.log('emit test', res)
+
+         let modal = this.modalCtrl.create(Routes.getPage(Routes.DISPOTOBOOK));
+        //  this.nav.present(contactModal) 
+         modal.present();
+         })
+      );
     //    this.marker.addListener( 'click', ( (res) => {
     //     console.log('emit test', res)
     //     let modal = this.modalCtrl.create(Routes.getPage(Routes.LOGIN));

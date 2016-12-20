@@ -29,7 +29,7 @@ export class Map {
 
   @Output() select:EventEmitter<any> = new EventEmitter();
 
-constructor(public modalCtrl: ModalController) {}
+  constructor(public modalCtrl: ModalController) {}
 
   //var map = new google.maps.Map(document.getElementById("map"), mapOptions);
 
@@ -45,28 +45,27 @@ constructor(public modalCtrl: ModalController) {}
      });
   }
 
-  addMarker(latd: number, long:number) { //, callbck:any) {
-
-    console.log("latd:", latd)
-     let myLatLng = { latd, long }; // 46.2043907, 6.143157699999961
+  addMarker(lat: number, lng:number, callbck) {   
+     let myLatLng = { lat, lng }; // 46.2043907, 6.143157699999961
      this.marker = new google.maps.Marker({
-        position: new google.maps.LatLng(latd, long), //myLatLng,
+        position: new google.maps.LatLng(lat, lng), //myLatLng,
         title:"Hello World!"
-       });
+     });
        
-      //callbck();
-       //mettre la suite ds un callback
-       this.marker.addListener( 'click', ( (res) => {
-         console.log('emit test', res)
-         let modal = this.modalCtrl.create(Routes.getPage(Routes.LOGIN));
-         modal.present();
-        } ))
+     //callbck(this.marker);  //this.modalCtrl undefined dans le callback
+
+     //mettre la suite ds un callback
+     this.marker.addListener('click', (res => {
+        console.log('emit test', res)
+        let modal = this.modalCtrl.create(Routes.getPage(Routes.DISPOTOBOOK));
+        modal.present();
+     } ))
+
      //  this.marker.addListener( 'click', ( () => { this.select.emit("console.log('emit test');" )} )) //next("I was a map click")
       //google.maps.event.addListener(this.marker, 'click', ( () => this.select.emit("console.log('emit test');" ) ))  //next("I was a map click")
      // To add the marker to the map, call setMap();
      this.marker.setMap(this.map);
   }
-
 
 
 // ionic plugin add cordova-plugin-googlemaps --variable API_KEY_FOR_ANDROID="YOUR_ANDROID_API_KEY_IS_HERE" --variable API_KEY_FOR_IOS="YOUR_IOS_API_KEY_IS_HERE"
