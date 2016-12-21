@@ -1,0 +1,39 @@
+page-place-info-pop {
+
+    $popover-ios-width: 800px;
+    $primary-color: red;
+
+    background-color: $primary-color;
+
+    $popover-ios-background: red;
+
+
+
+    // height: 800px
+    .scroll-content {
+    //display: table;
+    //idth: 600px;
+    //height: 300px;
+    }
+}
+
+.popover-md .popover-content {
+    width: 90%; //350px;
+    height: 70%; //500px;
+}
+
+
+
+// .popover-md  popover-wrapper {
+//    // display: table;
+//     width: 400px;
+//     height: 500px;
+// }
+
+// .popover-wrapper {
+//    // display: table;
+//     width: 400px;
+//     height: 500px;
+// }
+
+

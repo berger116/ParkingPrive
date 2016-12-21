@@ -27,7 +27,7 @@
       {{error}}
     </ion-item>
 
-    <button full ion-button (click)="login()">Login</button>  
+    <button full ion-button (click)="login()" [disabled]="loginOk">Login</button>  
    <!-- <button full ion-button (click)="overrideLogin()">Login anonyme</button>  
     <button ion-button item-center outline (click)="openSignup()">Sign up</button>  -->
 

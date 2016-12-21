@@ -18,12 +18,11 @@ import { AngularFire, FirebaseListObservable, FirebaseObjectObservable} from 'an
   templateUrl: 'tabs.html'
 })
 export class TabsPage {
-
  // tab1Root: any = HomePage;
  // tab2Root: any = AddPage;
   tab2Root: any = PlacetobookPage;
   tab3Root: any = AroundplacePage;
- // tab4Root: any = FriendsPage;
+ // tab4Root: any = AroundplacePage;
  // tab5Root: any = SettingsPage;
 
   email: string;

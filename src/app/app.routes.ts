@@ -6,6 +6,7 @@ import {TabsPage} from '../pages/tabs/tabs';
 import { AroundplacePage } from '../pages/around/aroundplace';
 import { PlacetobookPage } from '../pages/placetobook/placetobook';
 import { DispotobookPage } from '../pages/dispotobook/dispotobook';
+import { PlaceInfoPopPage } from '../pages/place-info-pop/place-info-pop';
 //import {LoginPage} from '../login/login';
 //import {PlacesPage} from '../pages/places/places';
 //import {SignupPage} from '../pages/signup/signup';
@@ -20,6 +21,7 @@ export class Routes {
   static PLACETOBOOK:string="placetobook";
   static DISPOTOBOOK:string="dispotobook";
   static AROUNDPLACE:string="aroundplace";
+  static PLACEINFOPOP:string="placeinfopop";
  // static SIGNUP:string="signup";
 
   static pages = {
@@ -29,6 +31,7 @@ export class Routes {
     [Routes.PLACETOBOOK]: PlacetobookPage,
     [Routes.DISPOTOBOOK]: DispotobookPage,
     [Routes.AROUNDPLACE]: AroundplacePage,
+    [Routes.PLACEINFOPOP]: PlaceInfoPopPage,
  //   [Routes.PLACES]: PlacesPage,
  //   [Routes.FRIENDS]: FriendsPage,
  //   [Routes.SIGNUP]: SignupPage,

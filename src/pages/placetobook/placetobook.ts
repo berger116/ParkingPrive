@@ -3,6 +3,7 @@ import { NavController, NavParams } from 'ionic-angular';
 import { AngularFire, FirebaseListObservable, FirebaseObjectObservable} from 'angularfire2';  //AuthProviders, AuthMethods
 import { FireService } from '../../providers/fireservice';
 import { Subject } from 'rxjs/Subject';
+import { Routes } from '../../app/app.routes';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/filter';
 
@@ -170,6 +171,11 @@ export class PlacetobookPage {
   }
   deleteEverything() {
   //  this.items.remove();
+  }
+
+
+  letDispo() {
+     this.navCtrl.setRoot(Routes.getPage(Routes.DISPOTOBOOK));
   }
 
 

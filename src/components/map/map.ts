@@ -1,5 +1,5 @@
 import { Component,  Input, Output, EventEmitter } from '@angular/core';
-import { NavController, NavParams, ModalController } from 'ionic-angular';
+import { NavController, NavParams, ModalController, PopoverController } from 'ionic-angular';
 import { } from "@types/google-maps";
 import { Routes } from '../../app/app.routes';
 
@@ -29,7 +29,7 @@ export class Map {
 
   @Output() select:EventEmitter<any> = new EventEmitter();
 
-  constructor(public modalCtrl: ModalController) {}
+  constructor(public popoverCtrl: PopoverController) {}
 
   //var map = new google.maps.Map(document.getElementById("map"), mapOptions);
 
@@ -57,9 +57,11 @@ export class Map {
      //mettre la suite ds un callback
      this.marker.addListener('click', (res => {
         console.log('emit test', res)
-        let modal = this.modalCtrl.create(Routes.getPage(Routes.DISPOTOBOOK));
-        modal.present();
-     } ))
+      //  let modal = this.modalCtrl.create(Routes.getPage(Routes.DISPOTOBOOK));
+      //  modal.present();
+        let popover = this.popoverCtrl.create(Routes.getPage(Routes.PLACEINFOPOP));   //PopoverPage
+        popover.present(); //{ ev: myEvent });
+     } ));
 
      //  this.marker.addListener( 'click', ( () => { this.select.emit("console.log('emit test');" )} )) //next("I was a map click")
       //google.maps.event.addListener(this.marker, 'click', ( () => this.select.emit("console.log('emit test');" ) ))  //next("I was a map click")

@@ -147,6 +147,10 @@ export class DispotobookPage {
      console.log("DidLoad authUID: ", this.uid);
   }
 
+  onClickBack(){
+    // this.navCtrl.pop()   //page blanche si pop ???
+  }
+
    // ionViewCanLeave(): boolean{   //code utile ??
    // here we can either return true or false
    // depending on if we want to leave this view

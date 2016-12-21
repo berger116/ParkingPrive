@@ -19,7 +19,9 @@ export class LoginPage {
   password:string = "tttttt";
   error:string;
   loader:any;
-  
+  loginOk:boolean = false;
+
+
   constructor(public navCtrl: NavController, private af: AngularFire, public loadingCtrl: LoadingController,) {
     //this.af.auth.subscribe(auth => console.log("XXX Login auth:" + auth)); 
       //console.log(this.af.auth )
@@ -85,6 +87,7 @@ export class LoginPage {
 
    goTabs(uid){
       console.log ("go tabs",uid);
+      this.loginOk = true
       this.navCtrl.push(Routes.getPage(Routes.TABS), {uid: uid});   // ADDPLACES
       
       //this.hideLoading();
