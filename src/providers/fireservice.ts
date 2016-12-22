@@ -21,6 +21,8 @@ export class FireService {
         if (auth) { 
           this.authObj = auth;
         }
+       // this.name = auth.auth.displayName
+       // this.email = auth.auth.displayName
      });
   }
 
