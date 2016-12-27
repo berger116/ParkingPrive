@@ -25,12 +25,11 @@
     </li> -->
   </ul>  
 
- <!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+
   <!-- il n'y pour l'instant qu'un seul enregistrement, comme vu avec fazio...impossible de pas utiliser un ngFor  
          pour que le template face le binding avec le .ts voir exemple ci dessus ! 
+         est-ce qu'il y a une autre manière de faire ca ?? merci -->
 
-         est-ce qu'il y a une autre manière de faire ca ?? merci
-  -->
   <ion-list> <!-- *ngFor="let item of items | async">  -->  
      <ion-grid>
         <!--<ion-row >
@@ -47,7 +46,7 @@
                 <ion-label floating>Adresse</ion-label>   <!-- fixed stacked -->
                  <!--<ion-input type="text" [(ngModel)]="items[0]?.adresse"></ion-input>  --> <!-- Plante ! -->
                  <!-- <ion-input type="text" [(ngModel)]="item.adresse"></ion-input> -->
-               <ion-input type="text" [(ngModel)]="this.adresse"></ion-input>   
+               <ion-input type="text" [(ngModel)]="this.place.adresse"></ion-input>   
               </ion-item>
            </ion-col>
         </ion-row>
@@ -57,7 +56,7 @@
           <ion-col width-50>
              <ion-item>
                 <ion-label floating>Ville</ion-label>
-                <ion-input type="text" [(ngModel)]="this.ville"></ion-input>  
+                <ion-input type="text" [(ngModel)]="this.place.ville"></ion-input>  
              <!--     <ion-input type="text" [(ngModel)]="this.items[0].ville"></ion-input>   --> 
              </ion-item>
           </ion-col>
@@ -65,47 +64,49 @@
              <ion-item>
                 <ion-label floating>No Postal</ion-label>
              <!--   <ion-input type="text" [(ngModel)]="items[0].noPostal"></ion-input>  -->
-                 <ion-input type="text" [(ngModel)]="this.noPostal"></ion-input>
+                 <ion-input type="text" [(ngModel)]="this.place.noPostal"></ion-input>
              </ion-item>
            </ion-col>
         </ion-row>
 
         <ion-row>
-          <ion-col width-30>
-                <button ion-button color="secondary">Coord GPS</button>
-            
-          </ion-col>
+          <!-- <ion-col width-30> -->
+                <button ion-button  round  color="secondary" (click)= "getGeocode()">Calcul GPS</button>  
+          <!-- </ion-col>  -->
+          
           <ion-col width-40>
              <ion-item>
                 <ion-label floating>Latitude</ion-label>
-                <ion-input type="text" [(ngModel)]="latitude"></ion-input>  
+                <ion-input type="text" [(ngModel)]="this.place.latitude"></ion-input>  
              </ion-item>
            </ion-col>
            <ion-col width-40>
              <ion-item>
                 <ion-label floating>Longitude</ion-label>
-                <ion-input type="text" [(ngModel)]="longitude"></ion-input> 
+                <ion-input type="text" [(ngModel)]="this.place.longitude"></ion-input> 
              </ion-item>
            </ion-col>
         </ion-row>
 
         <ion-row>
-            <ion-col width-90>           
-            <!--     <button ion-button color="secondary"  (click)="addItem()">Valider</button>  -->
-            <button ion-button color="secondary" (click)="placeUpdate()">Enregistre</button>
+            <ion-col width-60>           
+              <button ion-button color="secondary" round (click)="placeUpdate()">Enregistrer</button>
             
             </ion-col>
         </ion-row>
-      </ion-grid>
-
-      <ion-item *ngIf="error" class="signup_error">
-        {{error}}
-      </ion-item>
     <!--  <div padding>
-        <button ion-button full (click)="signup()">Sign Up</button>
-      </div>  -->
-  
-      <button ion-item color="secondary" (click)="letDispo()">Gestion des disponibilités</button>
+              <button ion-button full (click)="signup()">Sign Up</button>
+        </div>  -->
+        <ion-row>
+            <ion-col width-80>   
+              <button ion-item color="secondary" round  (click)="manageDispo()">Gestion des disponibilités</button>
+            </ion-col>
+        </ion-row>
+
+        <ion-item *ngIf="error" class="signup_error">
+              {{error}}
+        </ion-item>
+       </ion-grid>
 
   </ion-list> 
 
@@ -121,16 +122,15 @@
       <p>{{item.description}}</p>
     </ion-item>
   </ion-list>
-</ion-content>  -->
+</ion-content> -->
 
     <ul>
-      <li *ngFor="let item of items | async">
+    <!--   <li *ngFor="let item of items | async">
         <input type="text" #updatename [value]="item.adresse" /> 
         <input type="text" #updateplaque [value]="item.ville" />
-      
-       <!-- <button (click)="updateItem(item.$key, updatename.value,  updateplaque.value)">Update</button>
-        <button (click)="deleteItem(item.$key)">Delete</button>  -->
-      </li>
+        <button (click)="updateItem(item.$key, updatename.value,  updateplaque.value)">Update</button>
+        <button (click)="deleteItem(item.$key)">Delete</button>  
+      </li>  -->
     </ul>
     <!-- <input type="text" #newname />
     <input type="text" #newplaque />

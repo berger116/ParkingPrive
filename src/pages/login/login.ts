@@ -22,7 +22,9 @@ export class LoginPage {
   loginOk:boolean = false;
 
 
-  constructor(public navCtrl: NavController, private af: AngularFire, public loadingCtrl: LoadingController,) {
+  constructor(public navCtrl: NavController,
+              private af: AngularFire,
+              public loadingCtrl: LoadingController) {
     //this.af.auth.subscribe(auth => console.log("XXX Login auth:" + auth)); 
       //console.log(this.af.auth )
 
@@ -45,10 +47,10 @@ export class LoginPage {
         { provider: AuthProviders.Password,
           method: AuthMethods.Password
         }).then ((res) => {
-           //console.log("Login res.uid", res.uid)
+           console.log("Login res.uid", res.uid)
            this.goTabs(res.uid);
            }, (error) => {
-               console.log("Login catch error", error)
+               console.log("Login error", error)
               //this.error = error._body;
            // });
         }).catch(err =>{
@@ -87,7 +89,7 @@ export class LoginPage {
 
    goTabs(uid){
       console.log ("go tabs",uid);
-      this.loginOk = true
+      this.loginOk = true;
       this.navCtrl.push(Routes.getPage(Routes.TABS), {uid: uid});   // ADDPLACES
       
       //this.hideLoading();

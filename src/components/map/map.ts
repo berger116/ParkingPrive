@@ -1,5 +1,5 @@
 import { Component,  Input, Output, EventEmitter } from '@angular/core';
-import { NavController, NavParams, ModalController, PopoverController } from 'ionic-angular';
+import { NavController, NavParams, PopoverController } from 'ionic-angular';
 import { } from "@types/google-maps";
 import { Routes } from '../../app/app.routes';
 
@@ -27,7 +27,7 @@ export class Map {
   map:google.maps.Map;  
   marker: any;
 
-  @Output() select:EventEmitter<any> = new EventEmitter();
+ //() @Output() select:EventEmitter<any> = new EventEmitter();  //??
 
   constructor(public popoverCtrl: PopoverController) {}
 
@@ -56,7 +56,7 @@ export class Map {
 
      //mettre la suite ds un callback
      this.marker.addListener('click', (res => {
-        console.log('emit test', res)
+        console.log('add listener: ', res)
       //  let modal = this.modalCtrl.create(Routes.getPage(Routes.DISPOTOBOOK));
       //  modal.present();
         let popover = this.popoverCtrl.create(Routes.getPage(Routes.PLACEINFOPOP));   //PopoverPage

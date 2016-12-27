@@ -26,6 +26,17 @@ export class FireService {
      });
   }
 
+ // getUserUID () {  //exemple d'utilisation
+ //     let uid= null;
+ //     let authObj = this.authSVC.getAuthObj();
+ //     if (authObj){
+ //         console.log("authObj uid: ", authObj.auth.uid)
+ //         uid =  authObj.auth.uid;
+ //         return uid;
+ //     }
+ //     return uid;
+ // }
+
   get authenticated(): boolean {
     return this.authState !== null;
   }
@@ -39,7 +50,7 @@ export class FireService {
     this.queryObs = null;
 
     if (uid) {
-      this.queryObs = this.af.database.list('/places', {  //  '/items'
+      this.queryObs = this.af.database.list('/places', {  // '/places'  '/items'
               query: {
                 // orderByChild: 'ville',
                 orderByChild: 'userKey',

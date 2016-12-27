@@ -99,15 +99,12 @@ export class AroundplacePage {
 
    addMarkerlistener(marker) {
         console.log("listener")
-   //    marker.addListener('click', (res => {
-      //     console.log('emit test', res)
-
+    //    marker.addListener('click', (res => {
       //     let modal = this.modalCtrl.create(Routes.getPage(Routes.DISPOTOBOOK));
-      //      // this.nav.present(contactModal) 
+      //     // this.nav.present(contactModal)
       //     modal.present();
-   //     })
-   //);
-
+    //     })
+    //);
 
     //    this.marker.addListener( 'click', ( (res) => {
     //     console.log('emit test', res)

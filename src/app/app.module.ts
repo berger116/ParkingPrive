@@ -1,9 +1,7 @@
 import { NgModule, ErrorHandler } from '@angular/core';
 import { IonicApp, IonicModule } from 'ionic-angular';    //IonicErrorHandler
 import { MyApp } from './app.component';
-import { HeaderContentComponent } from '../components/header-content/header-content';
 import { Routes } from './app.routes';
-//import { FirebaseSVC } from '../providers/firebase-svc';
 import { AngularFireModule, AuthProviders, AuthMethods } from 'angularfire2';
 
 //import { AuthHttp, AuthConfig } from 'angular2-jwt';
@@ -11,8 +9,10 @@ import { AngularFireModule, AuthProviders, AuthMethods } from 'angularfire2';
 //import { Storage } from '@ionic/storage';
 //import { Endpoints} from '../providers/endpoints'
 //import { Auth} from '../providers/auth'
-//import { Settings} from '../providers/Settings';
-import {Map} from '../components/map/map';
+import { HeaderContentComponent } from '../components/header-content/header-content';
+import { Map } from '../components/map/map';
+import { ToastMsg } from '../components/toast-msg/toast-msg';
+
 import { FireService } from '../providers/fireservice';
 //import {SortAsc} from '../pipes/sort-asc';
 //import {GroupBy} from '../pipes/group-by';
@@ -22,7 +22,8 @@ const app:Array<any>=[MyApp];
 const pages:Array<any> = Routes.getPages();
 const components:Array<any> = [
   HeaderContentComponent,
-  Map
+  Map,
+  ToastMsg,
 ];
 //const pipes:Array<any> = [SortAsc, GroupBy];
 
