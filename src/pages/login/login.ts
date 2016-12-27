@@ -21,7 +21,6 @@ export class LoginPage {
   loader:any;
   loginOk:boolean = false;
 
-
   constructor(public navCtrl: NavController,
               private af: AngularFire,
               public loadingCtrl: LoadingController) {

@@ -42,10 +42,6 @@ export class PlacetobookPage { //implements IPlaceParking {
   place: PlaceParking;
 
   geocoder: google.maps.Geocoder;
- // geocoderOptions = {
- //	    'address' : 'Bois de la Chapelle 71, 1213 Onex',
- //	    'region' : 'CH'
- //	}
 
   @ViewChild(ToastMsg)
   private toastMsg: ToastMsg;
@@ -102,12 +98,6 @@ export class PlacetobookPage { //implements IPlaceParking {
 
      //this.items.map( item => { item.userKey == this.uid })
      //?? console.log("MARCHE filter: " ,this.queryObs.filter( item => { return item.userKey == this.uid }))
-
-     // this.items.subscribe( itm => {
-     // this.adresse = this.items[0].adresse;
-     // this.ville = this.items.ville;
-     // this.noPostal =this.items.noPostal;
-     // })
   }
 
 //https://github.com/angular/angularfire2/issues/104
@@ -127,20 +117,29 @@ export class PlacetobookPage { //implements IPlaceParking {
  
   placeUpdate() { 
     //console.log("authenticated key: ", this.fireSVC.authenticated, this.fireKey)
-    if (this.fireSVC.authenticated)
-    {  
-          //let authObj = this.authSVC.getAuthObj();
-         // this.uid = this.getUserUID ();
-         console.log(" placetobook authUID: ", this.uid);
+    if (this.fireSVC.authenticated)  {  
+       //let authObj = this.authSVC.getAuthObj();
+       // this.uid = this.getUserUID ();
+       console.log(" placetobook authUID: ", this.uid);
 
-         if (this.uid){
-            if (this.uid != this.place.userKey) console.log("Placetobook userid error !!!!",this.uid ," / ",this.place.userKey)
+       if (this.uid){
+          if (this.uid != this.place.userKey) console.log("Placetobook userid error !!!!",this.uid ," / ",this.place.userKey)
 
-            // this.fireKey = null;  //pour ajouter un nouvel enregistrement 
-            //console.log("fireKey: " + this.fireKey)
-            if (this.fireKey) {  // item update
-                console.log("update test");
-                this.scsUpd = this.queryObs.update(this.fireKey, { // this.$key
+          // this.fireKey = null;  //pour ajouter un nouvel enregistrement 
+          //console.log("fireKey: " + this.fireKey)
+          if (this.fireKey) {  // item update
+              console.log("update test");
+              this.scsUpd = this.queryObs.update(this.fireKey, { // this.$key
+              userKey: this.uid,
+
+              adresse: this.place.adresse, 
+              ville: this.place.ville,
+              noPostal: this.place.noPostal,
+              latitude: this.place.latitude,
+              longitude: this.place.longitude,
+            });
+         } else {  //item insert
+            this.scsUpd = this.queryObs.push({ 
                 userKey: this.uid,
 
                 adresse: this.place.adresse, 
@@ -149,26 +148,16 @@ export class PlacetobookPage { //implements IPlaceParking {
                 latitude: this.place.latitude,
                 longitude: this.place.longitude,
               });
-            } else {  //item insert
-              this.scsUpd = this.queryObs.push({ 
-                  userKey: this.uid,
-
-                  adresse: this.place.adresse, 
-                  ville: this.place.ville,
-                  noPostal: this.place.noPostal,
-                  latitude: this.place.latitude,
-                  longitude: this.place.longitude,
-                });
-            }
-          
-            this.scsUpd  //promisse
-            .then(_ => { 
-                console.log("success insert/update key: ",  this.fireKey)
-                // this.toastMsg.presentToast();  NE MARCHE PAS !!!
-                this.presentToast("Données sauvegardées")   //Element was added/modified successfully
-            })
-            .catch(err => console.log(err, 'You do not have access!'));
-        } // end if this.uid
+         }
+        
+         this.scsUpd  //promisse
+         .then(_ => { 
+             console.log("success insert/update key: ",  this.fireKey)
+             // this.toastMsg.presentToast();  NE MARCHE PAS !!!
+             this.presentToast("Données sauvegardées")   //Element was added/modified successfully
+         })
+          .catch(err => console.log(err, 'You do not have access!'));
+      } // end if this.uid
     } 
   }
 
