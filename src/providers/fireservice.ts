@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { NavParams } from 'ionic-angular';
-import { AngularFire, AuthProviders, FirebaseAuth, FirebaseAuthState, AuthMethods, FirebaseListObservable, FirebaseObjectObservable} from 'angularfire2';
+import { AngularFire,
+         AuthProviders, FirebaseAuth, FirebaseAuthState, AuthMethods,
+         FirebaseListObservable, FirebaseObjectObservable} from 'angularfire2';
 //import { AngularFire, FirebaseListObservable, FirebaseObjectObservable} from 'angularfire2';
 import { Subject } from 'rxjs/Subject';
 

@@ -39,74 +39,93 @@
               </ion-item>
            </ion-col>
         </ion-row>  -->
-
+     <form [formGroup]="myForm" (ngSubmit)="onSubmit()">  
         <ion-row >
-           <ion-col width-100>
-             <ion-item>
-                <ion-label floating>Adresse</ion-label>   <!-- fixed stacked -->
-                 <!--<ion-input type="text" [(ngModel)]="items[0]?.adresse"></ion-input>  --> <!-- Plante ! -->
-                 <!-- <ion-input type="text" [(ngModel)]="item.adresse"></ion-input> -->
-               <ion-input type="text" [(ngModel)]="this.place.adresse"></ion-input>   
-              </ion-item>
+           <ion-col width-100>        
+                <ion-item>
+                    <ion-label floating>Adresse</ion-label>   <!-- fixed stacked -->
+                    <!--<ion-input type="text" [(ngModel)]="items[0]?.adresse"></ion-input>  --> <!-- Plante ! -->
+                    <ion-input type="text" formControlName="adresse" [(ngModel)]="this.place.adresse"></ion-input>  
+                </ion-item>  
+                <small  class="notice" [hidden]="myForm.controls.adresse.valid || (myForm.controls.adresse.pristine)"> <!-- && !submitted)"> --> 
+                    L'adresse est requise. (minimum 5 characters).
+                </small>   
            </ion-col>
         </ion-row>
-
       
         <ion-row>
           <ion-col width-50>
              <ion-item>
                 <ion-label floating>Ville</ion-label>
-                <ion-input type="text" [(ngModel)]="this.place.ville"></ion-input>  
-             <!--     <ion-input type="text" [(ngModel)]="this.items[0].ville"></ion-input>   --> 
+                <ion-input type="text" formControlName="ville" [(ngModel)]="this.place.ville"></ion-input>      
              </ion-item>
+              <small  class="notice" [hidden]="myForm.controls.ville.valid || (myForm.controls.ville.pristine)"> <!-- && !submitted)"> --> 
+                   La ville est requise.
+              </small> 
+            <!-- <div *ngIf="ville.invalid">La ville est requise.</div> -->
           </ion-col>
           <ion-col width-50>
              <ion-item>
                 <ion-label floating>No Postal</ion-label>
-             <!--   <ion-input type="text" [(ngModel)]="items[0].noPostal"></ion-input>  -->
-                 <ion-input type="text" [(ngModel)]="this.place.noPostal"></ion-input>
+                <ion-input type="text" formControlName="noPostal" [(ngModel)]="this.place.noPostal"></ion-input>
              </ion-item>
+           <!--  <div [style.background]="#f0f0f0">   marche pas -->
+             <small class="notice" [hidden]="myForm.controls.noPostal.valid || (myForm.controls.noPostal.pristine)"> <!-- && !submitted)"> --> 
+                  Le no postal est requis.
+             </small>
+          <!--  </div>  -->
            </ion-col>
         </ion-row>
 
         <ion-row>
-          <!-- <ion-col width-30> -->
-                <button ion-button  round  color="secondary" (click)= "getGeocode()">Calcul GPS</button>  
-          <!-- </ion-col>  -->
-          
+           <ion-col width-30> 
+               <!-- <button ion-button  ion-icon name="ios-locate-outline" outline round  color="dark" (click)= "getGeocode()">  -->
+                   <ion-icon name="ios-locate-outline"  class="iconFormat" (click)= "getGeocode()"></ion-icon>
+             
+           <!--  <ion-icon name="ios-locate-outline"></ion-icon> -->
+            </ion-col> 
+            
           <ion-col width-40>
              <ion-item>
                 <ion-label floating>Latitude</ion-label>
-                <ion-input type="text" [(ngModel)]="this.place.latitude"></ion-input>  
+                <ion-input type="text" formControlName="latitude" [(ngModel)]="this.place.latitude"></ion-input>  
              </ion-item>
+             <small  class="notice" [hidden]="myForm.controls.latitude.valid || (myForm.controls.latitude.pristine)"> <!-- && !submitted)"> --> 
+                  Le coordonnée latitude est requise.
+             </small> 
            </ion-col>
            <ion-col width-40>
              <ion-item>
                 <ion-label floating>Longitude</ion-label>
-                <ion-input type="text" [(ngModel)]="this.place.longitude"></ion-input> 
+                <ion-input type="text" formControlName="longitude" [(ngModel)]="this.place.longitude"></ion-input> 
              </ion-item>
+             <small class="notice" [hidden]="myForm.controls.longitude.valid || (myForm.controls.longitude.pristine)"> <!-- && !submitted)"> --> 
+                  Le coordonnée longitude est requise.
+             </small> 
            </ion-col>
         </ion-row>
 
         <ion-row>
-            <ion-col width-60>           
-              <button ion-button color="secondary" round (click)="placeUpdate()">Enregistrer</button>
+            <ion-col width-60>          
+              <button ion-button round color="secondary" ng-disabled="this.myForm.valid" (click)="placeUpdate()">Enregistrer</button>
             
             </ion-col>
-        </ion-row>
-    <!--  <div padding>
+        </ion-row>             
+    </form>
+
+      <!--  <div padding>
               <button ion-button full (click)="signup()">Sign Up</button>
         </div>  -->
         <ion-row>
             <ion-col width-80>   
-              <button ion-item color="secondary" round  (click)="manageDispo()">Gestion des disponibilités</button>
+              <button ion-item color="secondary"  outline round  (click)="manageDispo()">Gestion des disponibilités</button>
             </ion-col>
         </ion-row>
 
         <ion-item *ngIf="error" class="signup_error">
               {{error}}
         </ion-item>
-       </ion-grid>
+    </ion-grid>
 
   </ion-list> 
 

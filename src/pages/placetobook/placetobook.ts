@@ -1,5 +1,6 @@
-import { Component, ViewChild } from '@angular/core';
-import { NavController, NavParams, ToastController } from 'ionic-angular';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { Validators,  FormGroup, FormControlName, FormControl } from '@angular/forms';
+import { NavController, NavParams, ToastController, AlertController } from 'ionic-angular';
 import { AngularFire, FirebaseListObservable, FirebaseObjectObservable} from 'angularfire2';  //AuthProviders, AuthMethods
 import { FireService } from '../../providers/fireservice';
 import { Subject } from 'rxjs/Subject';
@@ -24,13 +25,12 @@ import { PlaceParking } from './placeparking';
   selector: 'page-placetobook',
   templateUrl: 'placetobook.html'
 })
-export class PlacetobookPage { //implements IPlaceParking {
+export class PlacetobookPage implements OnInit { 
   queryObs: FirebaseListObservable<any>;
-  //items: Observable<any>; //FirebaseListObservable<any>;
   uidSubject: Subject<any>;
-  scsUpd:any;
+  succs:any;
 
-//champ placetobook
+  //champ placetobook
   uid: string;
   fireKey:string;
   //userKey:string
@@ -39,18 +39,19 @@ export class PlacetobookPage { //implements IPlaceParking {
   //noPostal: string;
   //latitude: string;
   //longitude: string;
+
   place: PlaceParking;
-
   geocoder: google.maps.Geocoder;
-
-  @ViewChild(ToastMsg)
-  private toastMsg: ToastMsg;
+  toastMsg: ToastMsg;
+  myForm:any;
 
   constructor(public navCtrl: NavController,
               public navparams: NavParams,
               public af: AngularFire,
               public fireSVC: FireService,
-              private toastCtrl: ToastController) {
+              private toastCtrl: ToastController,
+              private alertCtrl: AlertController) {
+
      //this.items = af.database.list('/items', { preserveSnapshot: true });
      //this.items.subscribe(snapshots => {
        // snapshots.forEach(snapshot => {
@@ -70,6 +71,7 @@ export class PlacetobookPage { //implements IPlaceParking {
 
     //.subscribe( item => { item.filter(.userKey == this.uid}) //.filter(item => { return item[0].userKey == this.uid })    //.$ref // '/dispo'
     this.place = new PlaceParking();
+    this.toastMsg = new ToastMsg(toastCtrl, alertCtrl);
 
     this.uidSubject = new Subject();
     this.queryObs = fireSVC.getQueryPlace(this.uid,  this.uidSubject );
@@ -79,9 +81,7 @@ export class PlacetobookPage { //implements IPlaceParking {
       this.queryObs.subscribe (itm => { 
           if (itm[0]) {
             //console.log("itm: ", itm[0].$key)
-            this.fireKey = itm[0].$key
-            //this.fireKey =  "-KZ7adwUf4BUQXKGsZ97"    //mis en dure  !!!! 
-
+            this.fireKey = itm[0].$key    //this.fireKey =  "-KZ7adwUf4BUQXKGsZ97"    //mis en dure  !!!! 
             this.place.userKey = itm[0].userkey 
             this.place.adresse = itm[0].adresse 
             this.place.ville = itm[0].ville
@@ -94,11 +94,40 @@ export class PlacetobookPage { //implements IPlaceParking {
      if (this.uid)
          this.uidSubject.next(this.uid)
 
-     //.subscribe(itm => { console.log(itm)} );
-
+       // // adresse: new FormControlName(this.myForm, [<any>Validators.required, <any>Validators.minLength(5)])
+     // });
+   
      //this.items.map( item => { item.userKey == this.uid })
      //?? console.log("MARCHE filter: " ,this.queryObs.filter( item => { return item.userKey == this.uid }))
   }
+
+  ngOnInit() {
+      console.log("oninit")
+      this.myForm = new FormGroup({
+        adresse: new FormControl('', Validators.required), // , Validators.minLength(10)),
+        ville : new FormControl('', Validators.required), // , Validators.minLength(10)),
+        noPostal : new FormControl('', Validators.required), // , Validators.minLength(10)),
+        latitude : new FormControl('', Validators.required), // , Validators.minLength(10)),
+        longitude : new FormControl('', Validators.required), // , Validators.minLength(10)),
+                    // [ Validators.required, validateEmail]) plusieur validateur
+      });
+
+    //this.eNumberForm = this._formBuilder.group({
+    //  adresse: ['', Validators.required]
+    //});
+  }
+
+ // get adresse(): any { return this.myForm.get('adresse'); }
+ // get ville(): any { return this.myForm.get('ville'); }
+ // get noPostal(): any { return this.myForm.get('noPostal'); }
+ // get latitude(): any { return this.myForm.get('latitude'); }
+ // get longitude(): any { return this.myForm.get('longitude'); }
+
+  onSubmit(): void {
+    console.log(this.myForm.value, "inval adresse: ", this.myForm.controls.adresse.invalid );  // {first: 'Nancy', last: 'Drew'}
+    console.log(this.myForm.value, "inval postal: ", this.myForm.valid);  
+  }
+
 
 //https://github.com/angular/angularfire2/issues/104
 // @Inject(FirebaseRef) private ref:Firebase
@@ -117,48 +146,47 @@ export class PlacetobookPage { //implements IPlaceParking {
  
   placeUpdate() { 
     //console.log("authenticated key: ", this.fireSVC.authenticated, this.fireKey)
-    if (this.fireSVC.authenticated)  {  
-       //let authObj = this.authSVC.getAuthObj();
-       // this.uid = this.getUserUID ();
-       console.log(" placetobook authUID: ", this.uid);
+    if (this.fireSVC.authenticated && this.uid)  {  
+       //console.log(" placetobook authUID: ", this.uid);
 
-       if (this.uid){
-          if (this.uid != this.place.userKey) console.log("Placetobook userid error !!!!",this.uid ," / ",this.place.userKey)
+       if (this.myForm.valid){
+          if (this.uid != this.place.userKey)
+             console.log("Placetobook userid error !!!!",this.uid ," / ",this.place.userKey)
 
-          // this.fireKey = null;  //pour ajouter un nouvel enregistrement 
+          //this.fireKey = null;  //pour ajouter un nouvel enregistrement 
           //console.log("fireKey: " + this.fireKey)
-          if (this.fireKey) {  // item update
+
+          //affectation des tout les champs
+          let item = this.updateField (this.uid, this.place)
+          //console.log("item:", item)
+          if (this.fireKey) {  // item UPDATE
               console.log("update test");
-              this.scsUpd = this.queryObs.update(this.fireKey, { // this.$key
-              userKey: this.uid,
+              this.succs = this.queryObs.update(this.fireKey, item); 
 
-              adresse: this.place.adresse, 
-              ville: this.place.ville,
-              noPostal: this.place.noPostal,
-              latitude: this.place.latitude,
-              longitude: this.place.longitude,
-            });
-         } else {  //item insert
-            this.scsUpd = this.queryObs.push({ 
-                userKey: this.uid,
+          } else  //item INSERT
+              this.succs = this.queryObs.push(item);
 
-                adresse: this.place.adresse, 
-                ville: this.place.ville,
-                noPostal: this.place.noPostal,
-                latitude: this.place.latitude,
-                longitude: this.place.longitude,
-              });
-         }
-        
-         this.scsUpd  //promisse
-         .then(_ => { 
+          this.succs  //promisse
+          .then(_ => { 
              console.log("success insert/update key: ",  this.fireKey)
-             // this.toastMsg.presentToast();  NE MARCHE PAS !!!
-             this.presentToast("Données sauvegardées")   //Element was added/modified successfully
-         })
-          .catch(err => console.log(err, 'You do not have access!'));
-      } // end if this.uid
+             this.toastMsg._presentToast("Données sauvegardées");  
+             //this.presentToast("Données sauvegardées")  
+          })
+          .catch(err => console.log(err, 'placetobook error in succs promisse!'));
+      } else 
+          this.toastMsg._presentToast("Données non sauvegardées (incomplètes)");  // end if this.uid
     } 
+  }
+
+  updateField (uid, place){
+     return {
+       userKey: this.uid,
+       adresse: this.place.adresse, 
+       ville: this.place.ville,
+       noPostal: this.place.noPostal,
+       latitude: this.place.latitude,
+       longitude: this.place.longitude
+      }
   }
 
   deleteItem(key: string) { 
@@ -169,6 +197,45 @@ export class PlacetobookPage { //implements IPlaceParking {
   ManageDispo() {
      this.navCtrl.setRoot(Routes.getPage(Routes.DISPOTOBOOK));
   }
+
+  private getGeocode() {
+    // let latlng = { lat: this.place.latitude, lng: this.place.longitude };
+    // console.log("latlng", latlng);
+    let adrGeocode = this.place.adresse + " " +  this.place.noPostal + " " +  this.place.ville;
+    let geocodeAdresseOpt = {
+	    'address' : adrGeocode,   
+	    'region' : 'CH'
+	  }
+
+    this.geocoder = new google.maps.Geocoder;
+    this.geocoder.geocode( geocodeAdresseOpt, (results, status) => {
+      if( status == google.maps.GeocoderStatus.OK ) {
+        //console.log("geocode result: ", results[0].geometry.location.lat());
+        this.place.latitude = results[0].geometry.location.lat(); //.toString();
+        this.place.longitude = results[0].geometry.location.lng(); //.toString();
+        console.log("geocode result: ", results[0].geometry.location.lat()," place.lat: ",  this.place.latitude);
+
+        this.toastMsg._presentToast("Points GPS codés selon l'adresse fournie");
+        //this.toastMsg._showAlert( `Points GPS codés selon l'adresse fournie`)
+      }
+      else
+        // this.toastMsg._presentToast("Adresse non decodée");
+         this.toastMsg._showAlert("Adresse non decodée");
+    });
+    
+   // this.geocoder.geocode( this.geocoderOptions, this.geocodingResult );  // perte de contexte ?
+  }
+
+  //private geocodingResult(results, status)
+	//{
+	  // Si la recherche a fonctionné
+	//  if( status == google.maps.GeocoderStatus.OK ) {
+  //    console.log("geocode result: ", results[0].geometry.location.lat());
+  //    console.log("place.latitude: ", this.place.latitude);
+  //    this.place.latitude = results[0].geometry.location.lat().toString();
+  //    this.place.longitude = results[0].geometry.location.lng().toString();
+  //  }
+  //}
 
   ionViewDidLoad() {
      console.log("DidLoad authUID: ", this.uid);
@@ -181,65 +248,16 @@ export class PlacetobookPage { //implements IPlaceParking {
     console.log('Hello AddplaceparkingPage Page');
   }
 
-  getGeocode() {
-    // let latlng = { lat: this.place.latitude, lng: this.place.longitude };
-    // console.log("latlng", latlng);
-    let adrGeocode = this.place.adresse + " " +  this.place.noPostal + " " +  this.place.ville;
-    let geocodeAdresseOpt = {
-	    'address' : adrGeocode,   
-	    'region' : 'CH'
-	  }
-
-    this.geocoder = new google.maps.Geocoder;
-    this.geocoder.geocode( geocodeAdresseOpt, (results, status) => {
-      if( status == google.maps.GeocoderStatus.OK ) {
-        console.log("geocode result: ", results[0].geometry.location.lat());
-        this.place.latitude = results[0].geometry.location.lat(); //.toString();
-        this.place.longitude = results[0].geometry.location.lng(); //.toString();
-        this.presentToast("points GPS codés selon l'adresse fournie");
-      }
-      else  this.presentToast("Adresse non decodée");
-    });
+  ionViewCanLeave():boolean {   //code utile ??
+    console.log("CanLeave");
     
-   // this.geocoder.geocode( this.geocoderOptions, this.geocodingResult );  // perte de contexte ?
-  }
-
-  geocodingResult(results, status)
-	{
-	  // Si la recherche a fonctionné
-	  if( status == google.maps.GeocoderStatus.OK ) {
-      console.log("geocode result: ", results[0].geometry.location.lat());
-      console.log("place.latitude: ", this.place.latitude);
-      this.place.latitude = results[0].geometry.location.lat().toString();
-      this.place.longitude = results[0].geometry.location.lng().toString();
-    }
-  }
-
-  //Affichage message de confirmation
-  presentToast(msg) {
-    let toast = this.toastCtrl.create({
-      message: msg, //'Element was added/modified successfully',
-      duration: 3000,
-      position: 'top',
-    //  color: 'red'
-    });
-
-    toast.onDidDismiss(() => {
-      console.log('Dismissed toast');
-    });
-
-    toast.present();
-  }
-
-
-   // ionViewCanLeave(): boolean{   //code utile ??
    // here we can either return true or false
    // depending on if we want to leave this view
-   //if(isValid(randomValue)){
-   //   return true;
-   // } else {
-   //   return false;
-   // }
-  //}
+    //if(isValid(randomValue)){
+    //    return true;
+    //  } else {
+        return false;
+    //  }
+  }
 
 }

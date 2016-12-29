@@ -57,12 +57,12 @@ export class LoginPage {
             this.navCtrl.setRoot(Routes.getRootPage(false));
         });
 
+        if (this.loader)
+            this.hideLoading();
+
        // this.af.auth.subscribe(auth => {   //(this.af.auth.getAuth().provider) {  //méthode dépréciée
        //    console.log("Subscribe af.auth: " + auth )
        // });
-
-        if (this.loader)
-            this.hideLoading();
 
        // affichage si connecte -> marche pas
        //var connectedRef = this.firebase.database().ref(".info/connected");

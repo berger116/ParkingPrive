@@ -35,7 +35,8 @@ export class DispotobookPage {
   //itemKey: string;
  
 
-  constructor(public navCtrl: NavController, public navparams: NavParams, public af: AngularFire, public fireSVC: FireService) {
+  constructor(public navCtrl: NavController, public navparams: NavParams,
+              public af: AngularFire, public fireSVC: FireService) {
      //this.items = af.database.list('/items', { preserveSnapshot: true });
      //this.items.subscribe(snapshots => {
        // snapshots.forEach(snapshot => {
