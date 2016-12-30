@@ -82,7 +82,7 @@ export class AroundplacePage {
       })
 
       if (this.uid)
-        this.uidSubject.next(this.uid); //(  null //this.uid)
+        this.uidSubject.next(this.uid); 
 
       // this.queryObs.forEach( itm => {
       //    console.log("itm.lat: ", itm.latitude )
@@ -122,14 +122,8 @@ export class AroundplacePage {
   //  })
 
   
-  // openSignup(){
-  //  let modal = this.modalCtrl.create(Routes.getPage(Routes.SIGNUP));
-  //  modal.present();
-  //}
-
    onClickBack(){
     // this.navCtrl.pop()
   }
-
 
 }

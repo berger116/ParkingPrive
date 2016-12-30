@@ -6,10 +6,8 @@
 -->
 <ion-header>
 
-  <!-- <ion-navbar>
-    <ion-title>addplaceparking</ion-title>
-  </ion-navbar>  -->
-  <header-content title="Manage parking place"></header-content>  
+  <!-- <header-content title="Manage parking place"></header-content>  -->
+   <header-content backEnabled={{true}} (onBack)="onClickBack()"></header-content> 
 </ion-header>
   
 <ion-content>
@@ -30,7 +28,7 @@
          pour que le template face le binding avec le .ts voir exemple ci dessus ! 
          est-ce qu'il y a une autre manière de faire ca ?? merci -->
 
-  <ion-list> <!-- *ngFor="let item of items | async">  -->  
+ <!-- <ion-list> --> <!-- *ngFor="let item of items | async">  -->  
      <ion-grid>
         <!--<ion-row >
            <ion-col width-100>
@@ -80,12 +78,10 @@
         <ion-row>
            <ion-col width-30> 
                <!-- <button ion-button  ion-icon name="ios-locate-outline" outline round  color="dark" (click)= "getGeocode()">  -->
-                   <ion-icon name="ios-locate-outline"  class="iconFormat" (click)= "getGeocode()"></ion-icon>
-             
-           <!--  <ion-icon name="ios-locate-outline"></ion-icon> -->
-            </ion-col> 
+                   <ion-icon name="ios-locate-outline" class="iconFormat" (click)= "getGeocode()"></ion-icon>
+           </ion-col> 
             
-          <ion-col width-40>
+           <ion-col width-40>
              <ion-item>
                 <ion-label floating>Latitude</ion-label>
                 <ion-input type="text" formControlName="latitude" [(ngModel)]="this.place.latitude"></ion-input>  
@@ -107,7 +103,7 @@
 
         <ion-row>
             <ion-col width-60>          
-              <button ion-button round color="secondary" ng-disabled="this.myForm.valid" (click)="placeUpdate()">Enregistrer</button>
+              <button ion-button round small color="secondary" id="placeupd"  onSubmit="document.getElementById('placeupd').disabled=true;" ng-disabled="this.myForm.valid" (click)="placeUpdate()">Enregistrer</button>
             
             </ion-col>
         </ion-row>             
@@ -117,8 +113,8 @@
               <button ion-button full (click)="signup()">Sign Up</button>
         </div>  -->
         <ion-row>
-            <ion-col width-80>   
-              <button ion-item color="secondary"  outline round  (click)="manageDispo()">Gestion des disponibilités</button>
+            <ion-col width-100>   
+              <button ion-button round small color="secondary" (click)="manageDispo()">Gestion des disponibilités</button>
             </ion-col>
         </ion-row>
 
@@ -127,7 +123,7 @@
         </ion-item>
     </ion-grid>
 
-  </ion-list> 
+ <!-- </ion-list> --> 
 
   <!-- <button ion-button color="secondary"  (click)="addItem(newname.value, newplaque.value)">Valider G</button> -->
 

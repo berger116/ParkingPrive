@@ -11,10 +11,10 @@ export class FireService {
   private authState: FirebaseAuthState;
   private authObj: any;
 
-  queryObs: FirebaseListObservable<any>;
+  //queryObs: FirebaseListObservable<any>;
 
   constructor(public fba: FirebaseAuth, public af: AngularFire) {
-     this.authState = fba.getAuth();
+     //this.authState = fba.getAuth();  // methode dépreciée, supprimée par la suite
      fba.subscribe((state: FirebaseAuthState) => {
        this.authState = state;
      })
@@ -49,10 +49,10 @@ export class FireService {
   }
   
   getQueryPlace(uid, uidSubject):FirebaseListObservable<any> {
-    this.queryObs = null;
+    let queryObs: FirebaseListObservable<any> = null;
 
     if (uid) {
-      this.queryObs = this.af.database.list('/places', {  // '/places'  '/items'
+       queryObs = this.af.database.list('/places', {  // '/places'  '/items'
               query: {
                 // orderByChild: 'ville',
                 orderByChild: 'userKey',
@@ -65,15 +65,16 @@ export class FireService {
 
       //this.uidSubject.next(uid)
     }
-    console.log("authSVC queryObs: ", this.queryObs)
-    return this.queryObs
+    console.log("authSVC Places queryObs: ", queryObs)
+    return queryObs
   }
 
   getQueryDispo(uid, uidSubject):FirebaseListObservable<any> {
-    this.queryObs = null;
+    let queryObs: FirebaseListObservable<any> = null;
+    //console.log ("fireService uid: ", uid);
 
     if (uid) {
-      this.queryObs = this.af.database.list('/dispo', {  //  '/items'
+      queryObs = this.af.database.list('/dispos', {  //  '/items'
               query: {
                 // orderByChild: 'ville',
                 orderByChild: 'userKey',
@@ -86,8 +87,8 @@ export class FireService {
 
       //this.uidSubject.next(uid)
     }
-    console.log("authSVC queryObs: ", this.queryObs)
-    return this.queryObs
+    console.log("authSVC Dispos queryObs: ", queryObs)
+    return queryObs
   }
 
     //InWithFacebook(): firebase.Promise<FirebaseAuthState> {

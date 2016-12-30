@@ -9,8 +9,8 @@
     <ion-title>addplaceparking</ion-title>
   </ion-navbar>  -->
     
-  <header-content title="manage dispo parking place" backEnabled={{true}} (onBack)="onClickBack()"></header-content> 
-
+  <header-content title="Gestion disponibilité place" backEnabled={{true}} (onBack)="onClickBack()"></header-content> 
+ 
 </ion-header>
   
 <ion-content>
@@ -18,80 +18,110 @@
  <!--  <ion-spinner></ion-spinner>  -->
   <!-- <div> {{ (af.auth | async)?.uid }} </div>  -->
   
-  <!--  {{ items | async  | json  }}  -->
+   <!-- {{ this.dispos | async  | json  }}   --> 
 
-  <ul>
-   <!-- <li *ngFor="let item of items | async">
-       {{ item.adresse | json }}
-    </li> -->
-  </ul>  
+ <!-- <ul>
+    <li *ngFor="let item of dispos  ">
+       {{ item | json  }}
+    </li>  
+  </ul>  -->
 
 
   <!-- <ion-list> *ngFor="let item of items | async">  -->  
      <ion-grid>
-        <ion-row >
+    <!--    <ion-row >
            <ion-col width-100>
              <ion-item>
-                 <ion-label >{{this.fireKey}}</ion-label>    
+                 <ion-label >{{this.dispos.placeKey}}</ion-label>    
               </ion-item>
            </ion-col>
-        </ion-row>
+        </ion-row>  -->
 
         <!--  Entête de la liste  -->
         <ion-row>
-           <ion-col width-30>
+           <ion-col width-25>
              <ion-item>
                 <ion-label fixed>Date dispo</ion-label>   <!-- fixed stacked -->  
              </ion-item>
            </ion-col>
-           <ion-col width-30>
+           <ion-col width-25>
              <ion-item>
                 <ion-label fixed>Heure dispo</ion-label>
              </ion-item>
           </ion-col>
-          <ion-col width-30>
+           <ion-col width-25>
              <ion-item>
-                <button ion-button color="secondary">Validez Dispo</button>
+                <ion-label fixed>Plaque réserv.</ion-label>
              </ion-item>
-           </ion-col>
+          </ion-col>
+             <ion-col width-20>
+             <ion-item>
+                <ion-label fixed></ion-label>
+             </ion-item>
+          </ion-col>
+       
         </ion-row>
 
-        <ion-list  *ngFor="let item of items | async"> 
-           
-              <ion-col width-30>
+      <!-- <ion-list *ngFor="let dispo of dispos"> -->  
+        <ion-row *ngFor="let dispo of dispos">       
+              <ion-col width-25>
                 <ion-item>
-                    <ion-input type="text" [(ngModel)]="this.dateDispo"></ion-input>   
+                  <!--  <ion-input type="text" [(ngModel)]="dispo.dateDispo"></ion-input> -->  
+                  <ion-input type="text" #updateDate [value]="dispo.dateDispo" (click)="datePick()"></ion-input>
                 </ion-item>
               </ion-col>
-              <ion-col width-30>
+              <ion-col width-25>
                 <ion-item>
-                    <ion-input type="text" [(ngModel)]="this.dateHeure"></ion-input>  
+                  <!--  <ion-input type="text" [(ngModel)]="dispo.heureDispo"></ion-input>  -->
+                   <ion-input type="text" #updateHeure [value]="dispo.heureDispo"></ion-input>
                 </ion-item>
               </ion-col>
-              <ion-col width-30>
+              <ion-col width-25>
                 <ion-item>
-                  <ion-input type="text" [(ngModel)]="this.noPlaque"></ion-input> 
+                <!--  <ion-input type="text" [(ngModel)]="dispo.resNoplaque"></ion-input>   --> 
                 </ion-item>
-              </ion-col>
-          
-        </ion-list> 
+              </ion-col> 
+              <ion-col width-20>           
+                 <button ion-button color="secondary" id="dispoDel" onSubmit="document.getElementById('dispoDel').disabled=true;"  (click)="deleteDispo(dispo.$key)">Effacer</button>
+            </ion-col>
+        </ion-row>  
+
+      <!--<ion-row *ngFor="let dispo of dispos">
+        <input type="text" #updateDate [value]="dispo.dateDispo" /> 
+        <input type="text" #updateHeure [value]="dispo.heureDispo" />
+        <button (click)="updateItem(item.$key, updatename.value,  updateplaque.value)">Update</button>
+        <button (click)="deleteItem(item.$key)">Delete</button>  
+      </ion-row>   -->
+
+      <!--<input type="text" #newname />
+         <input type="text" #newplaque />
+        <button (click)="addItem(newname.value, newplaque.value)">Add</button>  -->
 
         <ion-row>
-            <ion-col width-90>           
-                 <button ion-button color="secondary"  (click)="dispoUpdate()">Enregistrer</button>
+           <ion-col width-25>
+                <ion-item>
+                  <!--  <ion-input type="text" [(ngModel)]="dispo.dateDispo"></ion-input> -->  
+                  <ion-input type="text" #newDate></ion-input>
+                </ion-item>
             </ion-col>
+            <ion-col width-25>
+                <ion-item>
+                  <!--  <ion-input type="text" [(ngModel)]="dispo.heureDispo"></ion-input>  -->
+                   <ion-input type="text" #newHeure></ion-input>
+                </ion-item>
+            </ion-col>
+            <ion-col width-90>           
+                 <button ion-button color="secondary" id="dispoIns" onSubmit="document.getElementById('dispoIns').disabled=true;"  (click)="insertDispo(newDate.value, newHeure.value)">Inserer</button>
+               <!--   <button (click)="addItem(newname.value, newplaque.value)">Add</button> -->
+           </ion-col>
         </ion-row>
-      </ion-grid>
+  
+          <ion-item *ngIf="error" class="signup_error">
+            {{error}}
+          </ion-item>
 
-      <ion-item *ngIf="error" class="signup_error">
-        {{error}}
-      </ion-item>
-    <!--  <div padding>
-        <button ion-button full (click)="signup()">Sign Up</button>
-      </div>  -->
- 
-
-  <!-- <button ion-button color="secondary"  (click)="addItem(newname.value, newplaque.value)">Valider G</button> -->
+        </ion-grid>
+   
 
 <!--<ion-content padding>   avatar  ??
   <ion-list>
@@ -125,11 +155,6 @@
       <button (click)="filterBy('hJWnojzr2tcPrkpX47znLhvtopB2')">hJWnojzr2tcPrkpX47znLhvtopB2</button>  -->
     </div>
 
-   <!-- <ul>
-      <li class="text" *ngFor="let item of items | async">
-         {{ item | json }}
-      </li>  
-    </ul> -->  <!-- {{item.$value}}  {{ item | json }}-->
-    <h3>{{ (item | async)?.size }}</h3>
+   <!-- <h3>{{ (item | async)?.size }}</h3>  -->
   
 </ion-content>

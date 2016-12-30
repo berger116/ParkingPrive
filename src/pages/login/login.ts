@@ -63,16 +63,6 @@ export class LoginPage {
        // this.af.auth.subscribe(auth => {   //(this.af.auth.getAuth().provider) {  //méthode dépréciée
        //    console.log("Subscribe af.auth: " + auth )
        // });
-
-       // affichage si connecte -> marche pas
-       //var connectedRef = this.firebase.database().ref(".info/connected");
-       // connectedRef.on("value", function(snap) {
-       //     if (snap.val() === true) {
-       //       alert("connected");
-       //     } else {
-       //       alert("not connected");
-       //     }
-       // });
     }
 
    // overrideLogin() {
@@ -87,7 +77,7 @@ export class LoginPage {
    //}
 
    goTabs(uid){
-      console.log ("go tabs",uid);
+      console.log ("go tabs", uid);
       this.loginOk = true;
       this.navCtrl.push(Routes.getPage(Routes.TABS), {uid: uid});   // ADDPLACES
       

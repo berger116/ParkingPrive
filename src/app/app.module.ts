@@ -1,11 +1,10 @@
 import { NgModule, ErrorHandler } from '@angular/core';
-import { IonicApp, IonicModule } from 'ionic-angular';    //IonicErrorHandler
+import { IonicApp, IonicModule, ViewController } from 'ionic-angular';    //IonicErrorHandler
 import { MyApp } from './app.component';
 import { Routes } from './app.routes';
 import { AngularFireModule, AuthProviders, AuthMethods } from 'angularfire2';
 
-// ??XXXX import { FormsModule } from '@angular/forms';
-
+import { FormsModule } from '@angular/forms';
 
 //import { AuthHttp, AuthConfig } from 'angular2-jwt';
 //import { Http } from '@angular/http';
@@ -14,7 +13,6 @@ import { AngularFireModule, AuthProviders, AuthMethods } from 'angularfire2';
 //import { Auth} from '../providers/auth'
 import { HeaderContentComponent } from '../components/header-content/header-content';
 import { Map } from '../components/map/map';
-//import { ToastMsg } from '../components/toast-msg/toast-msg';
 
 import { FireService } from '../providers/fireservice';
 //import {SortAsc} from '../pipes/sort-asc';
@@ -72,7 +70,8 @@ export const myFirebaseAuthConfig = {
   declarations: app.concat(pages).concat(components), // .concat(pipes),
   imports: [
     IonicModule.forRoot(MyApp, appIonicConfig, Routes.getDeepLinkerConfig()),
-    AngularFireModule.initializeApp(myFirebaseConfig)  //myFirebaseAuthConfig
+    AngularFireModule.initializeApp(myFirebaseConfig),  //myFirebaseAuthConfig
+    FormsModule
   ],
   providers: [
   // {
@@ -82,9 +81,7 @@ export const myFirebaseAuthConfig = {
    //},
   // Endpoints,
   // Auth,
-  // Settings,
-  //FirebaseSVC
-
+ 
     FireService
   ],
 
