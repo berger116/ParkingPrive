@@ -1,0 +1,21 @@
+page-locateplacetobook {
+    $popover-ios-width: 800px;
+    $primary-color: red;
+
+    background-color: $primary-color;
+
+    $popover-ios-background: red;
+
+    // height: 800px
+    .scroll-content {
+    //display: table;
+    //idth: 600px;
+    //height: 300px;
+    }
+}
+
+.popover-md .popover-content {
+    width: 90%; //90%; //350px;
+    height: 90% //70%; //500px;
+}
+

@@ -1,10 +1,11 @@
 import { Component, ViewChild } from '@angular/core';
-import { NavController, NavParams, ModalController } from 'ionic-angular';
+import { NavController, NavParams, PopoverController, ModalController } from 'ionic-angular';
 import { Map } from '../../components/map/map';
 import { Routes } from '../../app/app.routes';
 import { AngularFire, FirebaseListObservable, FirebaseObjectObservable} from 'angularfire2';
 import { FireService } from '../../providers/fireservice';
 import { Subject } from 'rxjs/Subject';
+import { PlaceParking } from '../../placetobook/placeparking';
 //import {SebmGoogleMap, SebmGoogleMapMarker} from 'angular2-google-maps/core';
 
 //import {
@@ -43,46 +44,75 @@ import { Subject } from 'rxjs/Subject';
 
 export class AroundplacePage {
   uidSubject: Subject<any>;
+  uidSubjectRechDispo: Subject<any>;
   queryObs: FirebaseListObservable<any>;
-  uid: string;
+  queryRechDispoObs: FirebaseListObservable<any>;
+  uidAuth: string;
 
   @ViewChild(Map)
   private map: Map;
 
-  constructor(public navCtrl: NavController, public navparams: NavParams, public modalCtrl: ModalController, public fireSVC: FireService) {
-    this.uid = this.navparams.get("uid");
-    console.log("addPlaceParking UID: ", this.uid);
+  constructor(public navCtrl: NavController,
+              public navparams: NavParams,
+              public fireSVC: FireService,
+              public popoverCtrl: PopoverController,
+              public modalCtrl: ModalController) {
 
-    this.uidSubject = new Subject();
-    this.queryObs = fireSVC.getQueryPlace(this.uid, this.uidSubject);
-    
-    // if (this.queryObs) { 
-    //    console.log("around queryObs: ", this.queryObs)
-    //    this.queryObs.subscribe(snapshots=>{
-    //        snapshots.forEach(snapshot => {
-    //        console.log("snapshot: ",snapshot.key, snapshot.val());
-    //       });  
-    //    });
-    // } 
+      this.uidAuth = this.navparams.get("uid");
+      // console.log("AroundplacePage UID: ", this.uid);
+
+      this.uidSubject = new Subject();
+      this.queryObs = fireSVC.getQueryPlace(this.uidAuth, this.uidSubject);  //   this.uidAuth -> ctrl de l'authentification
+      this.uidSubjectRechDispo = new Subject();
+      this.queryRechDispoObs = fireSVC.getQueryRechDispo(this.uidAuth, this.uidSubject);
+
+      // if (this.queryObs) { 
+      //    console.log("around queryObs: ", this.queryObs)
+      //    this.queryObs.subscribe(snapshots=>{
+      //        snapshots.forEach(snapshot => {
+      //        console.log("snapshot: ",snapshot.key, snapshot.val());
+      //       });  
+      //    });
+      // } 
   }
 
-  ionViewDidEnter(){
+  ionViewDidEnter() {
     this.map.initMap();
-    //this.map.addMarker(46.2043907, 6.143157699999961, this.addMarkerlistener);
 
-    if (this.queryObs) {
-      console.log("Around queryObs: ", this.queryObs)
-   
-      this.queryObs.subscribe( itms => {
-          // console.log("avant for itm.lat: ", itms)
-          itms.forEach( itm => {
-            console.log("itm.latitude: ", itm.latitude)
-            this.map.addMarker(itm.latitude, itm.longitude, this.addMarkerlistener);
+    if (this.queryRechDispoObs) {
+      console.log("Around queryRechDispoObs: ", this.queryRechDispoObs)
+
+      this.queryRechDispoObs
+      .map(res =>{
+               //console.log ("map: res: ",  res[0].dateDebDispo,  res[0].dateFinDispo)
+              // console.log ("map: deb < fin: ",  new Date(res[].dateDebDispo), new Date(res[].dateFinDispo)," date jour: ", new Date( res.dateDebDispo))
+             res.forEach( resx => {
+               console.log (resx.dateDebDispo,"2017-01-03T06:00:00Z"," >: ", (resx.dateDebDispo >= "2017-01-03T06:00:00Z"));
+               return (resx.dateDebDispo >= "2017-01-03T06:00:00Z") ? resx: null;
+             } )          
+             // return {res.dateDebDispo, res.userKey};
+             // return res.json()  //json not a function !! 
+            // return res;   //flux continu !!      
           })
+      .subscribe( disp => {
+         disp.forEach ( dis =>{
+              this.completeAddMarker (disp) 
+         })
+           
+      
+      //t .subscribe( itms => {
+          // console.log("avant for itm.lat: ", itms)
+      //t     itms.forEach( disp => {
+            //console.log("itm.dateDebDispo: ", disp.dateDebDispo)
+      //t    this.completeAddMarker (disp) 
+            //let marker = this.map.addMarker(itm.latitude, itm.longitude);
+            //this.addMarkerlistener(marker, itm);
+      //t    })
       })
 
-      if (this.uid)
-        this.uidSubject.next(this.uid); 
+      if (this.uidAuth)
+          this.uidSubject.next(null); //("2017-01-03T06:00:00Z");   // recherche sur une date de debut en dur
+    }
 
       // this.queryObs.forEach( itm => {
       //    console.log("itm.lat: ", itm.latitude )
@@ -94,25 +124,40 @@ export class AroundplacePage {
       //      console.log("error", err);
       //    })
 
-       }   //end if
-   }     
+   } // end ionViewDidEnter
 
-   addMarkerlistener(marker) {
-        console.log("listener")
-    //    marker.addListener('click', (res => {
-      //     let modal = this.modalCtrl.create(Routes.getPage(Routes.DISPOTOBOOK));
-      //     // this.nav.present(contactModal)
-      //     modal.present();
-    //     })
-    //);
+   completeAddMarker (disp) {
+      if (this.queryObs) {
+          console.log("Around queryObs: ", this.queryObs)
+      
+          this.queryObs
+          .subscribe( itms => {
+              // console.log("avant for itm.lat: ", itms)
+              itms.forEach( place => {
+                // console.log("itm.latitude: ", itm.latitude)
 
-    //    this.marker.addListener( 'click', ( (res) => {
-    //     console.log('emit test', res)
-    //     let modal = this.modalCtrl.create(Routes.getPage(Routes.LOGIN));
-    //     modal.present();
-    //    } ))
+                // this.map.addMarker(itm.latitude, itm.longitude, this.addMarkerlistener);
+                let marker = this.map.addMarker(place.latitude, place.longitude);
+                this.addMarkerlistener(marker, place, disp);
+              })
+          })
+
+          if (this.uidAuth)
+            this.uidSubject.next(disp.userKey);   // null pour tout les marker sinon this.uid
+      }  //end if
+   } 
+
+   addMarkerlistener(marker, place, disp) {
+       marker.addListener('click', (res => {
+            console.log('add listener: ', res," plc: ", place);
+        
+            let popover = this.popoverCtrl.create(Routes.getPage(Routes.PLACEINFOPOP), {place : place, dispo: disp }); 
+            popover.present(); //{ param: myEvent });
+
+          //  let modal = this.modalCtrl.create(Routes.getPage(Routes.PLACEINFOPOP)); 
+          //  modal.present(); //{ param: myEvent });
+       } ));
    }
-
 
   //     this.af.database.list('/users', { preserveSnapshot: true})
   //  .subscribe(snapshots=>{

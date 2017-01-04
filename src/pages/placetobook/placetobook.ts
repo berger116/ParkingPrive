@@ -1,16 +1,18 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Validators,  FormGroup, FormControlName, FormControl } from '@angular/forms';
-import { NavController, NavParams, ToastController, AlertController } from 'ionic-angular';
-import { AngularFire, FirebaseListObservable, FirebaseObjectObservable} from 'angularfire2';  //AuthProviders, AuthMethods
+import { NavController, NavParams, LoadingController, PopoverController, ModalController, ToastController, AlertController } from 'ionic-angular';
+import { AngularFire, FirebaseListObservable } from 'angularfire2';  //AuthProviders, AuthMethods
 import { FireService } from '../../providers/fireservice';
 import { Subject } from 'rxjs/Subject';
 import { Routes } from '../../app/app.routes';
 import { ToastMsg } from '../../components/toast-msg/toast-msg';
+//import { Map } from '../../components/map/map';
 import { } from "@types/google-maps"; // ??
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/filter';
 
 import { PlaceParking } from './placeparking';
+import { LocateplacetobookPage } from "../../locateplacetobook/locateplacetobook";
 
 //import {FIREBASE_PROVIDERS, defaultFirebase, AngularFire} from 'angularfire2';
 
@@ -28,26 +30,26 @@ export class PlacetobookPage implements OnInit {
   private queryObs: FirebaseListObservable<any>;
   private uidSubject: Subject<any>;
   private succs:any;
+  private loader:any;
 
-  //champ placetobook
-  private uid: string;
+  private uidAuth: string;
   private fireKey:string;
-  //userKey:string
-  //adresse: string;
-  //ville: string;
-  //noPostal: string;
-  //latitude: string;
-  //longitude: string;
 
   place: PlaceParking;
   geocoder: google.maps.Geocoder;
   toastMsg: ToastMsg;
   myForm:any;
 
+  // @ViewChild(LocateplacetobookPage)
+  //private map: Map;
+
   constructor(public navCtrl: NavController,
               public navparams: NavParams,
               public af: AngularFire,
               public fireSVC: FireService,
+              public popoverCtrl: PopoverController,
+              public modalCtrl: ModalController,
+              public loadingCtrl: LoadingController,
               private toastCtrl: ToastController,
               private alertCtrl: AlertController) {
 
@@ -60,27 +62,28 @@ export class PlacetobookPage implements OnInit {
       //});
       //// this.item.set({ size: 'name 4'});  a eviter
 
-      this.uid = this.navparams.get("uid") // this.getUserUID ()
-      console.log("placetobook Cstr UID: ", this.uid);
-
-      //const promise = af.database.list('/items').remove();   //code utile
-      //promise
-      //  .then(_ => console.log('success'))
-      //  .catch(err => console.log(err, 'You do not have access!'));
+      this.uidAuth = this.navparams.get("uid") 
+      console.log("placetobook Cstr UID: ", this.uidAuth);
 
       //.subscribe( item => { item.filter(.userKey == this.uid}) //.filter(item => { return item[0].userKey == this.uid })    //.$ref // '/dispo'
       this.place = new PlaceParking();
       this.toastMsg = new ToastMsg(toastCtrl, alertCtrl);
 
       this.uidSubject = new Subject();
-      this.queryObs = fireSVC.getQueryPlace(this.uid,  this.uidSubject );
+      this.queryObs = fireSVC.getQueryPlace(this.uidAuth,  this.uidSubject);
+
+     //affichage du spinner
+      this.loader = this.loadingCtrl.create({
+         content: "Chargement..."
+      });
+      this.loader.present();
     
       console.log("placetobook queryObs: ", this.queryObs)
       if (this.queryObs)
-        this.queryObs.subscribe (itm => { 
+        this.queryObs.subscribe (itm => {
             if (itm[0]) {
               //console.log("itm: ", itm[0].$key)
-              this.fireKey = itm[0].$key    //this.fireKey =  "-KZ7adwUf4BUQXKGsZ97"    //mis en dure  !!!! 
+              this.fireKey = itm[0].$key       // clé de l'enregistrement
               this.place.userKey = itm[0].userkey 
               this.place.adresse = itm[0].adresse 
               this.place.ville = itm[0].ville
@@ -90,25 +93,30 @@ export class PlacetobookPage implements OnInit {
             }
         }); 
 
-      if (this.uid)
-          this.uidSubject.next(this.uid)
+      if (this.uidAuth)
+          this.uidSubject.next(this.uidAuth)
     
       //this.items.map( item => { item.userKey == this.uid })
       //?? console.log("MARCHE filter: " ,this.queryObs.filter( item => { return item.userKey == this.uid }))
   }
 
   ngOnInit() {
-      console.log("oninit")
+      this.uidAuth = this.navparams.get("uid") 
+      console.log("placetobook OnInit UID: ", this.uidAuth);
+      
       this.myForm = new FormGroup({
-        adresse: new FormControl('', Validators.required),   // [ Validators.required, validateEmail]) plusieur validateur
-        ville : new FormControl('', Validators.required), // , Validators.minLength(10)),
-        noPostal : new FormControl('', Validators.required), // , Validators.minLength(10)),
-        latitude : new FormControl('', Validators.required), // , Validators.minLength(10)),
-        longitude : new FormControl('', Validators.required), // , Validators.minLength(10)),
+        adresse: new FormControl('', Validators.required),  // [ Validators.required, validateEmail]) plusieur validateur
+        ville : new FormControl('', Validators.required),   // , Validators.minLength(10)),
+        noPostal : new FormControl('', Validators.required), 
+        latitude : new FormControl('', Validators.required), 
+        longitude : new FormControl('', Validators.required), 
         //adresse: new FormControlName(this.myForm, [<any>Validators.required, <any>Validators.minLength(5)])          
       });
 
-    //this.eNumberForm = this._formBuilder.group({
+      if (this.loader)
+          this.hideLoading();
+
+    //this.eNumberForm = this._formBuilder.group({   //formBuilder ne fonctionne pas avec ngModel
     //  adresse: ['', Validators.required]
     //});
   }
@@ -120,11 +128,10 @@ export class PlacetobookPage implements OnInit {
  // get longitude(): any { return this.myForm.get('longitude'); }
 
   onSubmit(): void {
-    console.log(this.myForm.value, "inval adresse: ", this.myForm.controls.adresse.invalid );  // {first: 'Nancy', last: 'Drew'}
+    console.log(this.myForm.value, "inval adresse: ", this.myForm.controls.adresse.invalid );  
     console.log(this.myForm.value, "inval postal: ", this.myForm.valid);  
     event.preventDefault(); //??
   }
-
 
 //https://github.com/angular/angularfire2/issues/104
 // @Inject(FirebaseRef) private ref:Firebase
@@ -143,24 +150,26 @@ export class PlacetobookPage implements OnInit {
  
   placeUpdate() { 
     //console.log("authenticated key: ", this.fireSVC.authenticated, this.fireKey)
-    if (this.fireSVC.authenticated && this.uid)  {  
+    if (this.fireSVC.authenticated && this.uidAuth)  {  
        //console.log(" placetobook authUID: ", this.uid);
 
        if (this.myForm.valid){
-          if (this.uid != this.place.userKey)
-             console.log("Placetobook userid error !!!!",this.uid ," / ",this.place.userKey)
+          if (this.uidAuth != this.place.userKey && this.place.userKey != null) 
+             console.log("Placetobook userid error !!!!",this.uidAuth ," / ",this.place.userKey)
 
           //this.fireKey = null;  //pour ajouter un nouvel enregistrement 
           //console.log("fireKey: " + this.fireKey)
 
           //affectation de tout les champs
-          let item = this.updateField () // (this.uid, this.place)
+          let item = this.updateField () 
           //console.log("item:", item)
-          if (this.fireKey) {  // item UPDATE
-              console.log("update test");
-              this.succs = this.queryObs.update(this.fireKey, item); 
 
-          } else  //item INSERT
+          if (this.fireKey) { 
+              console.log("update test");
+              // item UPDATE
+              this.succs = this.queryObs.update(this.fireKey, item); 
+          } else  
+              //item INSERT
               this.succs = this.queryObs.push(item);
 
           this.succs  //promisse
@@ -175,9 +184,9 @@ export class PlacetobookPage implements OnInit {
     }  // end if this.myForm.valid
   }
 
-  updateField () { //(uid, place){
+  updateField () { 
      return {
-       userKey: this.uid,
+       userKey: this.uidAuth,
        adresse: this.place.adresse, 
        ville: this.place.ville,
        noPostal: this.place.noPostal,
@@ -186,14 +195,10 @@ export class PlacetobookPage implements OnInit {
       }
   }
 
-  deleteItem(key: string) { 
-  //  this.items.remove(key); 
-   // this.items.remove(); //deleteEverything()
-  }
-
+  //Gestion des disponibilités
   manageDispo() {
-    if (this.fireKey)
-       this.navCtrl.setRoot(Routes.getPage(Routes.DISPOTOBOOK), {uid : this.uid, placeKey: this.fireKey});
+    if (this.fireKey)  //clé de l'enregistrement place -> doit exister pour saisir des dispo
+       this.navCtrl.setRoot(Routes.getPage(Routes.DISPOTOBOOK), {uid : this.uidAuth, placeKey: this.fireKey});
     else
        this.toastMsg._presentToast("vous devez avoir une place enregistrée"); 
   }
@@ -211,12 +216,19 @@ export class PlacetobookPage implements OnInit {
     this.geocoder.geocode( geocodeAdresseOpt, (results, status) => {
       if( status == google.maps.GeocoderStatus.OK ) {
         //console.log("geocode result: ", results[0].geometry.location.lat());
-        this.place.latitude = results[0].geometry.location.lat(); //.toString();
-        this.place.longitude = results[0].geometry.location.lng(); //.toString();
-        console.log("geocode result: ", results[0].geometry.location.lat()," place.lat: ",  this.place.latitude);
+        this.place.latitude = results[0].geometry.location.lat(); 
+        this.place.longitude = results[0].geometry.location.lng(); 
+        console.log("geocode result: ", results[0].geometry.location.lat()," place.lat: ", this.place.latitude);
 
+    //   this.getLocation();
+        let myLatLng = { lat: this.place.latitude, lng: this.place.longitude };
+      //  this.navCtrl.setRoot(Routes.getPage(Routes.LOCATEPLACETOBOOK), {uid : this.uidAuth, latLng : myLatLng});  //XXXXXXXXX carte s'affiche
+      //  let popover = this.popoverCtrl.create(Routes.getPage(Routes.LOCATEPLACETOBOOK), {uid: this.uidAuth, latLng: myLatLng}); 
+      //  popover.present(); //{ param: myEvent });
+
+        let modal = this.modalCtrl.create(Routes.getPage(Routes.LOCATEPLACETOBOOK), {uid: this.uidAuth, latLng: myLatLng}); 
+        modal.present(); //{ param: myEvent });
         this.toastMsg._presentToast("Points GPS codés selon l'adresse fournie");
-        //this.toastMsg._showAlert( `Points GPS codés selon l'adresse fournie`)
       }
       else
         // this.toastMsg._presentToast("Adresse non decodée");
@@ -226,26 +238,26 @@ export class PlacetobookPage implements OnInit {
    // this.geocoder.geocode( this.geocoderOptions, this.geocodingResult );  // perte de contexte ?
   }
 
-  //private geocodingResult(results, status)
-	//{
-	  // Si la recherche a fonctionné
-	//  if( status == google.maps.GeocoderStatus.OK ) {
-  //    console.log("geocode result: ", results[0].geometry.location.lat());
-  //    console.log("place.latitude: ", this.place.latitude);
-  //    this.place.latitude = results[0].geometry.location.lat().toString();
-  //    this.place.longitude = results[0].geometry.location.lng().toString();
-  //  }
-  //}
+  getLocation() {
+    let myLatLng = { lat: this.place.latitude, lng: this.place.longitude };
+ //   this.navCtrl.setRoot(Routes.getPage(Routes.LOCATEPLACETOBOOK), {uid : this.uid, latLng : myLatLng});
+ //   let popover = this.popoverCtrl.create(Routes.getPage(Routes.LOCATEPLACETOBOOK), {uid: this.uid, latLng: myLatLng}); 
+ //   popover.present(); //{ param: myEvent });
+
+ //  let popover = this.popoverCtrl.create(Routes.getPage(Routes.PLACEINFOPOP),  {uid: this.uid, latLng: myLatLng}); 
+ //  popover.present(); //{ param: myEvent });
+
+  }
 
   ionViewDidLoad() {
-     console.log("Placetobook DidLoad authUID: ", this.uid);
+     console.log("Placetobook DidLoad authUID: ", this.uidAuth)
     
      //this.uid = this.getUserUID ();
      //if (this.uid){
        // this.items.map( item => { item.userKey == this.uid })
        // console.log("apres", this.items)
      //}
-    console.log('Hello AddplaceparkingPage Page');
+    console.log('Hello PlacetobookPage Page');
   }
 
  // public ionViewCanLeave() {   //code utile ??
@@ -259,6 +271,11 @@ export class PlacetobookPage implements OnInit {
  //       return true;
     //  }
   //}
+
+  private hideLoading(){
+       this.loader.dismiss();
+  }
+
 
   onClickBack(){
     // this.navCtrl.pop()

@@ -48,10 +48,10 @@ export class FireService {
     return this.authObj;
   }
   
-  getQueryPlace(uid, uidSubject):FirebaseListObservable<any> {
+  getQueryPlace(uidAuth, uidSubject):FirebaseListObservable<any> {
     let queryObs: FirebaseListObservable<any> = null;
 
-    if (uid) {
+    if (uidAuth) {
        queryObs = this.af.database.list('/places', {  // '/places'  '/items'
               query: {
                 // orderByChild: 'ville',
@@ -69,11 +69,11 @@ export class FireService {
     return queryObs
   }
 
-  getQueryDispo(uid, uidSubject):FirebaseListObservable<any> {
+  getQueryDispo(uidAuth, uidSubject):FirebaseListObservable<any> {
     let queryObs: FirebaseListObservable<any> = null;
     //console.log ("fireService uid: ", uid);
 
-    if (uid) {
+    if (uidAuth) {
       queryObs = this.af.database.list('/dispos', {  //  '/items'
               query: {
                 // orderByChild: 'ville',
@@ -90,6 +90,29 @@ export class FireService {
     console.log("authSVC Dispos queryObs: ", queryObs)
     return queryObs
   }
+
+  getQueryRechDispo(uidAuth, uidSubject):FirebaseListObservable<any> {
+    let queryObs: FirebaseListObservable<any> = null;
+    //console.log ("fireService uid: ", uid);
+
+    if (uidAuth) {
+      queryObs = this.af.database.list('/dispos', {  //  '/items'
+              query: {
+                // orderByChild: 'ville',
+                orderByChild: 'dateDebDispo',  // 'userKey',
+                equalTo: uidSubject,
+                //  orderByKey: true,   //un seul orderBy
+                //  limitToFirst: 2,
+                //  limitToLast: 2,
+              }
+          });
+
+      //this.uidSubject.next(uid)
+    }
+    console.log("authSVC Dispos queryObs: ", queryObs)
+    return queryObs
+  }
+
 
     //InWithFacebook(): firebase.Promise<FirebaseAuthState> {
     //   return this.auth$.login({

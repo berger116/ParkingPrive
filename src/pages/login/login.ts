@@ -41,6 +41,7 @@ export class LoginPage {
       this.loader.present();
 
       // this.af.auth.login();  // log avec google
+
       // login credential 
       this.af.auth.login({ email: this.email, password: this.password },
         { provider: AuthProviders.Password,
@@ -51,7 +52,6 @@ export class LoginPage {
            }, (error) => {
                console.log("Login error", error)
               //this.error = error._body;
-           // });
         }).catch(err =>{
             console.log("Login catch error", err)
             this.navCtrl.setRoot(Routes.getRootPage(false));
@@ -73,24 +73,14 @@ export class LoginPage {
    //   this.goTabs();   
    // }
 
-   //ionViewDidLoad(){
-   //}
-
    goTabs(uid){
       console.log ("go tabs", uid);
       this.loginOk = true;
-      this.navCtrl.push(Routes.getPage(Routes.TABS), {uid: uid});   // ADDPLACES
-      
-      //this.hideLoading();
+      this.navCtrl.push(Routes.getPage(Routes.TABS), {uid: uid});  
    }
 
    private hideLoading(){
        this.loader.dismiss();
    }
-
-    //  openSignup(){
-    //     let modal = this.modalCtrl.create(Routes.getPage(Routes.SIGNUP));
-    //     modal.present();
-    //  }
 
 }

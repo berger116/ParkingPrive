@@ -1,9 +1,11 @@
-import { NgModule, ErrorHandler } from '@angular/core';
-import { IonicApp, IonicModule, ViewController } from 'ionic-angular';    //IonicErrorHandler
+import { NgModule } from '@angular/core';  // , ErrorHandler
+import { IonicApp, IonicModule } from 'ionic-angular';   //  ViewController, PopoverController
 import { MyApp } from './app.component';
 import { Routes } from './app.routes';
 import { AngularFireModule, AuthProviders, AuthMethods } from 'angularfire2';
-
+//import { DatePickerModule } from 'datepicker-ionic2';
+//import { DatePickerModule } from 'ng2-datepicker';
+//import { HttpModule } from '@angular/http';
 import { FormsModule } from '@angular/forms';
 
 //import { AuthHttp, AuthConfig } from 'angular2-jwt';
@@ -71,7 +73,8 @@ export const myFirebaseAuthConfig = {
   imports: [
     IonicModule.forRoot(MyApp, appIonicConfig, Routes.getDeepLinkerConfig()),
     AngularFireModule.initializeApp(myFirebaseConfig),  //myFirebaseAuthConfig
-    FormsModule
+  //  DatePickerModule,
+    FormsModule,
   ],
   providers: [
   // {
@@ -79,9 +82,7 @@ export const myFirebaseAuthConfig = {
    //  useFactory: getAuthHttp,
    //  deps: [Http]
    //},
-  // Endpoints,
-  // Auth,
- 
+  // Endpoints, 
     FireService
   ],
 

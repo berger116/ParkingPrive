@@ -18,16 +18,31 @@
 
       <!--  Entête de la liste  -->
      <ion-grid>
-        <ion-row>
-           <ion-col width-30>
-             <ion-item>
-                <ion-label fixed>Date dispo</ion-label>   <!-- fixed stacked -->  
-             </ion-item>
+   
+        <ion-row >
+           <ion-col width-100>        
+                <ion-label >Adresse</ion-label>   <!-- fixed stacked -->
+                <ion-label>{{ this.place.adresse }}</ion-label>   
            </ion-col>
-           <ion-col width-30>
-             <ion-item>
+        </ion-row>
+      
+        <ion-row>
+          <ion-col width-50>
+                <ion-label >Ville</ion-label>
+                <ion-label>{{ this.place.ville }}</ion-label>       
+          </ion-col>
+          <ion-col width-50>
+                <ion-label >No Postal</ion-label>
+                <ion-label>{{ this.place.noPostal }}</ion-label>      
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+           <ion-col width-30>            
+                <ion-label fixed>Date dispo</ion-label>   <!-- fixed stacked -->  
+           </ion-col>
+           <ion-col width-30>     
                 <ion-label fixed>Heure dispo</ion-label>
-             </ion-item>
           </ion-col>
           <ion-col width-30>
              <ion-item>
@@ -35,8 +50,22 @@
              </ion-item>
            </ion-col>
         </ion-row>
+
+        <ion-row>    
+          <ion-col width-30>
+              <ion-label ion-datetime >{{dispo?.dateDebDispo | date: 'dd.MM.yyyy'}}</ion-label>  
+              <ion-label ion-datetime >{{dispo?.dateFinDispo | date: 'dd.MM.yyyy'}}</ion-label>            
+          </ion-col>
+          <ion-col width-50>           
+              <ion-label ion-datetime >de {{dispo?.dateDebDispo | date: 'HH.mm'}} heure</ion-label>    
+              <ion-label ion-datetime >a &nbsp; {{dispo?.dateDebDispo | date: 'HH.mm'}} heure</ion-label>          
+          </ion-col>
+          <ion-col width-30>
+            <!--   <ion-label  [(ngModel)]="dispo.resNoplaque"></ion-label>  -->  
+          </ion-col> 
+        </ion-row>
      </ion-grid>
 
-     <button ion-item color="secondary" (click)="close()">RETOUR</button>
+     <button ion-button color="secondary" (click)="close()">RETOUR</button>
 
 </ion-content>

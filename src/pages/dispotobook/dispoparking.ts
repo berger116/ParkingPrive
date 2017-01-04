@@ -3,8 +3,8 @@ export class DispoParking {
    //  fireKey: string;
      userKey: string; //uid du users
      placeKey: string;
-     dateDispo: string;
-     heureDispo: string;
+     dateDebDispo: Date;
+     dateFinDispo: Date;
      resNoplaque: string; 
   
  //  constructor(values: Object = {}) {

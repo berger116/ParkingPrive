@@ -1,11 +1,11 @@
 page-place-info-pop {
 
-    $popover-ios-width: 800px;
+  //  $popover-ios-width: 900px;
     $primary-color: red;
 
     background-color: $primary-color;
 
-    $popover-ios-background: red;
+  //  $popover-ios-background: red;
 
     // height: 800px
     .scroll-content {
@@ -17,7 +17,7 @@ page-place-info-pop {
 
 .popover-md .popover-content {
     width: 90%; //350px;
-    height: 70%; //500px;
+    height: 80%; //500px;
 }
 
 
