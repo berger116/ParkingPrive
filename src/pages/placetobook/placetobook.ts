@@ -7,7 +7,7 @@ import { Subject } from 'rxjs/Subject';
 import { Routes } from '../../app/app.routes';
 import { Camera } from 'ionic-native';
 import { ToastMsg } from '../../components/toast-msg/toast-msg';
-//import { Map } from '../../components/map/map';
+import { Map } from '../../components/map/map';
 import { } from "@types/google-maps"; 
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/filter';
@@ -43,8 +43,8 @@ export class PlacetobookPage implements OnInit {
   public base64Image: string;
 
 
-  // @ViewChild(LocateplacetobookPage)
-  //private map: Map;
+  @ViewChild(Map)
+  private map: Map;
 
   constructor(public navCtrl: NavController,
               public navparams: NavParams,
@@ -231,8 +231,8 @@ export class PlacetobookPage implements OnInit {
 
     //   this.getLocation();
         let myLatLng = { lat: this.place.latitude, lng: this.place.longitude };
-      //  this.navCtrl.setRoot(Routes.getPage(Routes.LOCATEPLACETOBOOK), {uid : this.uidAuth, latLng : myLatLng});  //XXXXXXXXX carte s'affiche
-        let popover = this.popoverCtrl.create(Routes.getPage(Routes.LOCATEPLACETOBOOK), {uid: this.uidAuth, latLng: myLatLng}); 
+      //  this.navCtrl.setRoot(Routes.getPage(Routes.LOCATEPLACETOBOOK), {uid : this.uidAuth, latLng : myLatLng, map: this.map});  //XXXXXXXXX carte s'affiche
+        let popover = this.popoverCtrl.create(Routes.getPage(Routes.LOCATEPLACETOBOOK), {uid: this.uidAuth, latLng: myLatLng, map: this.map}); 
         popover.present(); //{ param: myEvent });
 
       //  let modal = this.modalCtrl.create(Routes.getPage(Routes.LOCATEPLACETOBOOK), {uid: this.uidAuth, latLng: myLatLng}); 

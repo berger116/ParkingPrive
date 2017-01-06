@@ -26,8 +26,10 @@ export class LocateplacetobookPage {
 
       this.uidAuth = this.navparams.get("uid");
       this.myLatLng = this.navparams.get("latLng");
+      this.map = this.navparams.get("map");
       console.log("LocateplacetobookPage UID: ", this.uidAuth, " myLatLng: ", this.myLatLng );
 
+    
     //  this.map.initMap();
     //  console.log("LocateplacetobookPage ionViewDidEnter apr");
     //  let mark = this.map.addMarker(this.myLatLng.lat, this.myLatLng.lng);
@@ -36,11 +38,21 @@ export class LocateplacetobookPage {
      // this.queryObs = fireSVC.getQueryPlace(this.uid, this.uidSubject);
   }
 
+  ngOnInit(){
+    console.log("-----initmap")
+    setTimeout (_ =>{ 
+      console.log("-----initmap 3 s");
+      this.map.initMap();
+      let mark = this.map.addMarker(this.myLatLng.lat, this.myLatLng.lng);  
+    }, 4000);
+
+  }
   //ionViewDidEnter(){
   ionViewDidEnter(){
     console.log("LocateplacetobookPage ionViewDidEnter avant");
-    this.map.initMap();
     console.log("LocateplacetobookPage ionViewDidEnter apr");
+      this.map.initMap();
+      let mark = this.map.addMarker(this.myLatLng.lat, this.myLatLng.lng);  
 
     //if (this.queryObs) {
     //  console.log("LocateplacetobookPage queryObs: ", this.queryObs)
@@ -48,7 +60,7 @@ export class LocateplacetobookPage {
     //  this.queryObs.subscribe( itms => {
     //      itms.forEach( itm => {
     //      console.log("itm.latitude: ", itm.latitude)   
-         let mark = this.map.addMarker(this.myLatLng.lat, this.myLatLng.lng);
+  // t       let mark = this.map.addMarker(this.myLatLng.lat, this.myLatLng.lng);
        // this.addMarkerlistener(marker);
     //      })
     //  })

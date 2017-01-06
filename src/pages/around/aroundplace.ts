@@ -53,6 +53,9 @@ export class AroundplacePage {
   private loader:any;
   private dispo:any[];
   private place:any[];
+
+  private markers:any[];
+  private index = 0;
   //place = new PlaceParking();
 
   @ViewChild(Map)
@@ -118,11 +121,11 @@ export class AroundplacePage {
             console.log("Success Response", disp);
 
             this.dispo = disp;
-            for (let i=0; i < this.dispo.length; i++) { //each (obj in disp )  {}
+            //for (let i=0; i < this.dispo.length; i++) { //each (obj in disp )  {}
                  //for (let dsp in this.dispo) {
                 //console.log(" ionViewDidEnter dsp: ", this.dispo[i])
-                 this.completeAddMarker(this.dispo[i]);
-            } // end for
+                 this.completeAddMarker(this.dispo[this.index]);
+            //} // end for
        })
        //   function(disp) {
        //      console.log("Success Response", disp);
@@ -160,11 +163,15 @@ export class AroundplacePage {
           //     })
          
               let marker = this.map.addMarker(this.place[0].latitude, this.place[0].longitude);  
+              //this.markers.push(marker)
               this.addMarkerlistener(marker, this.place[0], dispo);
           }) 
 
-          if (this.uidAuth)
-              this.uidSubject.next(dispo.userKey);   // null pour avoir tout les marker sinon this.uid
+          if (this.uidAuth){
+            console.log("----> dispo.userKey",dispo["userKey"])
+             this.uidSubject.next(dispo["userKey"]);   // null pour avoir tout les marker sinon this.uid
+          }
+             
 
        }  //end if 
    }   // end completeAddMarker
@@ -177,10 +184,21 @@ export class AroundplacePage {
         
             let popover = this.popoverCtrl.create(Routes.getPage(Routes.PLACEINFOPOP), {place : place, dispo: dsp }); 
             popover.present(); //{ param: myEvent });
+              
 
           //  let modal = this.modalCtrl.create(Routes.getPage(Routes.PLACEINFOPOP)); 
           //  modal.present(); //{ param: myEvent });
        } ));
+
+              this.index++;
+               console.log("---- > avant dsp.", this.index,"dsp ",this.dispo)
+            if(this.dispo[this.index]){
+              //console.log("---- > dsp.", dsp[this.index])
+                this.completeAddMarker(this.dispo[this.index]);
+            }
+
+
+
    }
 
   //     this.af.database.list('/users', { preserveSnapshot: true})
@@ -189,6 +207,12 @@ export class AroundplacePage {
   //        console.log(snapshot.key, snapshot.val());
   //      });
   //  })
+
+  ngOnDestroy(){
+    this.index = 0;
+    //for .. marker.removeListerner('click')
+    // markers.shift()
+  }
 
   private hideLoading(){
        this.loader.dismiss();
