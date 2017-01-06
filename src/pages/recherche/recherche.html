@@ -1,0 +1,47 @@
+<!--
+  Generated template for the Recherche page.
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <!--<ion-navbar>
+    <ion-title>recherche</ion-title>
+  </ion-navbar>  -->
+
+    <header-content class="header-trt" title="Recherche de places disponibles" ></header-content> 
+
+</ion-header>
+
+
+<ion-content padding>
+   <ion-grid>
+   
+        <!--  Entête de la liste  -->
+      <ion-row>
+     
+           <form [formGroup]="myForm" (ngSubmit)="onSubmit()">  
+              <ion-col width-40>
+                 <ion-label >Saisir une date et heure de recherche:</ion-label>   <!-- fixed stacked -->  
+              </ion-col>
+                
+              <ion-col width-40>
+                <!-- <button full="true" [min]="now" calendar="true" [(ngModel)]="dispo.dateDispo" ion-item ion-datepicker> </button>   -->
+                <ion-item>    <!--  ionCancel="console.log('canceled')"      ionCancel="dateRefresh()"-->
+                  <ion-datetime  formControlName="dateRecherche" doneText="Saisir" cancelText="Annuler" displayFormat="DD.MM.YY :HH"  pickerFormat="DD.MMMM.YYYY :HH" [(ngModel)]="dateRecherche" ></ion-datetime>              
+                </ion-item>  
+                <small  class="notice" [hidden]="myForm.controls.dateRecherche.valid || (myForm.controls.dateRecherche.pristine)"> <!-- && !submitted)"> --> 
+                      La date recherche est requise.
+                </small>    
+              </ion-col>
+
+              <ion-col width-20>        
+              <!-- <button ion-button round small color="secondary" id="dispoIns" onSubmit="document.getElementById('dispoIns').disabled=true;" (click)="insertDispo()">Ajouter</button>  -->
+                   <ion-icon name="add" color="secondary" class="iconSizeFormat" (click)="goRecherche()" id="recherche" onSubmit="document.getElementById('recherche').disabled=true;"></ion-icon> 
+              </ion-col>  
+           </form>
+      </ion-row>
+         
+  </ion-grid>
+</ion-content>

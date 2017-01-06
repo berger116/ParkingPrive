@@ -1,10 +1,9 @@
 
-export class DispoParking { 
-   //  fireKey: string;
+export interface DispoParking { 
      userKey: string; //uid du users
      placeKey: string;
-     dateDebDispo: Date;
-     dateFinDispo: Date;
+     dateDebDispo: string;
+     dateFinDispo: string;
      resNoplaque: string; 
   
  //  constructor(values: Object = {}) {

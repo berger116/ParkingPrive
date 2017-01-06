@@ -62,8 +62,6 @@ export class FireService {
                 //  limitToLast: 2,
               }
           });
-
-      //this.uidSubject.next(uid)
     }
     console.log("authSVC Places queryObs: ", queryObs)
     return queryObs
@@ -84,8 +82,6 @@ export class FireService {
                 //  limitToLast: 2,
               }
           });
-
-      //this.uidSubject.next(uid)
     }
     console.log("authSVC Dispos queryObs: ", queryObs)
     return queryObs
@@ -96,18 +92,17 @@ export class FireService {
     //console.log ("fireService uid: ", uid);
 
     if (uidAuth) {
-      queryObs = this.af.database.list('/dispos', {  //  '/items'
-              query: {
-                // orderByChild: 'ville',
-                orderByChild: 'dateDebDispo',  // 'userKey',
-                equalTo: uidSubject,
+      queryObs = this.af.database.list('/dispos')
+        // {  //  '/items'
+        //      query: {
+        //        // orderByChild: 'ville',
+        //        orderByChild: 'dateDebDispo',  // 'userKey',
+        //        equalTo: uidSubject,
                 //  orderByKey: true,   //un seul orderBy
                 //  limitToFirst: 2,
                 //  limitToLast: 2,
-              }
-          });
-
-      //this.uidSubject.next(uid)
+        //      }
+        //  });
     }
     console.log("authSVC Dispos queryObs: ", queryObs)
     return queryObs

@@ -1,12 +1,13 @@
 
-export class PlaceParking { 
-   //  fireKey: string;
+export interface PlaceParking { 
      userKey: string; //uid du users
      adresse: string; 
      ville: string; 
      noPostal: string; 
-     latitude: number;  //string
-     longitude: number;  //string
+     latitude: number;  
+     longitude: number;  
+     prixPlace: number;
+     noPlace: number;
 
  //  constructor(values: Object = {}) {
  //   Object.assign(this, values);

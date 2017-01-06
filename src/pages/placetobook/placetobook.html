@@ -70,9 +70,9 @@
         </ion-row>
 
         <ion-row>
-           <ion-col width-30> 
+           <ion-col width-30>
                <!-- <button ion-button  ion-icon name="ios-locate-outline" outline round  color="dark" (click)= "getGeocode()">  -->
-                   <ion-icon name="ios-locate-outline" class="iconGeoCodeFormat" (click)= "getGeocode()"></ion-icon>
+                   <ion-icon color="secondary" name="ios-locate-outline" class="iconGeoCodeFormat" (click)= "getGeocode()"></ion-icon>
            </ion-col> 
             
            <ion-col width-40>
@@ -83,7 +83,7 @@
              <small  class="notice" [hidden]="myForm.controls.latitude.valid || (myForm.controls.latitude.pristine)"> <!-- && !submitted)"> --> 
                   Le coordonnée latitude est requise.
              </small> 
-           </ion-col>
+           </ion-col>          
            <ion-col width-40>
              <ion-item>
                 <ion-label floating>Longitude</ion-label>
@@ -96,7 +96,41 @@
         </ion-row>
 
         <ion-row>
-            <ion-col width-60>          
+          <ion-col width-50>
+             <ion-item>
+                <ion-label floating>Prix de la place</ion-label>
+                <ion-input type="text" formControlName="prixPlace" [(ngModel)]="this.place.prixPlace"></ion-input>      
+             </ion-item>
+              <small  class="notice" [hidden]="myForm.controls.prixPlace.valid || (myForm.controls.prixPlace.pristine)"> <!-- && !submitted)"> --> 
+                   Le prix de la place est requis.
+              </small>          
+          </ion-col>
+
+          <ion-col width-50>
+             <ion-item>
+                <ion-label floating>No Place</ion-label>   
+                <ion-input type="text" formControlName="noPlace" [(ngModel)]="this.place.noPlace"></ion-input>
+             </ion-item>      
+           </ion-col>
+        </ion-row>
+        
+        <ion-row>
+           <ion-col width-50>
+              <button ion-button round small  color="secondary"icon-left color="dark"  (click)="getPicture()">
+                  <ion-icon name='camera' is-active="false"></ion-icon>
+                  <span>Photo</span>
+              </button>
+           </ion-col>
+
+           <ion-col width-50>
+              <ion-card>
+                <img [src]="base64Image" *ngIf="base64Image" />
+              </ion-card>
+           </ion-col>
+     </ion-row>
+
+        <ion-row>
+            <ion-col width-100>          
                 <button ion-button round small color="secondary" id="placeupd" onSubmit="document.getElementById('placeupd').disabled=true;"
                         ng-disabled="this.myForm.valid" (click)="placeUpdate()">Enregistrer</button>
             
@@ -108,7 +142,7 @@
               <button ion-button full (click)="signup()">Sign Up</button>
         </div>  -->
         <ion-row>
-            <ion-col width-100>   
+            <ion-col width-90>   
                <button ion-button round small color="secondary" (click)="manageDispo()">Gestion des disponibilités</button>
             </ion-col>
         </ion-row>

@@ -15,7 +15,6 @@ import { FormsModule } from '@angular/forms';
 //import { Auth} from '../providers/auth'
 import { HeaderContentComponent } from '../components/header-content/header-content';
 import { Map } from '../components/map/map';
-
 import { FireService } from '../providers/fireservice';
 //import {SortAsc} from '../pipes/sort-asc';
 //import {GroupBy} from '../pipes/group-by';

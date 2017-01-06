@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { AroundplacePage } from '../around/aroundplace';
 import { PlacetobookPage } from '../placetobook/placetobook';
+import { RecherchePage } from '../recherche/recherche';
 import { Routes } from '../../app/app.routes';
 import { AngularFire, FirebaseListObservable } from 'angularfire2';
 
@@ -16,17 +17,18 @@ import { AngularFire, FirebaseListObservable } from 'angularfire2';
   templateUrl: 'tabs.html'
 })
 export class TabsPage {
- // tab1Root: any = HomePage;
+  tab1Root: any = RecherchePage;
   tab2Root: any = PlacetobookPage;
   tab3Root: any = AroundplacePage;
- // tab4Root: any = AroundplacePage;
 
   email: string;
   chatParams = {
     uid: this.navParams.get("uid")
   };
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public af: AngularFire) {  
+  constructor(public navCtrl: NavController,
+              public navParams: NavParams,
+              public af: AngularFire) {  
    //// this.email = (auth.user) ? auth.user.email : null
    //console.log ("Tabs: ",  this.navParams.get("uid")) 
   }

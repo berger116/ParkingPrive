@@ -1,18 +1,15 @@
-import {HomePage} from '../pages/home/home';
-import {LoginPage} from '../pages/login/login';
-import {TabsPage} from '../pages/tabs/tabs';
-//import {AddPage} from '../pages/add/add';
-//import {FriendsPage} from '../pages/friends/friends';
+import { HomePage } from '../pages/home/home';
+import { LoginPage } from '../pages/login/login';
+import { TabsPage } from '../pages/tabs/tabs';
 import { AroundplacePage } from '../pages/around/aroundplace';
 import { PlacetobookPage } from '../pages/placetobook/placetobook';
 import { DispotobookPage } from '../pages/dispotobook/dispotobook';
 import { PlaceInfoPopPage } from '../pages/place-info-pop/place-info-pop';
 import { LocateplacetobookPage } from '../pages/locateplacetobook/locateplacetobook';
-//import {LoginPage} from '../login/login';
-//import {PlacesPage} from '../pages/places/places';
+import { RecherchePage } from '../pages/recherche/recherche';
+
 //import {SignupPage} from '../pages/signup/signup';
-//import {PlacePage} from '../pages/place/place';
-//import {SettingsPage} from '../pages/settings/settings';
+
 
 export class Routes {
 
@@ -24,6 +21,7 @@ export class Routes {
   static AROUNDPLACE:string="aroundplace";
   static PLACEINFOPOP:string="placeinfopop";
   static LOCATEPLACETOBOOK:string="locateplacetobook";
+  static RECHERCHE:string="recherche";
  // static SIGNUP:string="signup";
 
   static pages = {
@@ -35,11 +33,8 @@ export class Routes {
     [Routes.AROUNDPLACE]: AroundplacePage,
     [Routes.PLACEINFOPOP]: PlaceInfoPopPage,
     [Routes.LOCATEPLACETOBOOK]: LocateplacetobookPage,
- //   [Routes.PLACES]: PlacesPage,
- //   [Routes.FRIENDS]: FriendsPage,
+    [Routes.RECHERCHE]: RecherchePage,
  //   [Routes.SIGNUP]: SignupPage,
- //   [Routes.PLACE]: PlacePage,
- //   [Routes.SETTINGS]: SettingsPage,
   };
 
   static getPage(id){

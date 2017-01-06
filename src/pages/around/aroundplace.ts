@@ -1,12 +1,13 @@
 import { Component, ViewChild } from '@angular/core';
-import { NavController, NavParams, PopoverController, ModalController } from 'ionic-angular';
+import { NavController, NavParams, LoadingController, PopoverController, ModalController } from 'ionic-angular';
 import { Map } from '../../components/map/map';
 import { Routes } from '../../app/app.routes';
 import { AngularFire, FirebaseListObservable, FirebaseObjectObservable} from 'angularfire2';
 import { FireService } from '../../providers/fireservice';
 import { Subject } from 'rxjs/Subject';
-import { PlaceParking } from '../../placetobook/placeparking';
-//import {SebmGoogleMap, SebmGoogleMapMarker} from 'angular2-google-maps/core';
+//import { PlaceParking } from './../placetobook/placeparking';
+import { DispoParking } from './../dispotobook/dispoparking';
+import 'rxjs/Rx';
 
 //import {
 // GoogleMap,
@@ -43,11 +44,16 @@ import { PlaceParking } from '../../placetobook/placeparking';
 //})
 
 export class AroundplacePage {
-  uidSubject: Subject<any>;
-  uidSubjectRechDispo: Subject<any>;
-  queryObs: FirebaseListObservable<any>;
-  queryRechDispoObs: FirebaseListObservable<any>;
-  uidAuth: string;
+  private uidSubject: Subject<any>;
+  private queryObs: FirebaseListObservable<any>;
+  private uidSubjectRechDispo: Subject<any>;
+  private queryRechDispoObs: FirebaseListObservable<any>;  // <DispoParking>;
+
+  private uidAuth: string;
+  private loader:any;
+  private dispo:any[];
+  private place:any[];
+  //place = new PlaceParking();
 
   @ViewChild(Map)
   private map: Map;
@@ -55,8 +61,15 @@ export class AroundplacePage {
   constructor(public navCtrl: NavController,
               public navparams: NavParams,
               public fireSVC: FireService,
+              public loadingCtrl: LoadingController,
               public popoverCtrl: PopoverController,
               public modalCtrl: ModalController) {
+
+      //affichage du spinner
+      this.loader = this.loadingCtrl.create({
+        content: "Chargement..."
+      });
+      this.loader.present();
 
       this.uidAuth = this.navparams.get("uid");
       // console.log("AroundplacePage UID: ", this.uid);
@@ -64,10 +77,8 @@ export class AroundplacePage {
       this.uidSubject = new Subject();
       this.queryObs = fireSVC.getQueryPlace(this.uidAuth, this.uidSubject);  //   this.uidAuth -> ctrl de l'authentification
       this.uidSubjectRechDispo = new Subject();
-      this.queryRechDispoObs = fireSVC.getQueryRechDispo(this.uidAuth, this.uidSubject);
+      this.queryRechDispoObs = fireSVC.getQueryRechDispo(this.uidAuth, this.uidSubjectRechDispo);
 
-      // if (this.queryObs) { 
-      //    console.log("around queryObs: ", this.queryObs)
       //    this.queryObs.subscribe(snapshots=>{
       //        snapshots.forEach(snapshot => {
       //        console.log("snapshot: ",snapshot.key, snapshot.val());
@@ -82,76 +93,89 @@ export class AroundplacePage {
     if (this.queryRechDispoObs) {
       console.log("Around queryRechDispoObs: ", this.queryRechDispoObs)
 
+    //  if (this.uidAuth)
+    //      this.uidSubjectRechDispo.next(null); 
+
       this.queryRechDispoObs
-      .map(res =>{
-               //console.log ("map: res: ",  res[0].dateDebDispo,  res[0].dateFinDispo)
-              // console.log ("map: deb < fin: ",  new Date(res[].dateDebDispo), new Date(res[].dateFinDispo)," date jour: ", new Date( res.dateDebDispo))
-             res.forEach( resx => {
-               console.log (resx.dateDebDispo,"2017-01-03T06:00:00Z"," >: ", (resx.dateDebDispo >= "2017-01-03T06:00:00Z"));
-               return (resx.dateDebDispo >= "2017-01-03T06:00:00Z") ? resx: null;
-             } )          
-             // return {res.dateDebDispo, res.userKey};
-             // return res.json()  //json not a function !! 
-            // return res;   //flux continu !!      
+      .debounceTime(1000)
+      .distinctUntilChanged()
+      .map(res =>{         
+          let filter= []
+          res.forEach( resx => {
+             console.log ("userKey: ", resx.userKey, " Deb: ",resx.dateDebDispo,"2017-01-03T06:00:00Z"," inside: ",  (resx.dateDebDispo <= "2017-01-03T06:00:00Z"
+                                                                                                                      && resx.dateFinDispo >= "2017-01-03T06:00:00Z"));          
+             let obj = (resx.dateDebDispo <= "2017-01-03T06:00:00Z"
+                        && resx.dateFinDispo >= "2017-01-03T06:00:00Z") ? resx: null;
+             if (obj)
+                 filter.push (obj) ;              
+
+           }) 
+           console.log("filter: ", filter)
+           return filter        
+            // return res.json()  //json not a function !!
           })
       .subscribe( disp => {
-         disp.forEach ( dis =>{
-              this.completeAddMarker (disp) 
-         })
-           
-      
-      //t .subscribe( itms => {
-          // console.log("avant for itm.lat: ", itms)
-      //t     itms.forEach( disp => {
-            //console.log("itm.dateDebDispo: ", disp.dateDebDispo)
-      //t    this.completeAddMarker (disp) 
-            //let marker = this.map.addMarker(itm.latitude, itm.longitude);
-            //this.addMarkerlistener(marker, itm);
-      //t    })
-      })
+            console.log("Success Response", disp);
 
-      if (this.uidAuth)
-          this.uidSubject.next(null); //("2017-01-03T06:00:00Z");   // recherche sur une date de debut en dur
+            this.dispo = disp;
+            for (let i=0; i < this.dispo.length; i++) { //each (obj in disp )  {}
+                 //for (let dsp in this.dispo) {
+                //console.log(" ionViewDidEnter dsp: ", this.dispo[i])
+                 this.completeAddMarker(this.dispo[i]);
+            } // end for
+       })
+       //   function(disp) {
+       //      console.log("Success Response", disp);
+       //      this.completeAddMarker(disp);
+       //      },
+       //   function(error) { console.log("Error happened" + error)},
+       //   function() { console.log("the subscription is completed")}
+
+       if (this.loader)
+          this.hideLoading();
     }
-
-      // this.queryObs.forEach( itm => {
-      //    console.log("itm.lat: ", itm.latitude )
-        //  this.(map.initMarker(itm.latitude, itm.longitude);
-      // }).then ( itm => {
-      //      console.log("itm.lat: ", itm[0].latitude )
-      //      this.map.initMarker(itm[0].latitude, itm[0].longitude);
-      //    }).catch ( err => {
-      //      console.log("error", err);
-      //    })
 
    } // end ionViewDidEnter
 
-   completeAddMarker (disp) {
-      if (this.queryObs) {
-          console.log("Around queryObs: ", this.queryObs)
+   completeAddMarker (dispo) { 
+      //console.log("completeAddMarker dispo:", dispo )
+
+        if (this.queryObs) {
+          //(console.log("Around completeAddmarker QueryObs: ", this.queryObs)
+          console.log("completeAddmarker disp: ", dispo)
       
-          this.queryObs
-          .subscribe( itms => {
-              // console.log("avant for itm.lat: ", itms)
-              itms.forEach( place => {
-                // console.log("itm.latitude: ", itm.latitude)
+          this.queryObs   //.toPromise().then ( places =>{
+          .debounceTime(1000)
+          .distinctUntilChanged()
+          .subscribe( places => {
+              console.log("completeAddMarker subscribe places", places)
+              this.place = places;
+
+          //     places.forEach( place => {
+          //     console.log("itm.latitude: ", place.latitude)
 
                 // this.map.addMarker(itm.latitude, itm.longitude, this.addMarkerlistener);
-                let marker = this.map.addMarker(place.latitude, place.longitude);
-                this.addMarkerlistener(marker, place, disp);
-              })
-          })
+          //     let marker = this.map.addMarker(place.latitude, place.longitude);
+          //     this.addMarkerlistener(marker, place, dispo);
+          //     })
+         
+              let marker = this.map.addMarker(this.place[0].latitude, this.place[0].longitude);  
+              this.addMarkerlistener(marker, this.place[0], dispo);
+          }) 
 
           if (this.uidAuth)
-            this.uidSubject.next(disp.userKey);   // null pour tout les marker sinon this.uid
-      }  //end if
-   } 
+              this.uidSubject.next(dispo.userKey);   // null pour avoir tout les marker sinon this.uid
 
-   addMarkerlistener(marker, place, disp) {
+       }  //end if 
+   }   // end completeAddMarker
+
+   addMarkerlistener(marker, place, dsp) {
+       console.log("In addMarkerlistener dsp: ", dsp);
        marker.addListener('click', (res => {
-            console.log('add listener: ', res," plc: ", place);
+            console.log( 'AroundPlace addlistener: ', res," place: ", place);
+            console.log( 'AroundPlace addlistener: ', res," disp: ", dsp);
         
-            let popover = this.popoverCtrl.create(Routes.getPage(Routes.PLACEINFOPOP), {place : place, dispo: disp }); 
+            let popover = this.popoverCtrl.create(Routes.getPage(Routes.PLACEINFOPOP), {place : place, dispo: dsp }); 
             popover.present(); //{ param: myEvent });
 
           //  let modal = this.modalCtrl.create(Routes.getPage(Routes.PLACEINFOPOP)); 
@@ -166,7 +190,10 @@ export class AroundplacePage {
   //      });
   //  })
 
-  
+  private hideLoading(){
+       this.loader.dismiss();
+  }
+
    onClickBack(){
     // this.navCtrl.pop()
   }
