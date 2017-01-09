@@ -1,6 +1,5 @@
-# ionic2-places
+# Parking Privé
 
-Ionic 2 course training
 
 ### With the Ionic tool:
 
