@@ -3,6 +3,7 @@ import { NavController, NavParams } from 'ionic-angular';
 import { AroundplacePage } from '../around/aroundplace';
 import { PlacetobookPage } from '../placetobook/placetobook';
 import { RecherchePage } from '../recherche/recherche';
+import { DisplaybookingPage } from '../displaybooking/displaybooking';
 import { Routes } from '../../app/app.routes';
 import { AngularFire, FirebaseListObservable } from 'angularfire2';
 
@@ -20,6 +21,7 @@ export class TabsPage {
   tab1Root: any = RecherchePage;
   tab2Root: any = PlacetobookPage;
   tab3Root: any = AroundplacePage;
+  tab4Root: any = DisplaybookingPage
 
   uidAuth: string;
   chatParams: any;

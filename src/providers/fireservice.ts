@@ -54,7 +54,6 @@ export class FireService {
     if (uidAuth) {
        queryObs = this.af.database.list('/places', {  
               query: {
-                // orderByChild: 'ville',
                 orderByChild: 'userKey',
                 equalTo: uidSubject,
                 //  orderByKey: true,   //un seul orderBy
@@ -74,7 +73,6 @@ export class FireService {
     if (uidAuth) {
       queryObs = this.af.database.list('/dispos', {  //  '/items'
               query: {
-                // orderByChild: 'ville',
                 orderByChild: 'userKey',
                 equalTo: uidSubject,
                 //  orderByKey: true,   //un seul orderBy
@@ -92,19 +90,36 @@ export class FireService {
     //console.log ("fireService uid: ", uid);
 
     if (uidAuth) {
-      queryObs = this.af.database.list('/dispos')
-        // {  //  '/items'
-        //      query: {
-        //        // orderByChild: 'ville',
-        //        orderByChild: 'dateDebDispo',  // 'userKey',
-        //        equalTo: uidSubject,
+      queryObs = this.af.database.list('/dispos')  //,{
+     //         query: {
+     //           orderByChild: 'dateDebDispo',  
+     //           equalTo: uidSubject,
                 //  orderByKey: true,   //un seul orderBy
                 //  limitToFirst: 2,
-                //  limitToLast: 2,
-        //      }
-        //  });
+     //           limitToLast: 5,
+     //         }
+     //       });
     }
     console.log("authSVC Dispos queryObsRechDispo: ", queryObs)
+    return queryObs
+  }
+
+   getQueryBookDispo(uidAuth, uidSubject):FirebaseListObservable<any> {
+    let queryObs: FirebaseListObservable<any> = null;
+    //console.log ("fireService uid: ", uid);
+
+    if (uidAuth) {
+      queryObs = this.af.database.list('/dispos' ,{
+              query: {
+                orderByChild: 'userbookKey',  
+                equalTo: uidSubject,
+                //  orderByKey: true,   //un seul orderBy
+                //  limitToFirst: 2,
+                limitToLast: 5,
+              }
+            });
+    }
+    console.log("authSVC Dispos getQueryBookDispo: ", queryObs)
     return queryObs
   }
 
@@ -116,9 +131,6 @@ export class FireService {
     //   });
     // }
 
-    // signOut(): void {
-    //   this.auth$.logout();
-    // }
 
     // displayName(): string {
     //   if (this.authState != null) {

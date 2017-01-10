@@ -7,6 +7,8 @@ import { DispotobookPage } from '../pages/dispotobook/dispotobook';
 import { PlaceInfoPopPage } from '../pages/place-info-pop/place-info-pop';
 import { LocateplacetobookPage } from '../pages/locateplacetobook/locateplacetobook';
 import { RecherchePage } from '../pages/recherche/recherche';
+import { DisplaybookingPage } from '../pages/displaybooking/displaybooking';
+
 
 //import {SignupPage} from '../pages/signup/signup';
 
@@ -22,6 +24,7 @@ export class Routes {
   static PLACEINFOPOP:string="placeinfopop";
   static LOCATEPLACETOBOOK:string="locateplacetobook";
   static RECHERCHE:string="recherche";
+  static DISPLAYBOOKING:string="Displaybooking";
  // static SIGNUP:string="signup";
 
   static pages = {
@@ -34,6 +37,7 @@ export class Routes {
     [Routes.PLACEINFOPOP]: PlaceInfoPopPage,
     [Routes.LOCATEPLACETOBOOK]: LocateplacetobookPage,
     [Routes.RECHERCHE]: RecherchePage,
+    [Routes.DISPLAYBOOKING]: DisplaybookingPage,
  //   [Routes.SIGNUP]: SignupPage,
   };
 

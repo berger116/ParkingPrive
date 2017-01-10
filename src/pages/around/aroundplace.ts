@@ -87,13 +87,14 @@ export class AroundplacePage {  //implements OnDestroy
      //if (this.queryRechDispoObs && this.uidAuth && this.dateRech) {
         console.log("Around queryRechDispoObs: ", this.queryRechDispoObs)
 
-      //  if (this.uidAuth)
-      //      this.uidSubjectRechDispo.next(null); 
+        if (this.uidAuth)
+            this.uidSubjectRechDispo.next(null); //on prend les x dernieres dispos
+
         this.getTabPlaces();
 
         if (this.queryRechDispoObs)
           this.queryRechDispoObs
-          .debounceTime(1000)
+        //  .debounceTime(500)
           .distinctUntilChanged()
           .map(res =>{         
               let filter= []
@@ -152,7 +153,7 @@ export class AroundplacePage {  //implements OnDestroy
           }) 
 
           if (this.uidAuth) {
-            this.uidSubject.next(null);
+             this.uidSubject.next(null);
           } 
        }  //end if 
    }   // end completeAddMarker

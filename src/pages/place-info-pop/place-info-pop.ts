@@ -7,7 +7,7 @@ import { Routes } from '../../app/app.routes';
 import { PlaceParking } from '../../placetobook/placeparking';
 import { ToastMsg } from '../../components/toast-msg/toast-msg';
 
-import { DispoParking } from '../../dispotobook/dispoparking';
+import { DispoParking } from '../dispotobook/dispoparking';
 
 /*
   Generated class for the PlaceInfoPop page.
@@ -27,8 +27,8 @@ export class PlaceInfoPopPage {
   private toastMsg: ToastMsg;
 
   private uidAuth: string;
-  private place:any;  //<PlaceParking>;
-  private dispo:DispoParking;  //<DispoParking>;
+  private place:any;  //PlaceParking;
+  private dispo:any;  //DispoParking; inutile 
   private plaqueMin: string;
   
   constructor(public navCtrl: NavController,
@@ -46,7 +46,7 @@ export class PlaceInfoPopPage {
       console.log("PlaceInfoPopPage dispo: ", this.dispo);
 
       this.uidAuth = this.navparams.get("uid");
-      console.log("PlaceInfoPopPage dispo.userKey: ", this.dispo.userKey);
+      console.log("PlaceInfoPopPage dispo.userKey: ", this.uidAuth);
 
       //myDate: String = new Date().toISOString();   utile ??
       this.toastMsg = new ToastMsg(toastCtrl, alertCtrl);
@@ -63,8 +63,8 @@ export class PlaceInfoPopPage {
           //    }) 
           }
 
-         // if (this.uidAuth)
-         //     this.uidSubject.next(this.uidAuth)
+      //   if (this.uidAuth)    // inutile
+      //       this.uidSubject.next(this.uidAuth)
       }
     
   }  //end Cstr 
@@ -87,7 +87,7 @@ export class PlaceInfoPopPage {
 
             this.succs  //promise
             .then(_ => { 
-                console.log("success update plaqueMin key: ", this.dispo.$key)  ////this.fireKey
+                console.log("success update plaqueMin key: ", this.dispo.$key)  //this.fireKey
                 this.toastMsg._presentToast("Réservation effectuée"); 
            //   this.myForm.reset();
           
@@ -101,12 +101,13 @@ export class PlaceInfoPopPage {
 
   updateField (plaqueMin) { //(uid, dispo){
     return {
-       userKey: this.uidAuth,
+       userKey: this.dispo.userKey,
        placeKey: this.dispo.placeKey,
        dateDebDispo: this.dispo.dateDebDispo,
        dateFinDispo: this.dispo.dateFinDispo, 
        resNoplaque: plaqueMin,
-    }  // userbookKey manque !!!
+       userbookKey: this.uidAuth
+    } 
   }
 
   ctrlPlaqueOk(plaqueMin) {
