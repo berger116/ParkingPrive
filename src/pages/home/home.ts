@@ -9,15 +9,7 @@ import { NavController } from 'ionic-angular';
 })
 export class HomePage {
 
-  constructor(public navCtrl: NavController) {
-   //  if(!this.auth.isInit){
-   //   this.auth.init()
-   //     .then((token)=>{
-   //    this.navCtrl.setRoot(Routes.getRootPage(false));  //token!=null
-       
-   //     });
-   // };
-  }
+  constructor(public navCtrl: NavController) { }
 
   goLogin(){
     console.log ("home");   

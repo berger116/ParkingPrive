@@ -7,6 +7,8 @@ import { Routes } from '../../app/app.routes';
 import { PlaceParking } from '../../placetobook/placeparking';
 import { ToastMsg } from '../../components/toast-msg/toast-msg';
 
+import { DispoParking } from '../../dispotobook/dispoparking';
+
 /*
   Generated class for the PlaceInfoPop page.
 
@@ -22,12 +24,13 @@ export class PlaceInfoPopPage {
   //private queryObs: FirebaseListObservable<DispoParking>;
   private uidSubject: Subject<any>;
   private succs:any;
+  private toastMsg: ToastMsg;
 
   private uidAuth: string;
   private place:any;  //<PlaceParking>;
-  private dispo:any;  //<DispoParking>;
-  private toastMsg: ToastMsg;
-
+  private dispo:DispoParking;  //<DispoParking>;
+  private plaqueMin: string;
+  
   constructor(public navCtrl: NavController,
               public navparams: NavParams,
               public viewCtrl: ViewController,
@@ -40,24 +43,80 @@ export class PlaceInfoPopPage {
 
       this.dispo = this.navparams.get("dispo");
       console.log("PlaceInfoPopPage dispo.userKey: ", this.dispo.userKey);  // != uidAuth
+      console.log("PlaceInfoPopPage dispo: ", this.dispo);
+
+      this.uidAuth = this.navparams.get("uid");
+      console.log("PlaceInfoPopPage dispo.userKey: ", this.dispo.userKey);
 
       //myDate: String = new Date().toISOString();   utile ??
       this.toastMsg = new ToastMsg(toastCtrl, alertCtrl);
 
-   //   this.uidSubject = new Subject();
-   //   this.queryObs = fireSVC.getQueryDispo(this.uidAuth,  this.uidSubject );
+      if (this.fireSVC.authenticated && this.uidAuth)  { 
+          this.uidSubject = new Subject();
+          this.queryObs = fireSVC.getQueryDispo(this.uidAuth,  this.uidSubject );
 
-   //   console.log("placeInfoPopPage queryObs: ", this.queryObs," Null: ", this.queryObs==null )
-   //   if (this.queryObs) {
-   //       this.queryObs.subscribe (itms => { 
-          //  if (itms)
-         //      this.dispos = itms // as Array<DispoParking>;
-   //       })
-      
-   
+          console.log("PlaceInfoPopPage queryObs: ", this.queryObs," Null: ", this.queryObs==null )
+          if (this.queryObs) {
+          //    this.queryObs.subscribe (itms => { 
+          //      if (itms)
+          //        this.dispos = itms;
+          //    }) 
+          }
+
+         // if (this.uidAuth)
+         //     this.uidSubject.next(this.uidAuth)
+      }
+    
+  }  //end Cstr 
+
+  placeReserve(){
+     console.log("authenticated key: ", this.fireSVC.authenticated) 
+     if (this.fireSVC.authenticated && this.uidAuth)  {  
+       console.log("placeInfopop update authUID: ", this.uidAuth);
+
+     //if (this.myForm.valid ){
+          if (this.ctrlPlaqueOk(this.plaqueMin)) {
+         
+            //affectation de tous les champs
+            let item = this.updateField (this.plaqueMin)  
+            console.log("placeInfopop item:", item)
+       //     if (this.fireKey) {    //fireKey est null -> que ajout pour l'instant 
+                console.log("placeInfopop update Dispo");
+                // item UPDATE
+                this.succs = this.queryObs.update(this.dispo.$key, item);   //this.fireKey
+
+            this.succs  //promise
+            .then(_ => { 
+                console.log("success update plaqueMin key: ", this.dispo.$key)  ////this.fireKey
+                this.toastMsg._presentToast("Réservation effectuée"); 
+           //   this.myForm.reset();
+          
+            }).catch(
+                err => console.log(err, 'placeInfopop error in succs promisse!'));
+          }  // end if CtrlDateOk 
+   //    } else 
+   //          this.toastMsg._presentToast("Données non sauvegardées (Plaque non saisie)");  // end if this.uid
+    } 
   }
 
+  updateField (plaqueMin) { //(uid, dispo){
+    return {
+       userKey: this.uidAuth,
+       placeKey: this.dispo.placeKey,
+       dateDebDispo: this.dispo.dateDebDispo,
+       dateFinDispo: this.dispo.dateFinDispo, 
+       resNoplaque: plaqueMin,
+    }  // userbookKey manque !!!
+  }
 
+  ctrlPlaqueOk(plaqueMin) {
+   //  if (plaqueMin...) {
+          return true;
+   //   } else {
+   //       this.toastMsg._presentToast("Date de début supérieur ou égal à date de fin");
+   //       return false;
+   //   }
+  }
 
 
   close() {

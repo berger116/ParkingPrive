@@ -29,7 +29,7 @@
               <ion-col width-40>
                 <!-- <button full="true" [min]="now" calendar="true" [(ngModel)]="dispo.dateDispo" ion-item ion-datepicker> </button>   -->
                 <ion-item>    <!--  ionCancel="console.log('canceled')"      ionCancel="dateRefresh()"-->
-                  <ion-datetime  formControlName="dateRecherche" doneText="Saisir" cancelText="Annuler" displayFormat="DD.MM.YY :HH"  pickerFormat="DD.MMMM.YYYY :HH" [(ngModel)]="dateRecherche" ></ion-datetime>              
+                  <ion-datetime  formControlName="dateRecherche" doneText="Saisir" cancelText="Annuler" displayFormat="DD.MM.YY :HH"  pickerFormat="DD.MMMM.YYYY :HH" [(ngModel)]="dateRech" ></ion-datetime>              
                 </ion-item>  
                 <small  class="notice" [hidden]="myForm.controls.dateRecherche.valid || (myForm.controls.dateRecherche.pristine)"> <!-- && !submitted)"> --> 
                       La date recherche est requise.
@@ -37,8 +37,8 @@
               </ion-col>
 
               <ion-col width-20>        
-              <!-- <button ion-button round small color="secondary" id="dispoIns" onSubmit="document.getElementById('dispoIns').disabled=true;" (click)="insertDispo()">Ajouter</button>  -->
-                   <ion-icon name="add" color="secondary" class="iconSizeFormat" (click)="goRecherche()" id="recherche" onSubmit="document.getElementById('recherche').disabled=true;"></ion-icon> 
+                  <button ion-button round small color="secondary" (click)="goRecherche()" id="recherche" onSubmit="document.getElementById('recherche').disabled=true;">Recherche de places</button>  
+               <!--    <ion-icon name="add" color="secondary" class="iconSizeFormat" (click)="goRecherche()" id="recherche" onSubmit="document.getElementById('recherche').disabled=true;"></ion-icon> -->
               </ion-col>  
            </form>
       </ion-row>

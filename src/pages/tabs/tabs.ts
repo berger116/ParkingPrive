@@ -21,16 +21,21 @@ export class TabsPage {
   tab2Root: any = PlacetobookPage;
   tab3Root: any = AroundplacePage;
 
-  email: string;
-  chatParams = {
-    uid: this.navParams.get("uid")
-  };
+  uidAuth: string;
+  chatParams: any;
 
-  constructor(public navCtrl: NavController,
-              public navParams: NavParams,
-              public af: AngularFire) {  
-   //// this.email = (auth.user) ? auth.user.email : null
-   //console.log ("Tabs: ",  this.navParams.get("uid")) 
+   constructor(public navCtrl: NavController,
+               public navparams: NavParams,
+               public af: AngularFire) {  
+     
+       this.uidAuth = this.navparams.get("uid");
+       console.log ("Tabs Cstr uid: ", this.uidAuth);
+  }
+
+  ngOnInit() {
+      this.chatParams = {
+        uid: this.uidAuth 
+      }; //this.navParams.get("uid")
   }
 
   logout() {

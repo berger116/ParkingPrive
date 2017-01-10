@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { NavController, NavParams, ToastController, AlertController } from 'ionic-angular';
+import { NavController, NavParams, ViewController, App, ToastController, AlertController } from 'ionic-angular';
 import { Validators, FormGroup, FormControlName, FormControl } from '@angular/forms';
 import { Routes } from '../../app/app.routes';
 import { ToastMsg } from '../../components/toast-msg/toast-msg';
@@ -16,16 +16,19 @@ import { ToastMsg } from '../../components/toast-msg/toast-msg';
 })
 export class RecherchePage implements OnInit {
   private uidAuth: string;
+  private dateRech: string;
   private toastMsg: ToastMsg;
   private myForm:any;
-  private dateRecherche:any;
 
   constructor(public navCtrl: NavController,        
               public navparams: NavParams,
+              public appCtrl: App,
+              public viewCtrl: ViewController,
               private toastCtrl: ToastController,
               private alertCtrl: AlertController ) {
 
       this.uidAuth = this.navparams.get("uid");
+      this.dateRech = this.navparams.get("dateRech");
       console.log("RecherchePage Cstr UID: ", this.uidAuth);
 
       this.toastMsg = new ToastMsg(toastCtrl, alertCtrl);
@@ -40,21 +43,30 @@ export class RecherchePage implements OnInit {
    }
 
    onSubmit(): void {
-    //tmp console.log(this.myForm.value, "inval dateDispo: ", this.myForm.controls.dateDispo.invalid );  // {first: 'Nancy', last: 'Drew'}
     //tmp console.log(this.myForm.value, "inval form: ", this.myForm.valid);  
-     event.preventDefault(); //??
+    // event.preventDefault(); //??
    }
 
    ionViewDidLoad() {
-    console.log('Hello RecherchePage Page');
+     console.log('Hello RecherchePage Page');
    }
 
+   public ionViewCanLeave() {   //code utile ??
+    console.log("Placetobook CanLeave");  
+   // here we can either return true or false
+   // depending on if we want to leave this view
+    //if(isValid(randomValue)){
+        return true;
+  }
+
    goRecherche() {
-   // if (this.fireKey)  //clé de l'enregistrement place -> doit exister pour saisir des dispo
-   //  if (this.myForm.valid )
-       this.navCtrl.setRoot(Routes.getPage(Routes.AROUNDPLACE), {uid : this.uidAuth, recherche: this.dateRecherche});
-   //  else
-   //    this.toastMsg._presentToast("vous devez saisir une date de recherche"); 
+       console.log("---- Go recherche")
+       if (this.myForm.valid ){
+          console.log("---- Go recherche if")
+       //  this.appCtrl.getRootNav().push(Routes.getPage(Routes.AROUNDPLACE), {uid : this.uidAuth, dateRech: this.dateRech});
+          this.navCtrl.setRoot(Routes.getPage(Routes.AROUNDPLACE), {uid : this.uidAuth, dateRech: this.dateRech});
+       } else
+          this.toastMsg._presentToast("vous devez saisir une date de recherche"); 
    }
 
 }

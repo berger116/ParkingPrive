@@ -12,7 +12,7 @@
   
 <ion-content>
   <h6>Mettre en location une place de parking</h6>
-  <!--  <ion-spinner></ion-spinner>  -->
+  
   <!-- <div> {{ (af.auth | async)?.uid }} </div> -->
   
   <!--  {{ items | async  | json  }}  -->
@@ -24,19 +24,12 @@
   </ul>   -->
 
      <ion-grid>
-        <!--<ion-row >
-           <ion-col width-100>
-             <ion-item>
-                 <ion-label >{{this.fireKey}}</ion-label>    
-              </ion-item>
-           </ion-col>
-        </ion-row>  -->
+    
      <form [formGroup]="myForm" (ngSubmit)="onSubmit()">  
         <ion-row >
            <ion-col width-100>        
                 <ion-item>
                     <ion-label floating>Adresse</ion-label>   <!-- fixed stacked -->
-                    <!--<ion-input type="text" [(ngModel)]="items[0]?.adresse"></ion-input>  --> <!-- Plante ! -->
                     <ion-input type="text" formControlName="adresse" [(ngModel)]="this.place.adresse"></ion-input>  
                 </ion-item>  
                 <small  class="notice" [hidden]="myForm.controls.adresse.valid || (myForm.controls.adresse.pristine)"> <!-- && !submitted)"> --> 
@@ -133,7 +126,6 @@
             <ion-col width-100>          
                 <button ion-button round small color="secondary" id="placeupd" onSubmit="document.getElementById('placeupd').disabled=true;"
                         ng-disabled="this.myForm.valid" (click)="placeUpdate()">Enregistrer</button>
-            
             </ion-col>
         </ion-row>             
     </form>
@@ -152,42 +144,8 @@
         </ion-item>
     </ion-grid>
 
-<!--<ion-content padding>   avatar  ??
-  <ion-list>
-    <ion-item  *ngFor="let item of items" (click)="selectItem(item.id)">
-      <ion-avatar item-left>
-        <img src="{{item.image}}">
-      </ion-avatar>
-      <h2>{{item.name}}</h2>
-      <p>{{item.description}}</p>
-    </ion-item>
-  </ion-list>
-</ion-content> -->
-
-    <ul>
-    <!--   <li *ngFor="let item of items | async">
-        <input type="text" #updatename [value]="item.adresse" /> 
-        <input type="text" #updateplaque [value]="item.ville" />
-        <button (click)="updateItem(item.$key, updatename.value,  updateplaque.value)">Update</button>
-        <button (click)="deleteItem(item.$key)">Delete</button>  
-      </li>  -->
-    </ul>
     <!-- <input type="text" #newname />
     <input type="text" #newplaque />
     <button (click)="addItem(newname.value, newplaque.value)">Add</button>  -->
-  <!-- <button (click)="deleteEverything()">Delete All</button>  -->
-
-
-    <div>
-   <!--   <h4>Filter by uid</h4>
-      <button (click)="filterBy('hJWnojzr2tcPrkpX47znLhvtopB2')">hJWnojzr2tcPrkpX47znLhvtopB2</button>  -->
-    </div>
-
-   <!-- <ul>
-      <li class="text" *ngFor="let item of items | async">
-         {{ item | json }}
-      </li>  
-    </ul> -->  <!-- {{item.$value}}  {{ item | json }}-->
-    <h3>{{ (item | async)?.size }}</h3>
   
 </ion-content>

@@ -18,14 +18,10 @@
 
       <!--  Entête de la liste  -->
      <ion-grid>
-   
         <ion-row >
-           <ion-col width-100>        
                 <ion-label >Adresse</ion-label>   <!-- fixed stacked -->
                 <ion-label>{{ this.place.adresse }}</ion-label>   
-           </ion-col>
         </ion-row>
-      
         <ion-row>
           <ion-col width-50>
                 <ion-label >Ville</ion-label>
@@ -36,7 +32,6 @@
                 <ion-label>{{ this.place.noPostal }}</ion-label>      
           </ion-col>
         </ion-row>
-
         <ion-row>
            <ion-col width-30>            
                 <ion-label fixed>Date dispo</ion-label>   <!-- fixed stacked -->  
@@ -50,7 +45,6 @@
              </ion-item>
            </ion-col>
         </ion-row>
-
         <ion-row>    
           <ion-col width-30>
               <ion-label ion-datetime >{{dispo?.dateDebDispo | date: 'dd.MM.yyyy'}}</ion-label>  
@@ -64,6 +58,25 @@
             <!--   <ion-label  [(ngModel)]="dispo.resNoplaque"></ion-label>  -->  
           </ion-col> 
         </ion-row>
+
+        <ion-row>
+             <ion-col width-100>            
+                <ion-label >Saisisez votre plaque pour réserver cette place</ion-label>   <!-- fixed stacked -->  
+             </ion-col>
+        </ion-row>  
+        <ion-row>
+            <ion-col width-50>   <!-- formControlName="plaqueMin"  -->
+              <ion-item>
+                  <ion-label floating>No plaque</ion-label> 
+                  <ion-input type="text" [(ngModel)]="this.plaqueMin"></ion-input>
+              </ion-item>  
+            </ion-col>
+         
+            <ion-col width-40>          
+                <button ion-button round small color="secondary" id="placeRes" onSubmit="document.getElementById('placeRes').disabled=true;"
+                        (click)="placeReserve()">Reserver</button>
+            </ion-col>
+        </ion-row>    
      </ion-grid>
 
      <button ion-button color="secondary" (click)="close()">RETOUR</button>

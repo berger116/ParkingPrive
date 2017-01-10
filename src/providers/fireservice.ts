@@ -52,7 +52,7 @@ export class FireService {
     let queryObs: FirebaseListObservable<any> = null;
 
     if (uidAuth) {
-       queryObs = this.af.database.list('/places', {  // '/places'  '/items'
+       queryObs = this.af.database.list('/places', {  
               query: {
                 // orderByChild: 'ville',
                 orderByChild: 'userKey',
@@ -104,7 +104,7 @@ export class FireService {
         //      }
         //  });
     }
-    console.log("authSVC Dispos queryObs: ", queryObs)
+    console.log("authSVC Dispos queryObsRechDispo: ", queryObs)
     return queryObs
   }
 

@@ -28,14 +28,6 @@ export class LocateplacetobookPage {
       this.myLatLng = this.navparams.get("latLng");
       this.map = this.navparams.get("map");
       console.log("LocateplacetobookPage UID: ", this.uidAuth, " myLatLng: ", this.myLatLng );
-
-    
-    //  this.map.initMap();
-    //  console.log("LocateplacetobookPage ionViewDidEnter apr");
-    //  let mark = this.map.addMarker(this.myLatLng.lat, this.myLatLng.lng);
-
-     // this.uidSubject = new Subject();
-     // this.queryObs = fireSVC.getQueryPlace(this.uid, this.uidSubject);
   }
 
   ngOnInit(){

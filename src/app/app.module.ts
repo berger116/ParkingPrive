@@ -16,8 +16,9 @@ import { FormsModule } from '@angular/forms';
 import { HeaderContentComponent } from '../components/header-content/header-content';
 import { Map } from '../components/map/map';
 import { FireService } from '../providers/fireservice';
-//import {SortAsc} from '../pipes/sort-asc';
-//import {GroupBy} from '../pipes/group-by';
+import { LogloginSvc } from '../providers/loglogin-svc';
+//import { SortAsc } from '../pipes/sort-asc';
+//import { GroupBy } from '../pipes/group-by';
 //import { HomePage } from '../pages/home/home';
 
 const app:Array<any>=[MyApp];
@@ -82,7 +83,8 @@ export const myFirebaseAuthConfig = {
    //  deps: [Http]
    //},
   // Endpoints, 
-    FireService
+    FireService,
+    LogloginSvc
   ],
 
   bootstrap: [IonicApp],

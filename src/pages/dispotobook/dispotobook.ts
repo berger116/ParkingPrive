@@ -43,11 +43,11 @@ export class DispotobookPage implements OnInit {
   private newDebDispo:any;
   private newFinDispo:any;
 
-  constructor(public navCtrl: NavController,
-              public navparams: NavParams,
-              public af: AngularFire,
-              public fireSVC: FireService,
-              public loadingCtrl: LoadingController,
+  constructor(private navCtrl: NavController,
+              private navparams: NavParams,
+              private af: AngularFire,
+              private fireSVC: FireService,
+              private loadingCtrl: LoadingController,
               private toastCtrl: ToastController,
               private alertCtrl: AlertController) {
 
@@ -102,8 +102,8 @@ export class DispotobookPage implements OnInit {
       console.log("Dispotobook OnInit queryObs: ", this.queryObs)
     
       this.myForm = new FormGroup({
-           dateDebut: new FormControl('', Validators.required),  // [ Validators.required, validateEmail]) plusieur validateur
-           dateFin : new FormControl('', Validators.required),   // , Validators.minLength(10)),      
+           dateDebut: new FormControl('', Validators.required),  // [ Validators.required, Validators.minLength(10)]) si plusieurs validateur
+           dateFin : new FormControl('', Validators.required),       
       });
 
       if (this.loader)
@@ -111,7 +111,6 @@ export class DispotobookPage implements OnInit {
    }
 
    onSubmit(): void {
-    //tmp console.log(this.myForm.value, "inval dateDispo: ", this.myForm.controls.dateDispo.invalid );  // {first: 'Nancy', last: 'Drew'}
     //tmp console.log(this.myForm.value, "inval form: ", this.myForm.valid);  
      event.preventDefault(); //??
    }
@@ -126,12 +125,6 @@ export class DispotobookPage implements OnInit {
      .then(_=> { this.toastMsg._presentToast("Données effacées")})
      .catch(err => { this.toastMsg._presentToast('error opération non effectuée' + err)})
      //  event.preventDefault(); 
-   }
-
-   dateRefresh() {
-      console.log("refresh");
-      this.newDebDispo = "";
-      this.newFinDispo = "";
    }
 
    insertDispo() {   
@@ -161,8 +154,8 @@ export class DispotobookPage implements OnInit {
             .then(_ => { 
               console.log("success insert key: ",  this.fireKey)
               this.toastMsg._presentToast("Données sauvegardées"); 
-              this.newDebDispo = "";
-              this.newFinDispo = "";
+              this.myForm.reset();
+          
             }).catch(
               err => console.log(err, 'Dispotobook error in succs promisse!'));
           }  // end if CtrlDateOk 
@@ -192,6 +185,12 @@ export class DispotobookPage implements OnInit {
       }
   }
 
+  dateRefresh2() {
+     // console.log("refresh");
+      this.newDebDispo = "";
+      this.newFinDispo = "";
+   }
+
   datePick(ev) {
       console.log("date picker !!! event:", ev);
       //search(searchEvent) {  code utile  ??
@@ -214,6 +213,7 @@ export class DispotobookPage implements OnInit {
   public ionViewCanLeave() {   //code utile ??
     console.log("Dispotobook CanLeave");
    //  console.log("previous", this.navCtrl.last())
+
    // here we can either return true or false
    // depending on if we want to leave this view
     //if(isValid(randomValue)){
@@ -226,9 +226,10 @@ export class DispotobookPage implements OnInit {
   onClickBack(){
    // this.navCtrl.last()   // marche pas
    // this.navCtrl.push( this.navCtrl.last())
-        //  console.log("previous", this.navCtrl.push( this.navCtrl.last())) // getPrevious())
+   //  console.log("previous", this.navCtrl.push( this.navCtrl.last())) // getPrevious())
 
-    this.navCtrl.setRoot(Routes.getPage(Routes.PLACETOBOOK), {uid : this.uidAuth}); //, placeKey: this.fireKey});
+    this.navCtrl.pop() 
+   //tmp  this.navCtrl.setRoot(Routes.getPage(Routes.PLACETOBOOK), {uid : this.uidAuth}); 
   }
   
 }

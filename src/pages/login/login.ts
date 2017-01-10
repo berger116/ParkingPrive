@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, LoadingController } from 'ionic-angular';
 import { Routes } from '../../app/app.routes';
 import { AngularFire, AuthProviders, AuthMethods} from 'angularfire2';
+import { LogloginSvc } from '../../providers/loglogin-svc';
 
 /*
   Generated class for the Login page.
@@ -22,6 +23,7 @@ export class LoginPage {
 
   constructor(public navCtrl: NavController,
               private af: AngularFire,
+              private logloginSvc: LogloginSvc,
               public loadingCtrl: LoadingController) {
     //this.af.auth.subscribe(auth => console.log("XXX Login auth:" + auth)); 
       //console.log(this.af.auth )
@@ -72,9 +74,15 @@ export class LoginPage {
    //   this.goTabs();   
    // }
 
-   goTabs(uid){
+   goTabs(uid:any){
       console.log ("go tabs", uid);
       this.loginOk = true;
+
+      //log du login 
+      //console.log("login",uid.toString());
+      let uidStr= uid.toString();
+      this.logloginSvc.addLogin(uidStr);  //toString()
+
       this.navCtrl.push(Routes.getPage(Routes.TABS), {uid: uid});  
    }
 
