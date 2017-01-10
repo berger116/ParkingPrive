@@ -1,5 +1,5 @@
 
-export interface PlaceParking { 
+export class PlaceParking { 
      userKey: string; //uid du users
      adresse: string; 
      ville: string; 

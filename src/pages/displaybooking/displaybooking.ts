@@ -30,20 +30,21 @@ export class DisplaybookingPage implements OnInit {
   private queryObs: FirebaseListObservable<any>
   //private queryObs: FirebaseListObservable<DispoParking>;
   private uidSubject: Subject<any>;
+  private uidSubjectPlace: Subject<any>;
+  private queryPlaceObs: FirebaseListObservable<any>;
   private succs:any;
   private loader:any;
 
   private uidAuth: string;
   private placeKey: string;
-  private fireKey:string;
  
-  // dispos:Array<FirebaseListObservable<DispoParking>>;
-  private displayBooks:Array<DispoParking> = [];
+ // private displayBooks:Array<DispoParking> = [];
+  private displayBooks:Array<any> = [];
+  private locateBooks:Array<any> = [];
   private toastMsg: ToastMsg;
   private myForm:any;
-  private newDebDispo:any;
-  private newFinDispo:any;
-
+  private allPlace:any[];
+  
   constructor(private navCtrl: NavController,
               private navparams: NavParams,
               private af: AngularFire,
@@ -68,13 +69,45 @@ export class DisplaybookingPage implements OnInit {
       if (this.fireSVC.authenticated && this.uidAuth)  { 
           this.uidSubject = new Subject();
           this.queryObs = fireSVC.getQueryBookDispo(this.uidAuth,  this.uidSubject );
+          this.uidSubjectPlace = new Subject();
+          this.queryPlaceObs = fireSVC.getQueryPlace(this.uidAuth, this.uidSubjectPlace);
+  
+          this.getTabPlaces();
 
           console.log("DisplaybookingPage queryObs: ", this.queryObs," Null: ", this.queryObs==null )
           if (this.queryObs) {
-              this.queryObs.subscribe (itms => {
-                if (itms)
-                  this.displayBooks = itms;
-              })
+              this.queryObs
+                .distinctUntilChanged()
+                .map(res =>{         
+                    let filter= []
+                    res.forEach( resx => {
+                   //   console.log ("userKey: ", resx.userKey)         
+                      let obj = (resx.resNoplaque != "") ? resx: null;            
+                      if (obj)
+                          filter.push (obj) ;              
+                    }) 
+                    //console.log("filter: ", filter)
+                    return filter        
+                })
+               .subscribe (itms => {
+                  if (itms)
+                    this.displayBooks = itms;
+
+                    console.log("displayBooks.length:", this.displayBooks.length )
+                    if ( this.displayBooks.length > 0)
+                        for (let i=0; i < this.displayBooks.length; i++) { 
+                            console.log(" displayBooks for: ", this.displayBooks[i])
+                            this.completeLocate(i); // this.displayBooks[i]);
+                        } // end for
+                    else {
+                          this.toastMsg._presentToast("Aucune place reservée"); 
+                          console.log("Aucune place reservée");     
+                    }   
+                }),
+                (err =>{ 
+                    console.log("aroundPlace subscribe erreur: ", err)
+                }); 
+               
           }
 
           if (this.uidAuth)
@@ -103,6 +136,38 @@ export class DisplaybookingPage implements OnInit {
      this.uidSubject.next(userKey); 
    }
 
+    // Stockage de toutes les places de parking  
+   getTabPlaces () { 
+      if (this.queryPlaceObs) {     
+          this.queryPlaceObs   //.toPromise().then ( places =>{
+         // .debounceTime(1000)
+            .distinctUntilChanged()
+            .subscribe( places => {
+                //console.log("completeAddMarker subscribe places", places)
+                this.allPlace = places; 
+          }) 
+
+          if (this.uidAuth) {
+             this.uidSubjectPlace.next(null);  //on veut toutes les places
+          } 
+       }  //end if 
+   }   // end getTabPlaces
+
+   completeLocate (index) {   //(displayBook) { 
+       console.log("allPlace");
+       console.log("allPlace.length:", this.allPlace.length);
+
+       this.allPlace.forEach( place => {  
+            if (place.userKey == this.displayBooks[index].userKey)  {
+                console.log("displayBook av : ", this.displayBooks[index]);
+                //this.displayBooks[index].push(place);
+                 this.locateBooks.push(place);
+                console.log("displayBook ap : ", this.displayBooks[index]);
+               // this.locateBooks.push(place);
+            }
+       })
+   }
+
 //   deleteDispo(key){
 //     console.log("delete Key:", key);
 //     this.queryObs.remove(key) 
@@ -110,7 +175,6 @@ export class DisplaybookingPage implements OnInit {
 //     .catch(err => { this.toastMsg._presentToast('error opération non effectuée' + err)})
      //  event.preventDefault(); 
 //   }
-
 
   private hideLoading(){
        this.loader.dismiss();
@@ -130,11 +194,9 @@ export class DisplaybookingPage implements OnInit {
   }
 
   onClickBack(){
-   // this.navCtrl.last()   // marche pas
    // this.navCtrl.push( this.navCtrl.last())
-   //  console.log("previous", this.navCtrl.push( this.navCtrl.last())) // getPrevious())
 
-    this.navCtrl.pop() 
+   // this.navCtrl.pop() 
    //tmp  this.navCtrl.setRoot(Routes.getPage(Routes.PLACETOBOOK), {uid : this.uidAuth}); 
   }
   

@@ -36,15 +36,15 @@ export class PlacetobookPage implements OnInit {
   private uidAuth: string;
   private fireKey:string;
 
-  private place: PlaceParking = null;   //une seul place
+  private place: PlaceParking;  //new PlaceParking() // null;   //une seul place
   private geocoder: google.maps.Geocoder;
   private toastMsg: ToastMsg;
   private myForm:any;
   public base64Image: string;
 
 
-  @ViewChild(Map)
-  private map: Map;
+  //@ViewChild(Map)
+  //private map: Map;
 
   constructor(private navCtrl: NavController,
               private navparams: NavParams,
@@ -70,12 +70,12 @@ export class PlacetobookPage implements OnInit {
       console.log("placetobook Cstr UID: ", this.uidAuth);
 
       //.subscribe( item => { item.filter(.userKey == this.uid}) //.filter(item => { return item[0].userKey == this.uid })  
-     //tmp  this.place = new PlaceParking();     
+      this.place = new PlaceParking();     
       this.toastMsg = new ToastMsg(toastCtrl, alertCtrl);
 
       if (this.fireSVC.authenticated && this.uidAuth)  { 
           this.uidSubject = new Subject();
-          this.queryObs = fireSVC.getQueryPlace(this.uidAuth,  this.uidSubject);
+          this.queryObs = fireSVC.getQueryPlace(this.uidAuth, this.uidSubject);
 
           console.log("placetobook queryObs: ", this.queryObs)
           if (this.queryObs)
@@ -89,7 +89,7 @@ export class PlacetobookPage implements OnInit {
                 }
              }); 
 
-    console.log("placetobook Cstr Fin UID: ", this.uidAuth);
+          //console.log("placetobook Cstr Fin UID: ", this.uidAuth);
           if (this.uidAuth)
               this.uidSubject.next(this.uidAuth)      
       } // end if
@@ -118,7 +118,7 @@ export class PlacetobookPage implements OnInit {
   onSubmit(): void {
    //console.log(this.myForm.value, "inval adresse: ", this.myForm.controls.adresse.invalid );  
     console.log(this.myForm.value, "inval postal: ", this.myForm.valid);  
-    //event.preventDefault(); //??
+    event.preventDefault(); //??
 
     // get adresse(): any { return this.myForm.get('adresse'); }
   }

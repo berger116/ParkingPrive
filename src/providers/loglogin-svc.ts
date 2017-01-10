@@ -15,7 +15,7 @@ export class LogloginSvc {
  // newTodo: Todo = { _id: 0, title: "" };
  
  // API_PTH = window.location.origin;  
- API_PTH = "http://localhost:8100"
+ API_PTH = "http://localhost:8109"
  //API_PTH = "http://127.0.0.1:8100/"
 
   constructor(private http: Http) { }
@@ -28,11 +28,12 @@ export class LogloginSvc {
   
   addLogin(loginAuth: string): Promise<string> {
     
-    console.log("----->logpath:", this.logPath, " / ", loginAuth);
+    console.log("----->logpath:", this.logPath, " / ", {loginAuth : loginAuth});
     return this.http
-    .post(this.logPath, loginAuth)
+    .post(this.logPath, {loginAuth : loginAuth})
     //.map(res => res.json())
-    .toPromise().then( res => {
+    .toPromise()
+    .then( res => {
          console.log("Ecriture effectuée", res)
     })
     .catch( err => console.log("catch err",err));

@@ -14,6 +14,13 @@ page-locateplacetobook {
     }
 }
 
+map {
+    //border: red dashed 2px;
+    width:100%;
+    height:400px;  //100% du parent qui est a zero-> marche pas
+    display: block;
+}
+
 .popover-md .popover-content {
     width: 90%; //90%; //350px;
     height: 60% //70%; //500px;

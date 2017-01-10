@@ -16,7 +16,7 @@
 </ion-header>
   
 <ion-content>
-  <h6 class="decale">Vos réservation de places de parking</h6>
+  <h6 class="decale">Vos réservations de places de parking</h6>
  
        <!-- {{ this.dispos | async  | json  }}   --> 
        <!-- <ul>
@@ -56,8 +56,10 @@
     <!--          <ion-datetime displayFormat=":HH.mm" [ngModel]="dispo.dateDebDispo"> De:</ion-datetime>  <!--doit etre sur la meme ligne
                   <ion-datetime displayFormat=":HH.mm" [ngModel]="dispo.dateFinDispo"> a:</ion-datetime>  -->
               </ion-col>
-              <ion-col width-40>
-               <!--   <ion-label>{{ displayBk.resNoplaque }}</ion-label>  -->
+        <!--</ion-row> -->
+        <!--<ion-row *ngFor="let locateBook of locateBooks"> -->
+              <ion-col width-40 *ngFor="let locateBook of locateBooks">  
+                 <ion-label>{{ locateBook?.adresse }}</ion-label>  
               </ion-col> 
               <ion-col width-20>
                <!-- <button ion-button color="secondary" id="dispoDel" onSubmit="document.getElementById('dispoDel').disabled=true;"  (click)="deleteDispo(dispo.$key)">Effacer</button> -->
@@ -65,7 +67,7 @@
 
               <!--      <ion-icon name="trash" outline color="danger" class="iconSizeFormat" (click)="deleteDispo(dispo.$key)"  id="dispoDel" onSubmit="document.getElementById('dispoDel').disabled=true;"></ion-icon> -->
             </ion-col>
-        </ion-row>  
+        </ion-row> 
 
         <ion-item *ngIf="error" class="signup_error">
             {{error}}

@@ -43,7 +43,7 @@ export class AroundplacePage {  //implements OnDestroy
   private toastMsg: ToastMsg;
   private dispo:any[];
   //private place:any[];
-  private placeS:any[];
+  private allPlace:any[];
 
   //private markers:any[] =[];
   //private index = 0;
@@ -78,21 +78,21 @@ export class AroundplacePage {  //implements OnDestroy
       this.queryObs = fireSVC.getQueryPlace(this.uidAuth, this.uidSubject);  //   this.uidAuth -> ctrl de l'authentification
       this.uidSubjectRechDispo = new Subject();
       this.queryRechDispoObs = fireSVC.getQueryRechDispo(this.uidAuth, this.uidSubjectRechDispo);
-  }
+  
+     
+   } // end Cstr
 
-  ionViewDidEnter() {
-     this.map.initMap();
+   ngOnInit() {
+        this.map.initMap();
 
-     if (this.fireSVC.authenticated && this.uidAuth && this.dateRech) {
+        if (this.fireSVC.authenticated && this.uidAuth && this.dateRech) {
      //if (this.queryRechDispoObs && this.uidAuth && this.dateRech) {
         console.log("Around queryRechDispoObs: ", this.queryRechDispoObs)
-
-        if (this.uidAuth)
-            this.uidSubjectRechDispo.next(null); //on prend les x dernieres dispos
 
         this.getTabPlaces();
 
         if (this.queryRechDispoObs)
+          //on filtre sur les dates corr. à la recherche et en prenant que les places non reservées
           this.queryRechDispoObs
         //  .debounceTime(500)
           .distinctUntilChanged()
@@ -101,7 +101,7 @@ export class AroundplacePage {  //implements OnDestroy
               res.forEach( resx => {
                 console.log ("userKey: ", resx.userKey, " Deb: ", resx.dateDebDispo, this.dateRech,
                               " inside: ", (resx.dateDebDispo <= this.dateRech && resx.dateFinDispo >= this.dateRech));          
-                let obj = (resx.dateDebDispo <=this.dateRech && resx.dateFinDispo >= this.dateRech) ? resx: null;
+                let obj = (resx.dateDebDispo <=this.dateRech && resx.dateFinDispo >= this.dateRech && resx.resNoplaque == "") ? resx: null;
               //  console.log ("userKey: ", resx.userKey, " Deb: ",resx.dateDebDispo,"2017-01-03T06:00:00Z",
               //                " inside: ",  (resx.dateDebDispo <= "2017-01-03T06:00:00Z" && resx.dateFinDispo >= "2017-01-03T06:00:00Z"));          
               //  let obj = (resx.dateDebDispo <= "2017-01-03T06:00:00Z" && resx.dateFinDispo >= "2017-01-03T06:00:00Z") ? resx: null;
@@ -111,18 +111,20 @@ export class AroundplacePage {  //implements OnDestroy
               //console.log("filter: ", filter)
               return filter        
           })
-          .subscribe( disp => {
+          .take(1).subscribe( disp => {
                 console.log("Success Response", disp);
                 this.dispo = disp;
 
+                console.log("dispo.length:", this.dispo.length )
                 if ( this.dispo.length > 0)
                     for (let i=0; i < this.dispo.length; i++) { 
                         //console.log(" ionViewDidEnter dsp: ", this.dispo[i])
                         this.completeAddMarker(this.dispo[i]);
                     } // end for
-                else 
-                  this.toastMsg._presentToast("Aucune place trouvée pour votre recherche");   
-
+                else {
+                      this.toastMsg._presentToast("Aucune place trouvée pour votre recherche"); 
+                      console.log("Aucune place trouvée pour votre recherche");     
+                }    
                 // on execute plus en boucle mais l'un à la suite de l'autre
           //      console.log("subscribe index:", this.index, "Dispo.length:",this.dispo.length )
           //      if (this.index < this.dispo.length)
@@ -131,15 +133,18 @@ export class AroundplacePage {  //implements OnDestroy
           //         this.index = 0;
           //         this.markers=[];
           //      }    
-                }),
-                (err =>{ 
-                    console.log("aroundPlace subscribe erreur: ", err)
-                });   
+            }),
+            (err =>{ 
+                console.log("aroundPlace subscribe erreur: ", err)
+            }); 
+
+            if (this.uidAuth)
+                this.uidSubjectRechDispo.next(null); //on prend les x dernieres dispos
      } // end if
-     
-     if (this.loader)
+
+        if (this.loader)
             this.hideLoading();
-   } // end ionViewDidEnter
+   }
 
    // Stockage de toutes les places de parking  
    getTabPlaces () { 
@@ -149,17 +154,17 @@ export class AroundplacePage {  //implements OnDestroy
             .distinctUntilChanged()
             .subscribe( places => {
                 //console.log("completeAddMarker subscribe places", places)
-                this.placeS = places; 
+                this.allPlace = places; 
           }) 
 
           if (this.uidAuth) {
-             this.uidSubject.next(null);
+             this.uidSubject.next(null);  //on veut toutes les places
           } 
-       }  //end if 
-   }   // end completeAddMarker
+       }  // end if
+   }   // end getTabPlaces
 
    completeAddMarker (dispo) { 
-       this.placeS.forEach( plc => {  //voir avec un map ???
+       this.allPlace.forEach( plc => {  //voir avec un map ???
             if (plc.userKey == dispo.userKey)  {
                 let marker = this.map.addMarker(plc.latitude, plc.longitude);  
                 this.addMarkerlistener(marker, plc, dispo);
@@ -217,7 +222,7 @@ export class AroundplacePage {  //implements OnDestroy
   // }   // end completeAddMarker
 
 
-  // public ngOnDestroy(){
+  // public ngOnDestroy(){   //essayer de clearer avant  !!!!
    ////public ionViewCanLeave() {  
    //   console.log("on leave Destroy:", this.index);
    //   this.index = 0;
@@ -233,8 +238,8 @@ export class AroundplacePage {  //implements OnDestroy
    }
 
    onClickBack(){
-      this.navCtrl.setRoot(Routes.getPage(Routes.RECHERCHE), {uid : this.uidAuth, dateRech : this.dateRech}); 
-    // this.navCtrl.pop()
+     //tmp  this.navCtrl.setRoot(Routes.getPage(Routes.RECHERCHE), {uid : this.uidAuth, dateRech : this.dateRech}); 
+     this.navCtrl.pop()
   }
 
 }

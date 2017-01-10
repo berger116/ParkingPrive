@@ -52,19 +52,19 @@ export class RecherchePage implements OnInit {
    }
 
    public ionViewCanLeave() {   //code utile ??
-    console.log("Placetobook CanLeave");  
-   // here we can either return true or false
-   // depending on if we want to leave this view
-    //if(isValid(randomValue)){
-        return true;
+      console.log("Placetobook CanLeave");  
+    // here we can either return true or false
+    // depending on if we want to leave this view
+      //if(isValid(randomValue)){
+      return true;
   }
 
    goRecherche() {
        console.log("---- Go recherche")
        if (this.myForm.valid ){
           console.log("---- Go recherche if")
-       //  this.appCtrl.getRootNav().push(Routes.getPage(Routes.AROUNDPLACE), {uid : this.uidAuth, dateRech: this.dateRech});
-          this.navCtrl.setRoot(Routes.getPage(Routes.AROUNDPLACE), {uid : this.uidAuth, dateRech: this.dateRech});
+         this.appCtrl.getRootNav().push(Routes.getPage(Routes.AROUNDPLACE), {uid : this.uidAuth, dateRech: this.dateRech});
+       //   this.navCtrl.setRoot(Routes.getPage(Routes.AROUNDPLACE), {uid : this.uidAuth, dateRech: this.dateRech});
        } else
           this.toastMsg._presentToast("vous devez saisir une date de recherche"); 
    }

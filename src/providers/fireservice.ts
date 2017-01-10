@@ -90,15 +90,15 @@ export class FireService {
     //console.log ("fireService uid: ", uid);
 
     if (uidAuth) {
-      queryObs = this.af.database.list('/dispos')  //,{
-     //         query: {
-     //           orderByChild: 'dateDebDispo',  
-     //           equalTo: uidSubject,
+      queryObs = this.af.database.list('/dispos' ,{
+              query: {
+                orderByChild: 'userKey',  //'dateDebDispo',  
+                equalTo: uidSubject,
                 //  orderByKey: true,   //un seul orderBy
                 //  limitToFirst: 2,
      //           limitToLast: 5,
-     //         }
-     //       });
+              }
+            });
     }
     console.log("authSVC Dispos queryObsRechDispo: ", queryObs)
     return queryObs
