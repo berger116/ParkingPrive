@@ -43,8 +43,8 @@ export class PlacetobookPage implements OnInit {
   public base64Image: string;
 
 
-  //@ViewChild(Map)
-  //private map: Map;
+  @ViewChild(Map)
+  private map: Map;
 
   constructor(private navCtrl: NavController,
               private navparams: NavParams,
