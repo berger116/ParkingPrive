@@ -1,14 +1,12 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NavController, NavParams, LoadingController, ToastController, AlertController } from 'ionic-angular';
-import { Validators,  FormGroup, FormControlName, FormControl } from '@angular/forms';
+import { Validators,  FormGroup, FormControl } from '@angular/forms';
 import { AngularFire, FirebaseListObservable} from 'angularfire2'; 
 import { FireService } from '../../providers/fireservice';
 import { Subject } from 'rxjs/Subject';
-import { Routes } from '../../app/app.routes';
 import { ToastMsg } from '../../components/toast-msg/toast-msg';
 import { DatePicker } from 'ionic-native';
 import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/reduce';
 
 import { DispoParking } from './dispoparking';
@@ -25,7 +23,7 @@ import { DispoParking } from './dispoparking';
   selector: 'page-placetobook',
   templateUrl: 'dispotobook.html'
 })
-export class DispotobookPage implements OnInit { 
+export class DispotobookPage implements OnInit {
   private queryObs: FirebaseListObservable<any>
   //private queryObs: FirebaseListObservable<DispoParking>;
   private uidSubject: Subject<any>;
@@ -42,7 +40,8 @@ export class DispotobookPage implements OnInit {
   private myForm:any;
   private newDebDispo:any;
   private newFinDispo:any;
-
+  private now:any; 
+       
   constructor(private navCtrl: NavController,
               private navparams: NavParams,
               private af: AngularFire,
@@ -64,6 +63,8 @@ export class DispotobookPage implements OnInit {
       //.subscribe( item => { item.filter(.userKey == this.uid}) //.filter(item => { return item[0].userKey == this.uid })    
       //tmp  this.dispos = new DispoParking();    
       this.toastMsg = new ToastMsg(toastCtrl, alertCtrl);
+      this.now = new Date().toISOString().substring(0, 13) + ":00:00";
+      console.log("now:", this.now)
 
       if (this.fireSVC.authenticated && this.uidAuth)  { 
           this.uidSubject = new Subject();
@@ -76,21 +77,19 @@ export class DispotobookPage implements OnInit {
                   this.dispos = itms;
               })
 
-          //   let max= 0;
+          //   let max= 0;   ----- A développer
           //   this.queryObs   //.subscribe (itms => itms.json()) 
           //   .reduce((previous, current) => {
-          //      console.log("XXX math:", previous, current) // previous.dateDebDispo > current.dateDebDispo);
-          //      console.log("XXX math:", previous[0].dateDebDispo, current[0].dateDebDispo, previous[0].dateDebDispo > current[0].dateDebDispo);
-                //return current.dateDebDispo; // Math.max(previous.dateDebDispo, current.dateDebDispo);   //current;
+          //      console.log(" math:", previous, current) // previous.dateDebDispo > current.dateDebDispo);
+          //      console.log(" math:", previous[0].dateDebDispo, current[0].dateDebDispo, previous[0].dateDebDispo > current[0].dateDebDispo);
+                // Math.max(previous.dateDebDispo, current.dateDebDispo);   //current;
           //      return (previous.dateDebDispo > current.dateDebDispo) ? previous: current;
           //   }).subscribe (itms => { 
           //      if (itms)
           //        console.log("if max:", itms ) // max = itms;
           //      else
           //        console.log("else max:", itms ) // max = 50;
-
-          //  }); 
-        // })
+          //  });   
           }
 
           if (this.uidAuth)
@@ -111,8 +110,8 @@ export class DispotobookPage implements OnInit {
    }
 
    onSubmit(): void {
-    //tmp console.log(this.myForm.value, "inval form: ", this.myForm.valid);  
-     event.preventDefault(); //??
+    // console.log(this.myForm.value, "inval form: ", this.myForm.valid);  
+    //event.preventDefault(); //??
    }
 
    filterBy(userKey: any) {
@@ -124,7 +123,6 @@ export class DispotobookPage implements OnInit {
      this.queryObs.remove(key) 
      .then(_=> { this.toastMsg._presentToast("Données effacées")})
      .catch(err => { this.toastMsg._presentToast('error opération non effectuée' + err)})
-     //  event.preventDefault(); 
    }
 
    insertDispo() {   
@@ -177,12 +175,24 @@ export class DispotobookPage implements OnInit {
   }
 
   ctrlDateOk(dateDeb, dateFin) {
-      if (dateDeb < dateFin) {
-          return true;
-      } else {
-          this.toastMsg._presentToast("Date de début supérieur ou égal à date de fin");
-          return false;
+      let res = true;  
+      let mess = "";
+      if (dateDeb > dateFin) {
+          res = false;
+          mess =  "Date de début supérieur ou égal à date de fin" 
       }
+      if (dateDeb < this.now){
+          res = false;
+          mess = "Date de début inférieur à date du jour" 
+      }
+      if (dateFin < this.now) {
+          res = false;
+          mess = "Date de fin inférieur à date du jour" 
+      }
+
+      if (res==false )
+          this.toastMsg._presentToast(mess);
+      return res;
   }
 
   dateRefresh2() {
@@ -224,12 +234,8 @@ export class DispotobookPage implements OnInit {
   }
 
   onClickBack(){
-   // this.navCtrl.last()   // marche pas
-   // this.navCtrl.push( this.navCtrl.last())
-   //  console.log("previous", this.navCtrl.push( this.navCtrl.last())) // getPrevious())
-
     this.navCtrl.pop() 
-   //tmp  this.navCtrl.setRoot(Routes.getPage(Routes.PLACETOBOOK), {uid : this.uidAuth}); 
+   //  this.navCtrl.setRoot(Routes.getPage(Routes.PLACETOBOOK), {uid : this.uidAuth}); 
   }
   
 }

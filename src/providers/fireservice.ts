@@ -1,17 +1,11 @@
 import { Injectable } from '@angular/core';
-import { NavParams } from 'ionic-angular';
-import { AngularFire,
-         AuthProviders, FirebaseAuth, FirebaseAuthState, AuthMethods,
-         FirebaseListObservable, FirebaseObjectObservable} from 'angularfire2';
-//import { AngularFire, FirebaseListObservable, FirebaseObjectObservable} from 'angularfire2';
-import { Subject } from 'rxjs/Subject';
+import { AngularFire, FirebaseAuth, FirebaseAuthState, FirebaseListObservable} from 'angularfire2';
+
 
 @Injectable()
 export class FireService {
   private authState: FirebaseAuthState;
   private authObj: any;
-
-  //queryObs: FirebaseListObservable<any>;
 
   constructor(public fba: FirebaseAuth, public af: AngularFire) {
      //this.authState = fba.getAuth();  // methode dépreciée, supprimée par la suite
@@ -123,6 +117,24 @@ export class FireService {
     return queryObs
   }
 
+  getQueryUser(uidAuth, uidSubject):FirebaseListObservable<any> {
+    let queryObs: FirebaseListObservable<any> = null;
+    //console.log ("fireService uid: ", uid);
+
+    if (uidAuth) {
+      queryObs = this.af.database.list('/users' ,{
+              query: {
+                orderByChild: 'userKey',  
+                equalTo: uidSubject,
+                //  orderByKey: true,   //un seul orderBy
+                //  limitToFirst: 2,
+                limitToLast: 5,
+              }
+            });
+    }
+    console.log("authSVC Users getQueryUser: ", queryObs)
+    return queryObs
+  }
 
     //InWithFacebook(): firebase.Promise<FirebaseAuthState> {
     //   return this.auth$.login({

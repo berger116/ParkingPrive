@@ -1,0 +1,108 @@
+
+<ion-header>
+   <header-content  class="header-trt" title="Votre profile"></header-content>
+</ion-header>
+  
+<ion-content>
+  <h6 class="decale">Vos données personnelles</h6>
+  
+  <!--  {{ items | async  | json  }}  -->
+
+ <!-- <ul>
+    <li *ngFor="let item of items | async">
+       {{ item.adresse | json }}
+    </li>
+  </ul>   -->
+
+  <ion-grid>   
+     <form [formGroup]="myForm" (ngSubmit)="onSubmit()">  
+          <ion-row >
+           <ion-col width-100>        
+                <ion-item>
+                    <ion-label floating>Nom</ion-label>   <!-- fixed stacked -->
+                    <ion-input type="text" formControlName="nom" [(ngModel)]="this.user.nom"></ion-input>  
+                </ion-item>  
+                <small  class="notice" [hidden]="myForm.controls.nom.valid || (myForm.controls.nom.pristine)"> <!-- && !submitted)"> --> 
+                    Votre nom est requis.
+                </small>   
+           </ion-col>
+           <ion-col width-100>        
+                <ion-item>
+                    <ion-label floating>Prénom</ion-label>   <!-- fixed stacked -->
+                    <ion-input type="text" formControlName="prenom" [(ngModel)]="this.user.prenom"></ion-input>  
+                </ion-item>  
+                <small  class="notice" [hidden]="myForm.controls.prenom.valid || (myForm.controls.prenom.pristine)"> <!-- && !submitted)"> --> 
+                    Votre prénom est requis.
+                </small>   
+           </ion-col>
+        </ion-row>
+
+        <ion-row >
+           <ion-col width-100>        
+                <ion-item>
+                    <ion-label floating>Adresse</ion-label>   <!-- fixed stacked -->
+                    <ion-input type="text" formControlName="adresse" [(ngModel)]="this.user.adresse"></ion-input>  
+                </ion-item>  
+                <small  class="notice" [hidden]="myForm.controls.adresse.valid || (myForm.controls.adresse.pristine)"> <!-- && !submitted)"> --> 
+                    Votre adresse est requise.
+                </small>   
+           </ion-col>
+        </ion-row>
+      
+        <ion-row>
+          <ion-col width-50>
+             <ion-item>
+                <ion-label floating>No Postal</ion-label>
+                <ion-input type="text" formControlName="noPostal" [(ngModel)]="this.user.noPostal"></ion-input>
+             </ion-item>
+             <small class="notice" [hidden]="myForm.controls.noPostal.valid || (myForm.controls.noPostal.pristine)"> <!-- && !submitted)"> --> 
+                  Le no postal est requis.
+             </small>
+           </ion-col>
+            <ion-col width-50>
+             <ion-item>
+                <ion-label floating>Ville</ion-label>
+                <ion-input type="text" formControlName="ville" [(ngModel)]="this.user.ville"></ion-input>      
+             </ion-item>
+              <small  class="notice" [hidden]="myForm.controls.ville.valid || (myForm.controls.ville.pristine)"> <!-- && !submitted)"> --> 
+                   La ville est requise.
+              </small>           
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+           <ion-col width-40>
+             <ion-item>
+                <ion-label floating>No téléphone</ion-label>
+                <ion-input type="text" formControlName="notel" [(ngModel)]="this.user.noTel"></ion-input>  
+             </ion-item>
+             <small  class="notice" [hidden]="myForm.controls.notel.valid || (myForm.controls.notel.pristine)"> <!-- && !submitted)"> --> 
+                   Votre no de teléphone est requis.
+             </small> 
+           </ion-col>          
+           <ion-col width-40>
+             <ion-item>
+                <ion-label floating>Email</ion-label>
+                <ion-input type="text" formControlName="email" [(ngModel)]="this.user.email"></ion-input> 
+             </ion-item>
+             <small class="notice" [hidden]="myForm.controls.email.valid || (myForm.controls.email.pristine)"> <!-- && !submitted)"> --> 
+                   Votre email est requis.
+             </small> 
+           </ion-col>
+        </ion-row>
+        
+        <ion-row>
+            <ion-col width-100>          
+                <button ion-button round small color="secondary" id="userupd" onSubmit="document.getElementById('userupd').disabled=true;"
+                        ng-disabled="this.myForm.valid" (click)="userUpdate()">Enregistrer</button>
+            </ion-col>
+        </ion-row>             
+     </form>
+
+     <ion-item *ngIf="error" class="signup_error">
+            {{error}}
+     </ion-item>
+  </ion-grid>
+  
+</ion-content>
+

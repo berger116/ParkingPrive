@@ -15,25 +15,67 @@
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
 
- 
-.header-trt {
-  background : darkred;
-  color : darkred;
+ //header content
+.toolbar-background-md {
+   background: darkred;
+   opacity: 0.8;
 }
 
+ // titre header content
+.toolbar-title-md {
+    color: white;
+ }
+
+ //tab du bas
+.tab-button {
+   background : darkred;
+   opacity: 0.7;
+}
+
+ //icon tab et header content
+.tab-button-icon {
+    color: white;
+ }
+.bar-button-md {
+    color: white;
+ }
+ .tab-button-text {
+    color: white;
+ }
+
 ion-label {
-    font-size: 1.3rem;
+  font-size: 1.3rem;
+  font-weight: bold;
 }
 
 ion-datetime {
-    font-size: 1.3rem;
+  font-size: 1.3rem;
+  font-weight: bold;
 }
 
+ion-input {
+  font-size: 1.3rem;
+  //font-weight: bold;
+}
+
+ // deécallage des titres 
 .decale {
+  margin-left: 3%;
+ // left: 3%; //15px;
+}
+
+/* class validator   */
+.notice {
+ /* background: red; */
+  color: red;
+  position: relative;
   left: 15px;
 }
 
 h6 {
-  margin-left:3%;
+  //margin-left: 3%;
+  border-left: 3%;
+  background: #aaa; // orange;
+  opacity: 0.5;
 }
 

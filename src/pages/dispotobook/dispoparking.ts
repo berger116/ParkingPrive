@@ -2,7 +2,7 @@
 export interface DispoParking { 
      userKey: string; //uid du users
      placeKey: string;
-     dateDebDispo: string;
+     dateDebDispo: string;  //ctrl sur date + facile en format string !
      dateFinDispo: string;
      resNoplaque: string; 
   

@@ -4,12 +4,6 @@ import { Routes } from '../../app/app.routes';
 import { AngularFire, AuthProviders, AuthMethods} from 'angularfire2';
 import { LogloginSvc } from '../../providers/loglogin-svc';
 
-/*
-  Generated class for the Login page.
-
-  See http://ionicframework.com/docs/v2/components/#navigation for more info on
-  Ionic pages and navigation.
-*/
 @Component({
   selector: 'page-login',
   templateUrl: 'login.html'
@@ -24,13 +18,7 @@ export class LoginPage {
   constructor(public navCtrl: NavController,
               private af: AngularFire,
               private logloginSvc: LogloginSvc,
-              public loadingCtrl: LoadingController) {
-    //this.af.auth.subscribe(auth => console.log("XXX Login auth:" + auth)); 
-      //console.log(this.af.auth )
-
-      // this.af.auth.subscribe(auth => {   //(this.af.auth.getAuth().provider) {  //méthode dépréciée
-      // },
-  }
+              public loadingCtrl: LoadingController) {}
 
   login() {
       console.log('login Page')
@@ -41,7 +29,7 @@ export class LoginPage {
       });
       this.loader.present();
 
-      // this.af.auth.login();  // log avec google
+      // this.af.auth.login();  // () vide -> log avec google
 
       // login credential 
       this.af.auth.login({ email: this.email, password: this.password },
@@ -61,9 +49,7 @@ export class LoginPage {
         if (this.loader)
             this.hideLoading();
 
-       // this.af.auth.subscribe(auth => {   //(this.af.auth.getAuth().provider) {  //méthode dépréciée
-       //    console.log("Subscribe af.auth: " + auth )
-       // });
+        //(this.af.auth.getAuth().provider) {  //méthode dépréciée
     }
 
    // overrideLogin() {
@@ -81,7 +67,7 @@ export class LoginPage {
       //log du login 
       //console.log("login",uid.toString());
       let uidStr= uid.toString();
-      this.logloginSvc.addLogin(uidStr);  //toString()
+      this.logloginSvc.addLogin(uidStr); 
 
       this.navCtrl.push(Routes.getPage(Routes.TABS), {uid: uid});  
    }

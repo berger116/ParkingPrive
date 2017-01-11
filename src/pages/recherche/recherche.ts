@@ -1,15 +1,9 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NavController, NavParams, ViewController, App, ToastController, AlertController } from 'ionic-angular';
-import { Validators, FormGroup, FormControlName, FormControl } from '@angular/forms';
+import { Validators, FormGroup, FormControl } from '@angular/forms';
 import { Routes } from '../../app/app.routes';
 import { ToastMsg } from '../../components/toast-msg/toast-msg';
 
-/*
-  Generated class for the Recherche page.
-
-  See http://ionicframework.com/docs/v2/components/#navigation for more info on
-  Ionic pages and navigation.
-*/
 @Component({
   selector: 'page-recherche',
   templateUrl: 'recherche.html'
@@ -19,6 +13,7 @@ export class RecherchePage implements OnInit {
   private dateRech: string;
   private toastMsg: ToastMsg;
   private myForm:any;
+  private now:any; 
 
   constructor(public navCtrl: NavController,        
               public navparams: NavParams,
@@ -32,6 +27,8 @@ export class RecherchePage implements OnInit {
       console.log("RecherchePage Cstr UID: ", this.uidAuth);
 
       this.toastMsg = new ToastMsg(toastCtrl, alertCtrl);
+      this.now = new Date().toISOString().substring(0, 13) + ":00:00";
+      console.log("now:", this.now)
   }
 
   ngOnInit() {
@@ -59,14 +56,29 @@ export class RecherchePage implements OnInit {
       return true;
   }
 
-   goRecherche() {
-       console.log("---- Go recherche")
-       if (this.myForm.valid ){
-          console.log("---- Go recherche if")
-         this.appCtrl.getRootNav().push(Routes.getPage(Routes.AROUNDPLACE), {uid : this.uidAuth, dateRech: this.dateRech});
+  goRecherche() {
+      //console.log("Go recherche")
+      if (this.myForm.valid){
+        if (this.ctrlDateOk(this.dateRech))
+           this.appCtrl.getRootNav().push(Routes.getPage(Routes.AROUNDPLACE), {uid : this.uidAuth, dateRech: this.dateRech});
        //   this.navCtrl.setRoot(Routes.getPage(Routes.AROUNDPLACE), {uid : this.uidAuth, dateRech: this.dateRech});
-       } else
+      } else
           this.toastMsg._presentToast("vous devez saisir une date de recherche"); 
    }
+
+   ctrlDateOk(dateRech) {
+      let res = true;  
+      let mess = "";
+    
+      if (dateRech < this.now){
+          res = false;
+          mess = "Date de recherche inférieur à date du jour" 
+      }
+
+      if (res==false )
+          this.toastMsg._presentToast(mess);
+      return res;
+   }
+
 
 }

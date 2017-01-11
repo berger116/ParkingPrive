@@ -3,8 +3,7 @@ import { Platform } from 'ionic-angular';
 import { StatusBar, Splashscreen } from 'ionic-native';
 import { Routes } from './app.routes';
 //import { Auth } from '../providers/auth';
-//import { HomePage } from '../pages/home/home';
-import {AngularFire, FirebaseListObservable} from 'angularfire2';
+import { AngularFire } from 'angularfire2';
 
 //import { FB_CONFIG } from '../providers/fb-config';
 //const firebaseconfig:Object = FB_CONFIG;
@@ -15,12 +14,10 @@ import {AngularFire, FirebaseListObservable} from 'angularfire2';
  // templateUrl: 'app.html'
 })
 export class MyApp {
-  //rootPage = HomePage //AroundPage; //HomePage;
   rootPage: any;
 
   //firebase.initializeApp(firebaseconfig);
- // items: FirebaseListObservable<any[]>;
-
+ 
   constructor(platform: Platform, af: AngularFire) {  //private auth:Auth  
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.

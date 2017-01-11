@@ -12,7 +12,7 @@ export class HomePage {
   constructor(public navCtrl: NavController) { }
 
   goLogin(){
-    console.log ("home");   
+    console.log ("home"); 
     // debugger; 
     this.navCtrl.push(Routes.getPage(Routes.LOGIN))
   }

@@ -8,6 +8,7 @@ import { PlaceInfoPopPage } from '../pages/place-info-pop/place-info-pop';
 import { LocateplacetobookPage } from '../pages/locateplacetobook/locateplacetobook';
 import { RecherchePage } from '../pages/recherche/recherche';
 import { DisplaybookingPage } from '../pages/displaybooking/displaybooking';
+import { UserprofilePage } from '../pages/userprofile/userprofile';
 
 
 //import {SignupPage} from '../pages/signup/signup';
@@ -24,7 +25,8 @@ export class Routes {
   static PLACEINFOPOP:string="placeinfopop";
   static LOCATEPLACETOBOOK:string="locateplacetobook";
   static RECHERCHE:string="recherche";
-  static DISPLAYBOOKING:string="Displaybooking";
+  static DISPLAYBOOKING:string="displaybooking";
+  static USERPROFILE:string="userprofile";
  // static SIGNUP:string="signup";
 
   static pages = {
@@ -38,7 +40,7 @@ export class Routes {
     [Routes.LOCATEPLACETOBOOK]: LocateplacetobookPage,
     [Routes.RECHERCHE]: RecherchePage,
     [Routes.DISPLAYBOOKING]: DisplaybookingPage,
- //   [Routes.SIGNUP]: SignupPage,
+    [Routes.USERPROFILE]: UserprofilePage,
   };
 
   static getPage(id){

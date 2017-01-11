@@ -1,18 +1,12 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
-import { AroundplacePage } from '../around/aroundplace';
 import { PlacetobookPage } from '../placetobook/placetobook';
 import { RecherchePage } from '../recherche/recherche';
 import { DisplaybookingPage } from '../displaybooking/displaybooking';
+import { UserprofilePage } from '../userprofile/userprofile';
 import { Routes } from '../../app/app.routes';
-import { AngularFire, FirebaseListObservable } from 'angularfire2';
+import { AngularFire } from 'angularfire2';
 
-/*
-  Generated class for the Tabs tabs.
-
-  See https://angular.io/docs/ts/latest/guide/dependency-injection.html
-  for more info on providers and Angular 2 DI.
-*/
 @Component({
   selector: 'page-tabs',
   templateUrl: 'tabs.html'
@@ -20,13 +14,13 @@ import { AngularFire, FirebaseListObservable } from 'angularfire2';
 export class TabsPage {
   tab1Root: any = RecherchePage;
   tab2Root: any = PlacetobookPage;
-  tab3Root: any = AroundplacePage;
-  tab4Root: any = DisplaybookingPage
+  tab3Root: any = DisplaybookingPage;
+  tab4Root: any = UserprofilePage;
 
   uidAuth: string;
   chatParams: any;
 
-   constructor(public navCtrl: NavController,
+  constructor(public navCtrl: NavController,
                public navparams: NavParams,
                public af: AngularFire) {  
      
@@ -37,7 +31,7 @@ export class TabsPage {
   ngOnInit() {
       this.chatParams = {
         uid: this.uidAuth 
-      }; //this.navParams.get("uid")
+      }; 
   }
 
   logout() {

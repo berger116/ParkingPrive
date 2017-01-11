@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NavController, NavParams, ViewController, App, LoadingController, PopoverController, ModalController, ToastController, AlertController } from 'ionic-angular';
-import { Validators,  FormGroup, FormControlName, FormControl } from '@angular/forms';
+import { Validators,  FormGroup, FormControl } from '@angular/forms';
 import { AngularFire, FirebaseListObservable } from 'angularfire2';  //AuthProviders, AuthMethods
 import { FireService } from '../../providers/fireservice';
 import { Subject } from 'rxjs/Subject';
@@ -13,8 +13,6 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/filter';
 
 import { PlaceParking } from './placeparking';
-import { LocateplacetobookPage } from "../../locateplacetobook/locateplacetobook";
-
 //import {FIREBASE_PROVIDERS, defaultFirebase, AngularFire} from 'angularfire2';
 
 /*
@@ -36,7 +34,7 @@ export class PlacetobookPage implements OnInit {
   private uidAuth: string;
   private fireKey:string;
 
-  private place: PlaceParking;  //new PlaceParking() // null;   //une seul place
+  private place: PlaceParking;  //new PlaceParking()  //une seul place
   private geocoder: google.maps.Geocoder;
   private toastMsg: ToastMsg;
   private myForm:any;
@@ -69,7 +67,6 @@ export class PlacetobookPage implements OnInit {
       this.uidAuth = this.navparams.get("uid") 
       console.log("placetobook Cstr UID: ", this.uidAuth);
 
-      //.subscribe( item => { item.filter(.userKey == this.uid}) //.filter(item => { return item[0].userKey == this.uid })  
       this.place = new PlaceParking();     
       this.toastMsg = new ToastMsg(toastCtrl, alertCtrl);
 
@@ -82,14 +79,13 @@ export class PlacetobookPage implements OnInit {
              this.queryObs.subscribe (itm => {
                 if (itm[0]) {
                   console.log("itm: ", itm[0].$key)
-                //  console.log("itm: ", itm[0].adresse)
-                  this.fireKey = itm[0].$key       // clé de l'enregistrement
+                  this.fireKey = itm[0].$key   // clé de l'enregistrement
                   this.place = itm[0]
                 //  this.place.userKey = itm[0].userkey 
                 }
              }); 
+             //.subscribe( item => { item.filter(.userKey == this.uid}) //.filter(item => { return item[0].userKey == this.uid })  
 
-          //console.log("placetobook Cstr Fin UID: ", this.uidAuth);
           if (this.uidAuth)
               this.uidSubject.next(this.uidAuth)      
       } // end if
@@ -100,7 +96,7 @@ export class PlacetobookPage implements OnInit {
       console.log("placetobook OnInit UID: ", this.uidAuth);
       
       this.myForm = new FormGroup({
-        adresse: new FormControl('', Validators.required),  // [ Validators.required, validateEmail]) plusieur validateur
+        adresse: new FormControl('', Validators.required),  // [ Validators.required, validateEmail]) plusieurs validateur
         ville : new FormControl('', Validators.required),   // , Validators.minLength(10)),
         noPostal : new FormControl('', Validators.required), 
         latitude : new FormControl('', Validators.required), 
@@ -189,7 +185,6 @@ export class PlacetobookPage implements OnInit {
   manageDispo() {
     if (this.fireKey) { //clé de l'enregistrement place -> doit exister pour saisir des dispo
 
-       //this.viewCtrl.dismiss();
        this.appCtrl.getRootNav().push(Routes.getPage(Routes.DISPOTOBOOK), {uid : this.uidAuth, placeKey: this.fireKey});
        //this.navCtrl.setRoot(Routes.getPage(Routes.DISPOTOBOOK), {uid : this.uidAuth, placeKey: this.fireKey});
   } else
@@ -197,8 +192,6 @@ export class PlacetobookPage implements OnInit {
   }
 
   getGeocode() {
-    // let latlng = { lat: this.place.latitude, lng: this.place.longitude };
-    // console.log("latlng", latlng);
     let adrGeocode = this.place.adresse + " " +  this.place.noPostal + " " +  this.place.ville;
     let geocodeAdresseOpt = {
 	    'address' : adrGeocode,   
@@ -220,8 +213,6 @@ export class PlacetobookPage implements OnInit {
         let popover = this.popoverCtrl.create(Routes.getPage(Routes.LOCATEPLACETOBOOK), {uid: this.uidAuth, latLng: myLatLng, map: this.map}); 
         popover.present(); //{ param: myEvent });
 
-      //  let modal = this.modalCtrl.create(Routes.getPage(Routes.LOCATEPLACETOBOOK), {uid: this.uidAuth, latLng: myLatLng}); 
-      //  modal.present(); //{ param: myEvent });
         this.toastMsg._presentToast("Points GPS codés selon l'adresse fournie");
       }
       else

@@ -3,13 +3,9 @@ import { IonicApp, IonicModule } from 'ionic-angular';   //  ViewController, Pop
 import { MyApp } from './app.component';
 import { Routes } from './app.routes';
 import { AngularFireModule, AuthProviders, AuthMethods } from 'angularfire2';
-//import { DatePickerModule } from 'datepicker-ionic2';
-//import { DatePickerModule } from 'ng2-datepicker';
-//import { HttpModule } from '@angular/http';
 import { FormsModule } from '@angular/forms';
 
 //import { AuthHttp, AuthConfig } from 'angular2-jwt';
-//import { Http } from '@angular/http';
 //import { Storage } from '@ionic/storage';
 //import { Endpoints} from '../providers/endpoints'
 //import { Auth} from '../providers/auth'
@@ -26,7 +22,6 @@ const pages:Array<any> = Routes.getPages();
 const components:Array<any> = [
   HeaderContentComponent,
   Map,
-//  ToastMsg,
 ];
 //const pipes:Array<any> = [SortAsc, GroupBy];
 
@@ -36,9 +31,6 @@ const appIonicConfig = {
     ios: {
       tabsPlacement: 'bottom',
     }
-//    android: {
-//      tabsPlacement: 'top',
-//    }
   }
 };
 
@@ -59,15 +51,6 @@ export const myFirebaseAuthConfig = {
 
 //let storage = new Storage();
 
-//export function getAuthHttp(http) {
-//  return new AuthHttp(new AuthConfig({
-//    // headerPrefix: YOUR_HEADER_PREFIX,
-//    noJwtError: true,
-//    globalHeaders: [{'Accept': 'application/json'}],
-//    tokenGetter: (() => storage.get('id_token')),
-//  }), http);
-//}
-
 @NgModule({
   declarations: app.concat(pages).concat(components), // .concat(pipes),
   imports: [
@@ -82,7 +65,6 @@ export const myFirebaseAuthConfig = {
    //  useFactory: getAuthHttp,
    //  deps: [Http]
    //},
-  // Endpoints, 
     FireService,
     LogloginSvc
   ],
