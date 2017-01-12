@@ -50,11 +50,36 @@ export class DisplaybookingPage implements OnInit {
 
       if (this.fireSVC.authenticated && this.uidAuth)  { 
           this.uidSubjectBook = new Subject();
-          this.queryObsBook = fireSVC.getQueryBookDispo(this.uidAuth,  this.uidSubjectBook );
+          this.queryObsBook = this.fireSVC.getQueryBookDispo(this.uidAuth,  this.uidSubjectBook );
           this.uidSubjectPlace = new Subject();
-          this.queryPlaceObs = fireSVC.getQueryPlace(this.uidAuth, this.uidSubjectPlace);
+          this.queryPlaceObs = this.fireSVC.getQueryPlace(this.uidAuth, this.uidSubjectPlace);
   
           this.getTabPlaces();
+          this.displayBooks = [];
+          this.locateBooks = [];
+
+      }   
+        //  if (this.uidAuth)
+        //      this.uidSubjectBook.next(this.uidAuth)  //
+   }
+
+   ngOnInit() {
+     console.log("DisplaybookingPage OnInit queryObs: ", this.queryObsBook)
+
+      if (this.loader)
+          this.hideLoading();
+   }
+
+   filterBy(userKey: any) {
+     //this.uidSubjectBook.next(userKey); 
+   }
+
+   //ionViewDidLoad() {
+   ionViewWillEnter() {
+     console.log("DisplaybookingPage WillEnter authUID: ", this.uidAuth)
+
+     this.displayBooks = [];
+     this.locateBooks = [];
 
           console.log("DisplaybookingPage queryObs: ", this.queryObsBook," Null: ", this.queryObsBook==null )
           if (this.queryObsBook) {
@@ -76,12 +101,14 @@ export class DisplaybookingPage implements OnInit {
                     this.displayBooks = itms;
 
                     console.log("displayBooks.length:", this.displayBooks.length )
-                    if ( this.displayBooks.length > 0)
+                    if ( this.displayBooks.length > 0){
+                        //this.locateBooks = [];
+       
                         for (let i=0; i < this.displayBooks.length; i++) { 
                             //console.log(" displayBooks for: ", this.displayBooks[i])
                             this.completeLocate(i); // this.displayBooks[i]);
                         } // end for
-                    else {
+                    } else {
                           this.toastMsg._presentToast("Aucune place reservée"); 
                           console.log("Aucune place reservée");     
                     }   
@@ -91,21 +118,13 @@ export class DisplaybookingPage implements OnInit {
                 }); 
           }
 
-          if (this.uidAuth)
-              this.uidSubjectBook.next(this.uidAuth)  //
-      }
-   }
+       if (this.uidAuth){
+            this.uidSubjectBook.next(this.uidAuth) 
+            console.log("DisplaybookingPage WillEnter2 authUID: ", this.uidAuth)
+       }
+     // }
 
-   ngOnInit() {
-     //console.log("DisplaybookingPage OnInit queryObs: ", this.queryObsBook)
-
-      if (this.loader)
-          this.hideLoading();
-   }
-
-   filterBy(userKey: any) {
-     //this.uidSubjectBook.next(userKey); 
-   }
+  }
 
    // Stockage de toutes les places de parking  
    getTabPlaces () { 
@@ -132,6 +151,7 @@ export class DisplaybookingPage implements OnInit {
                 let tab = this.displayBooks[index];
                 let tabConcat:any = [];
         
+                // merge d'objet
                 for(var key in tab) tabConcat[key]=tab[key];
                 for(var key in place) tabConcat[key]=place[key];
                // Object.keys(tab).forEach((key) => result[key] = tab[key]);
