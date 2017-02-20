@@ -15,8 +15,13 @@ export class LogloginSvc {
  // newTodo: Todo = { _id: 0, title: "" };
  
  // API_PTH = window.location.origin;  
- API_PTH = "http://localhost:8109"
- //API_PTH = "http://127.0.0.1:8100/"
+ // API_PTH = "http://localhost:8109"  //"http://127.0.0.1:8100/"
+  API_PTH = "https://server-parking.herokuapp.com"
+
+  // ----------------------------------------
+  //Consultation du fichier des log:
+  //https://server-parking.herokuapp.com/loglogin/loglogin.txt
+  // ----------------------------------------
 
   constructor(private http: Http) { }
   // Observable todos source
@@ -28,7 +33,7 @@ export class LogloginSvc {
   
   addLogin(loginAuth: string): Promise<string> {
     
-    console.log("----->logpath:", this.logPath, " / ", {loginAuth : loginAuth});
+    console.log("----->logpath:", this.logPath, " + ", {loginAuth : loginAuth});
     return this.http
     .post(this.logPath, {loginAuth : loginAuth})
     //.map(res => res.json())

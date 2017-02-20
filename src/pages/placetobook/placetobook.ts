@@ -38,7 +38,8 @@ export class PlacetobookPage implements OnInit {
   private geocoder: google.maps.Geocoder;
   private toastMsg: ToastMsg;
   private myForm:any;
-  public base64Image: string;
+  private base64Image: string;
+  private prefImgBase64: string = "data:image/jpeg;base64,";
 
 
   @ViewChild(Map)
@@ -79,8 +80,9 @@ export class PlacetobookPage implements OnInit {
              this.queryObs.subscribe (itm => {
                 if (itm[0]) {
                   console.log("itm: ", itm[0].$key)
-                  this.fireKey = itm[0].$key   // clé de l'enregistrement
-                  this.place = itm[0]
+                  this.fireKey = itm[0].$key;  // clé de l'enregistrement
+                  this.place = itm[0];
+                  this.base64Image = this.prefImgBase64 + this.place.base64Image;
                 //  this.place.userKey = itm[0].userkey 
                 }
              }); 
@@ -177,7 +179,8 @@ export class PlacetobookPage implements OnInit {
        latitude: this.place.latitude,
        longitude: this.place.longitude,
        prixPlace: this.place.prixPlace,
-       noPlace: this.place.noPlace
+       noPlace: this.place.noPlace,
+       base64Image :  this.place.base64Image 
       }
   }
 
@@ -187,7 +190,7 @@ export class PlacetobookPage implements OnInit {
 
        this.appCtrl.getRootNav().push(Routes.getPage(Routes.DISPOTOBOOK), {uid : this.uidAuth, placeKey: this.fireKey});
        //this.navCtrl.setRoot(Routes.getPage(Routes.DISPOTOBOOK), {uid : this.uidAuth, placeKey: this.fireKey});
-  } else
+    } else
        this.toastMsg._presentToast("vous devez avoir une place enregistrée"); 
   }
 
@@ -226,13 +229,21 @@ export class PlacetobookPage implements OnInit {
   getPicture(){
       Camera.getPicture({
         destinationType: Camera.DestinationType.DATA_URL,
-        targetWidth: 200,
-        targetHeight: 200
+        targetWidth: 100,
+        targetHeight: 80,
       }).then((imageData) => {
-        this.base64Image = "data:image/jpeg;base64," + imageData;
+        this.place.base64Image = imageData;
+        this.base64Image = this.prefImgBase64 + imageData;
+       // this.base64Image = "data:image/jpeg;base64," + imageData;
+
       }, (error) => {
         console.log("error ",error)
       });
+  }
+
+  showPicture() { 
+       let popover = this.popoverCtrl.create(this.base64Image); 
+        popover.present(); 
   }
 
   ionViewDidLoad() {

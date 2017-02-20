@@ -81,7 +81,7 @@
         <ion-row>
           <ion-col width-50>
              <ion-item>
-                <ion-label floating>Prix de la place</ion-label>
+                <ion-label floating>Prix de la place</ion-label>  <!--| currency:'USD':true:'1.2-2'  ne marche pas-->
                 <ion-input type="text" formControlName="prixPlace" [(ngModel)]="this.place.prixPlace"></ion-input>      
              </ion-item>
               <small  class="notice" [hidden]="myForm.controls.prixPlace.valid || (myForm.controls.prixPlace.pristine)"> <!-- && !submitted)"> --> 
@@ -98,26 +98,35 @@
         </ion-row>
         
         <ion-row>
-           <ion-col width-50>
-              <button ion-button round small  color="secondary"icon-left color="dark"  (click)="getPicture()">
+        <!--   <ion-col left width-50>
+              <button ion-button round small  color="secondary" icon-left color="dark"  (click)="getPicture()">
                   <ion-icon name='camera' is-active="false"></ion-icon>
                   <span>Photo</span>
               </button>
+           </ion-col>  -->
+   
+           <ion-col right width-50>
+               <button ion-button class="formatImg" round small icon-left color="dark" (click)="getPicture()">
+                   <ion-icon name='camera' is-active="false"></ion-icon>    
+               </button>
+               <ion-card>   
+                   <ion-card-header class="formatImg">
+                      <span>Vue Place</span>
+                   </ion-card-header>
+                   <img [src]="base64Image" *ngIf="base64Image" />
+               </ion-card>
+
+                 <button ion-button class="formatImg" round small icon-left color="dark" (click)="showPicture()">
+                   show   
+               </button>
            </ion-col>
 
-           <ion-col width-50>
-              <ion-card>
-                <img [src]="base64Image" *ngIf="base64Image" />
-              </ion-card>
+           <ion-col left width-50>          
+               <button ion-button round small color="secondary" id="placeupd" onSubmit="document.getElementById('placeupd').disabled=true;"
+                       ng-disabled="this.myForm.valid" (click)="placeUpdate()">Enregistrer</button>
            </ion-col>
-        </ion-row>
-
-        <ion-row>
-            <ion-col width-100>          
-                <button ion-button round small color="secondary" id="placeupd" onSubmit="document.getElementById('placeupd').disabled=true;"
-                        ng-disabled="this.myForm.valid" (click)="placeUpdate()">Enregistrer</button>
-            </ion-col>
-        </ion-row>             
+        </ion-row>  
+              
     </form>
 
     <ion-row>

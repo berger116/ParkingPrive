@@ -8,6 +8,7 @@ export class PlaceParking {
      longitude: number;  
      prixPlace: number;
      noPlace: number;
+     base64Image : string;
 
  //  constructor(values: Object = {}) {
  //   Object.assign(this, values);
